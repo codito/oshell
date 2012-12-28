@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{5C93B457-35A0-4432-8620-5B939DABFA5E}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>oshell</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <BaseIntermediateOutputPath>..\builds\obj</BaseIntermediateOutputPath>
+    <OutputPath>..\builds\bin\debug\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <StartAction>Project</StartAction>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <BaseIntermediateOutputPath>..\builds\obj</BaseIntermediateOutputPath>
+    <OutputPath>..\builds\bin\release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>OShell</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
+  <ItemGroup>
+    <Reference Include="SimpleInjector">
+      <HintPath>..\packages\SimpleInjector.1.6.0.12319\lib\net35\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector.Extensions">
+      <HintPath>..\packages\SimpleInjector.Extensions.1.6.0.12319\lib\net35\SimpleInjector.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\Commands\DefaultCommandProvider.cs" />
+    <Compile Include="Core\Commands\KeyMapCommands.cs" />
+    <Compile Include="Core\Commands\SetCommand.cs" />
+    <Compile Include="Core\Contracts\ICommand.cs" />
+    <Compile Include="Core\Contracts\ICommandService.cs" />
+    <Compile Include="Core\Contracts\ICommandHandler.cs" />
+    <Compile Include="Core\Contracts\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Core\Frame.cs" />
+    <Compile Include="Core\Contracts\IKeyMapService.cs" />
+    <Compile Include="Core\Contracts\INotificationService.cs" />
+    <Compile Include="Core\Contracts\IWindowManagerService.cs" />
+    <Compile Include="Core\KeyMap.cs" />
+    <Compile Include="Core\Contracts\ICommandProvider.cs" />
+    <Compile Include="Core\Services\NotificationService.cs" />
+    <Compile Include="Core\Contracts\ServiceBase.cs" />
+    <Compile Include="Core\Services\WindowManagerService.cs" />
+    <Compile Include="Core\Window.cs" />
+    <Compile Include="Common\Interop.cs" />
+    <Compile Include="Core\Services\KeyMapService.cs" />
+    <Compile Include="Core\Services\CommandService.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Common\GetOpt.cs" />
+    <Compile Include="Common\Logger.cs" />
+    <Compile Include="Core\Commands\Command.cs" />
+    <Compile Include="Core\Commands\SourceCommand.cs" />
+    <Compile Include="Core\Variable.cs" />
+    <Compile Include="Views\MainWindowImpl.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\MainWindowImpl.resx">
+      <DependentUpon>MainWindowImpl.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="oshellrc.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
