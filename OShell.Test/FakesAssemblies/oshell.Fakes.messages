@@ -8,7 +8,6 @@ F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot genera
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate stub for OShell.Common.Logger: type has no family visible contructors.
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate stub for OShell.Core.Commands.SourceCommand: type is not visible to exported or assembly(oshell.Fakes).
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate stub for OShell.Views.MainWindowImpl: type is sealed.
-F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Core.Contracts.ICommandProvider: type is an interface.
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Core.Contracts.ICommand: type is an interface.
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Core.Contracts.ICommandHandler`1: type is an interface.
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Core.Commands.SetCommand+Options: type is an enum.
@@ -26,6 +25,8 @@ F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot genera
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Common.Interop+RECT: type is not visible to exported or assembly(oshell.Fakes).
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Common.Interop+SetWindowPosFlags: type is an enum.
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Common.Interop+ShellHookMessages: type is an enum.
+F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Core.Services.CommandService+<Run>d__13: type is not supported because of internal limitations.
+F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Core.Services.CommandService+<Run>o__SiteContainer0: type is not supported because of internal limitations.
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Program: type is not visible to exported or assembly(oshell.Fakes).
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Common.Verbosity: type is an enum.
 F:\extern\github\oshell\OShell.Test\Fakes\oshell.fakes : warning : Cannot generate shim for OShell.Core.Commands.CommandManager+DedicatedFramesCommands: type is an enum.

@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D916FAD4-83D5-46CF-BA5F-FD3196B98560}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.md = Readme.md
+		oshell\Settings.StyleCop = oshell\Settings.StyleCop
 	EndProjectSection
 EndProject
 Global

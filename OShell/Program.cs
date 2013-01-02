@@ -10,6 +10,7 @@ namespace OShell
     using System.Collections.Generic;
     using System.Data;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
@@ -48,7 +49,8 @@ namespace OShell
         #endregion
 
         [System.Diagnostics.DebuggerStepThrough]
-        public static TService GetInstance<TService>() where TService : class
+        // XXX Must be private
+        internal static TService GetInstance<TService>() where TService : class
         {
             return container.GetInstance<TService>();
         }
@@ -80,7 +82,7 @@ namespace OShell
             ((IServiceBase)GetInstance<INotificationService>()).Start();
         }
 
-        static void OnStartup(string[] args)
+        static async void OnStartup(string[] args)
         {
             // TODO free console for UI execution
 
@@ -93,38 +95,25 @@ namespace OShell
             container.RegisterSingle<INotificationService, NotificationService>();
             
             // Register default command set
-            var commandsMap = new Dictionary<string, Func<object>>();
+            var commands =
+                AppDomain.CurrentDomain.GetAssemblies()
+                         .SelectMany(s => s.GetTypes())
+                         .Where(p => p != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(p))
+                         .ToList();
+            container.RegisterAll<ICommand>(commands);
             container.RegisterManyForOpenGeneric(
                 typeof(ICommandHandler<>), 
                 AccessibilityOption.PublicTypesOnly,
-                (closedServiceType, implementations) =>
-                    {
-                        var commandType = closedServiceType.GenericTypeArguments[0];
-                        if (implementations.Length != 1)
-                        {
-                            throw new Exception(string.Format(
-                                "Bootstrap: Duplicate handler found for Command: {0}",
-                                commandType));
-                        }
-                        var commandName = commandType.GetProperty("Name")
-                                                     .GetValue(Activator.CreateInstance(commandType))
-                                                     .ToString();
-                        commandsMap.Add(commandName, () => container.GetInstance(closedServiceType));
-                    },
                 Assembly.GetExecutingAssembly());
 
-            // Register CommandService
+            // Register handlers
+            var commandHandlers =
+                commands.Select(command => container.GetInstance(typeof(ICommandHandler<>).MakeGenericType(command)));
             container.RegisterSingle<ICommandService>(
-                new CommandService(
-                    container.GetInstance<MainWindow>(),
-                    commandsMap));
+                () => new CommandService(
+                          container.GetInstance<MainWindow>(), container.GetAllInstances<ICommand>(), commandHandlers));
 
             container.Verify();
-
-            //var cmdH = container.GetInstance<ICommandProvider>().GetCommandHandler("newkmap");
-            //var cmd = container.GetInstance<ICommandProvider>().GetCommand("newkmap");
-            var cmdSvc = container.GetInstance<ICommandService>();
-            cmdSvc.Run("newkmap foo");
 
             mainForm = container.GetInstance<MainWindow>();
 

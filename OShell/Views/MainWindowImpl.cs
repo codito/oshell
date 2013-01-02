@@ -21,13 +21,23 @@ namespace OShell.Views
 
         private Keys activeHotKey;
 
-        public MainWindowImpl()
+        private readonly IKeyMapService keyMapService;
+
+        private readonly IWindowManagerService windowManagerService;
+
+        public MainWindowImpl()//(IKeyMapService keyMapService, IWindowManagerService windowManagerService)
         {
+            // FIXME Ugly, needs refactor
+            //this.keyMapService = Program.GetInstance<IKeyMapService>();
+            //this.windowManagerService = Program.GetInstance<IWindowManagerService>();
+            //this.keyMapService = keyMapService;
+            //this.windowManagerService = windowManagerService;
+
             WM_SHELLHOOK = Interop.RegisterWindowMessage("SHELLHOOK");
 
             this.AllowTransparency = true;
             this.BackColor = Color.DarkGray;
-            this.Cursor = System.Windows.Forms.Cursors.NoMove2D;
+            this.Cursor = Cursors.NoMove2D;
             this.FormBorderStyle = FormBorderStyle.None;
             this.KeyPreview = true;
             this.Opacity = 0.3;
@@ -54,8 +64,9 @@ namespace OShell.Views
                 return base.ProcessCmdKey(ref msg, keyData);
             }
 
-            var keymapSvc = Program.GetInstance<IKeyMapService>();
-            var activeKeyMap = keymapSvc.GetKeyMap(keyData);
+            // FIXME
+            //var activeKeyMap = this.keyMapService.GetKeyMap(keyData);
+            var activeKeyMap = Program.GetInstance<IKeyMapService>().GetKeyMap(keyData);
 
             activeKeyMap.Execute(keyData, string.Empty);
 
@@ -72,8 +83,6 @@ namespace OShell.Views
             const int WM_HOTKEY = 0x312;
 // ReSharper restore InconsistentNaming
 
-            var wmsvc = Program.GetInstance<IWindowManagerService>();
-
             if (m.Msg == WM_SHELLHOOK)
             {
                 //Logger.GetLogger().Debug(String.Format("MainWindow: Shell hook: Message. Type = {0}, HWnd = {1}, App = {2}", m.WParam, m.LParam, OShell.Core.Window.GetApplicationName(m.LParam)));
@@ -85,11 +94,15 @@ namespace OShell.Views
                         break;
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWCREATED:
                         Logger.GetLogger().Debug("MainWindow: Shell hook: Window created. HWnd = " + m.LParam);
-                        wmsvc.AddWindow(m.LParam);
+                        // FIXME
+                        //this.windowManagerService.AddWindow(m.LParam);
+                        Program.GetInstance<IWindowManagerService>().AddWindow(m.LParam);
                         break;
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWDESTROYED:
                         Logger.GetLogger().Debug("MainWindow: Shell hook: Window destroyed. HWnd = " + m.LParam);
-                        wmsvc.RemoveWindow(m.LParam);
+                        // FIXME
+                        //this.windowManagerService.RemoveWindow(m.LParam);
+                        Program.GetInstance<IWindowManagerService>().RemoveWindow(m.LParam);
                         break;
                 }
             }

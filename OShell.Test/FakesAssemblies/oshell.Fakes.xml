@@ -316,78 +316,6 @@
         <member name="T:OShell.Core.Commands.Fakes.ShimCommandManager.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
-        <member name="T:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider">
-            <summary>Shim type of OShell.Core.Commands.DefaultCommandProvider</summary>
-        </member>
-        <member name="M:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.#ctor">
-            <summary>Initializes a new shim instance</summary>
-        </member>
-        <member name="M:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.#ctor(OShell.Core.Commands.DefaultCommandProvider)">
-            <summary>Initializes a new shim for the given instance</summary>
-        </member>
-        <member name="M:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.BehaveAsCurrent">
-            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.BehaveAsNotImplemented">
-            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="M:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.Bind(OShell.Core.Contracts.ICommandProvider)">
-            <summary>Binds the members of the interface to the shim.</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.Behavior">
-            <summary>Assigns the behavior for all methods of the shimmed type</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.CommandFactoryGet">
-            <summary>Sets the shim of DefaultCommandProvider.get_CommandFactory()</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.CommandFactorySetFuncOfTypeICommand">
-            <summary>Sets the shim of DefaultCommandProvider.set_CommandFactory(Func`2&lt;Type,ICommand&gt; value)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.CommandHandlerFactoryGet">
-            <summary>Sets the shim of DefaultCommandProvider.get_CommandHandlerFactory()</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.CommandHandlerFactorySetFuncOfTypeICommandHandlerOfICommand">
-            <summary>Sets the shim of DefaultCommandProvider.set_CommandHandlerFactory(Func`2&lt;Type,ICommandHandler`1&lt;ICommand&gt;&gt; value)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.ConstructorFuncOfTypeICommandFuncOfTypeICommandHandlerOfICommand">
-            <summary>Sets the shim of DefaultCommandProvider.DefaultCommandProvider(Func`2&lt;Type,ICommand&gt; commandFactory, Func`2&lt;Type,ICommandHandler`1&lt;ICommand&gt;&gt; commandHandlerFactory)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.GetCommandHandlerString">
-            <summary>Sets the shim of DefaultCommandProvider.GetCommandHandler(String command)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.GetCommandString">
-            <summary>Sets the shim of DefaultCommandProvider.GetCommand(String command)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.HasCommandString">
-            <summary>Sets the shim of DefaultCommandProvider.HasCommand(String command)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.StaticConstructor">
-            <summary>Sets the shim of DefaultCommandProvider.DefaultCommandProvider()</summary>
-        </member>
-        <member name="T:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances">
-            <summary>Define shims for all instances members</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances.CommandFactoryGet">
-            <summary>Sets the shim of DefaultCommandProvider.get_CommandFactory()</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances.CommandFactorySetFuncOfTypeICommand">
-            <summary>Sets the shim of DefaultCommandProvider.set_CommandFactory(Func`2&lt;Type,ICommand&gt; value)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances.CommandHandlerFactoryGet">
-            <summary>Sets the shim of DefaultCommandProvider.get_CommandHandlerFactory()</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances.CommandHandlerFactorySetFuncOfTypeICommandHandlerOfICommand">
-            <summary>Sets the shim of DefaultCommandProvider.set_CommandHandlerFactory(Func`2&lt;Type,ICommandHandler`1&lt;ICommand&gt;&gt; value)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances.GetCommandHandlerString">
-            <summary>Sets the shim of DefaultCommandProvider.GetCommandHandler(String command)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances.GetCommandString">
-            <summary>Sets the shim of DefaultCommandProvider.GetCommand(String command)</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.ShimDefaultCommandProvider.AllInstances.HasCommandString">
-            <summary>Sets the shim of DefaultCommandProvider.HasCommand(String command)</summary>
-        </member>
         <member name="T:OShell.Core.Commands.Fakes.ShimDelKMapCommand">
             <summary>Shim type of OShell.Core.Commands.DelKMapCommand</summary>
         </member>
@@ -568,6 +496,9 @@
         <member name="P:OShell.Core.Commands.Fakes.ShimNewKMapCommandHandler.KeyMapServiceSetIKeyMapService">
             <summary>Sets the shim of NewKMapCommandHandler.set_KeyMapService(IKeyMapService value)</summary>
         </member>
+        <member name="P:OShell.Core.Commands.Fakes.ShimNewKMapCommandHandler._Executeb__0">
+            <summary>Sets the shim of NewKMapCommandHandler.&lt;Execute&gt;b__0()</summary>
+        </member>
         <member name="T:OShell.Core.Commands.Fakes.ShimNewKMapCommandHandler.AllInstances">
             <summary>Define shims for all instances members</summary>
         </member>
@@ -626,24 +557,6 @@
             <summary>Gets or sets the instance behavior.</summary>
         </member>
         <member name="P:OShell.Core.Commands.Fakes.StubCommandManager.InstanceObserver">
-            <summary>Gets or sets the instance observer.</summary>
-        </member>
-        <member name="T:OShell.Core.Commands.Fakes.StubDefaultCommandProvider">
-            <summary>Stub type of OShell.Core.Commands.DefaultCommandProvider</summary>
-        </member>
-        <member name="M:OShell.Core.Commands.Fakes.StubDefaultCommandProvider.#ctor(System.Func{System.Type,OShell.Core.Contracts.ICommand},System.Func{System.Type,OShell.Core.Contracts.ICommandHandler{OShell.Core.Contracts.ICommand}})">
-            <summary>Initializes a new instance</summary>
-        </member>
-        <member name="M:OShell.Core.Commands.Fakes.StubDefaultCommandProvider.InitializeStub">
-            <summary>Initializes a new instance of type StubDefaultCommandProvider</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.StubDefaultCommandProvider.CallBase">
-            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.StubDefaultCommandProvider.InstanceBehavior">
-            <summary>Gets or sets the instance behavior.</summary>
-        </member>
-        <member name="P:OShell.Core.Commands.Fakes.StubDefaultCommandProvider.InstanceObserver">
             <summary>Gets or sets the instance observer.</summary>
         </member>
         <member name="T:OShell.Core.Commands.Fakes.StubDelKMapCommand">
@@ -855,30 +768,6 @@
         </member>
         <member name="M:OShell.Core.Contracts.Fakes.StubICommandHandler`1.o::OShell#Core#Contracts#ICommandHandler{TCommand}#Execute(`0)">
             <summary>Sets the stub of ICommandHandler`1.Execute(!0 command)</summary>
-        </member>
-        <member name="T:OShell.Core.Contracts.Fakes.StubICommandProvider">
-            <summary>Stub type of OShell.Core.Contracts.ICommandProvider</summary>
-        </member>
-        <member name="M:OShell.Core.Contracts.Fakes.StubICommandProvider.#ctor">
-            <summary>Initializes a new instance of type StubICommandProvider</summary>
-        </member>
-        <member name="F:OShell.Core.Contracts.Fakes.StubICommandProvider.GetCommandHandlerString">
-            <summary>Sets the stub of ICommandProvider.GetCommandHandler(String command)</summary>
-        </member>
-        <member name="F:OShell.Core.Contracts.Fakes.StubICommandProvider.GetCommandString">
-            <summary>Sets the stub of ICommandProvider.GetCommand(String command)</summary>
-        </member>
-        <member name="F:OShell.Core.Contracts.Fakes.StubICommandProvider.HasCommandString">
-            <summary>Sets the stub of ICommandProvider.HasCommand(String command)</summary>
-        </member>
-        <member name="M:OShell.Core.Contracts.Fakes.StubICommandProvider.o::OShell#Core#Contracts#ICommandProvider#GetCommand(System.String)">
-            <summary>Sets the stub of ICommandProvider.GetCommand(String command)</summary>
-        </member>
-        <member name="M:OShell.Core.Contracts.Fakes.StubICommandProvider.o::OShell#Core#Contracts#ICommandProvider#GetCommandHandler(System.String)">
-            <summary>Sets the stub of ICommandProvider.GetCommandHandler(String command)</summary>
-        </member>
-        <member name="M:OShell.Core.Contracts.Fakes.StubICommandProvider.o::OShell#Core#Contracts#ICommandProvider#HasCommand(System.String)">
-            <summary>Sets the stub of ICommandProvider.HasCommand(String command)</summary>
         </member>
         <member name="T:OShell.Core.Contracts.Fakes.StubICommandService">
             <summary>Stub type of OShell.Core.Contracts.ICommandService</summary>
@@ -2824,8 +2713,8 @@
         <member name="P:OShell.Core.Services.Fakes.ShimCommandService.Behavior">
             <summary>Assigns the behavior for all methods of the shimmed type</summary>
         </member>
-        <member name="P:OShell.Core.Services.Fakes.ShimCommandService.ConstructorMainWindowDictionaryOfStringFuncOfObject">
-            <summary>Sets the shim of CommandService.CommandService(MainWindow mainWindow, Dictionary`2&lt;String,Func`1&lt;Object&gt;&gt; commandsMap)</summary>
+        <member name="P:OShell.Core.Services.Fakes.ShimCommandService.ConstructorMainWindowIEnumerableOfICommandIEnumerableOfObject">
+            <summary>Sets the shim of CommandService.CommandService(MainWindow mainWindow, IEnumerable`1&lt;ICommand&gt; commandInstances, IEnumerable`1&lt;Object&gt; commandHandlers)</summary>
         </member>
         <member name="P:OShell.Core.Services.Fakes.ShimCommandService.RunString">
             <summary>Sets the shim of CommandService.Run(String commandSpec)</summary>
@@ -2836,8 +2725,11 @@
         <member name="P:OShell.Core.Services.Fakes.ShimCommandService.Stop">
             <summary>Sets the shim of CommandService.Stop()</summary>
         </member>
-        <member name="P:OShell.Core.Services.Fakes.ShimCommandService._Runb__0">
-            <summary>Sets the shim of CommandService.&lt;Run&gt;b__0()</summary>
+        <member name="P:OShell.Core.Services.Fakes.ShimCommandService._Runb__10Type">
+            <summary>Sets the shim of CommandService.&lt;Run&gt;b__10(Type i)</summary>
+        </member>
+        <member name="P:OShell.Core.Services.Fakes.ShimCommandService._Runb__fObject">
+            <summary>Sets the shim of CommandService.&lt;Run&gt;b__f(Object handler)</summary>
         </member>
         <member name="T:OShell.Core.Services.Fakes.ShimCommandService.AllInstances">
             <summary>Define shims for all instances members</summary>
@@ -3091,7 +2983,7 @@
         <member name="T:OShell.Core.Services.Fakes.StubCommandService">
             <summary>Stub type of OShell.Core.Services.CommandService</summary>
         </member>
-        <member name="M:OShell.Core.Services.Fakes.StubCommandService.#ctor(OShell.Core.Contracts.MainWindow,System.Collections.Generic.Dictionary{System.String,System.Func{System.Object}})">
+        <member name="M:OShell.Core.Services.Fakes.StubCommandService.#ctor(OShell.Core.Contracts.MainWindow,System.Collections.Generic.IEnumerable{OShell.Core.Contracts.ICommand},System.Collections.Generic.IEnumerable{System.Object})">
             <summary>Initializes a new instance</summary>
         </member>
         <member name="M:OShell.Core.Services.Fakes.StubCommandService.InitializeStub">
