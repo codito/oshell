@@ -1,14 +1,17 @@
 ﻿namespace OShell.Test
 {
-    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
+    using FluentAssertions;
+
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using NSubstitute;
+
     using OShell.Core.Contracts;
-    using OShell.Core.Contracts.Fakes;
     using OShell.Core.Services;
+    using OShell.Test.Assets;
 
     [TestClass]
     public class CommandServiceTests
@@ -18,18 +21,19 @@
         {
             string commandName = "stubcmd";
             string commandArgs = "arg1 arg2 arg3";
-            var command = new StubICommand { NameGet = () => commandName };
-            Func<StubICommand, bool> commandHandlerExecute = (cmd) =>
-                {
-                    Assert.AreEqual(commandName, cmd.NameGet());
-                    Assert.AreEqual(commandArgs, cmd.ArgsGet());
-                    return true;
-                };
-            var commandHandler = new DummyICommandHandler(commandHandlerExecute);
-            var cmdsvc = new CommandService(new StubMainWindow(), new List<ICommand> { command }, new List<object> { commandHandler });
+            string commandHelp = "sample help!";
+            var command = new ICommandStub { Args = commandArgs, Name = commandName, Help = commandHelp };
+            var commandHandler = new ICommandHandlerStub
+                                     {
+                                         ExpectedCommandArgs = commandArgs,
+                                         ExpectedCommandName = commandName,
+                                         ExpectedCommandHelp = commandHelp,
+                                         ExpectedExecuteResult = false
+                                     };
+            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { command }, new List<object> { commandHandler });
             var result = await cmdsvc.Run(commandName + " " + commandArgs);
 
-            Assert.IsTrue(result);
+            result.Should().BeFalse();
         }
 
         [TestMethod, Priority(0)]
@@ -60,21 +64,6 @@
         public void MalformedCommandSpecThrowsInvalidCommandException()
         {
             Assert.Fail();
-        }
-    }
-
-    public class DummyICommandHandler : ICommandHandler<StubICommand>
-    {
-        private readonly Func<StubICommand, bool> execute;
-
-        public DummyICommandHandler(Func<StubICommand, bool> execute)
-        {
-            this.execute = execute;
-        }
-
-        public Task<bool> Execute(StubICommand command)
-        {
-            return Task.Run(() => this.execute(command));
         }
     }
 }

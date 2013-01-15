@@ -89,7 +89,7 @@ namespace OShell
             // Bootstrap container
             container = new SimpleInjector.Container();
 
-            container.RegisterSingle<MainWindow, MainWindowImpl>();
+            container.RegisterSingle<IMainWindow, MainWindowImpl>();
             container.RegisterSingle<IWindowManagerService, WindowManagerService>();
             container.RegisterSingle<IKeyMapService, KeyMapService>();
             container.RegisterSingle<INotificationService, NotificationService>();
@@ -111,11 +111,13 @@ namespace OShell
                 commands.Select(command => container.GetInstance(typeof(ICommandHandler<>).MakeGenericType(command)));
             container.RegisterSingle<ICommandService>(
                 () => new CommandService(
-                          container.GetInstance<MainWindow>(), container.GetAllInstances<ICommand>(), commandHandlers));
+                          container.GetInstance<IMainWindow>(), container.GetAllInstances<ICommand>(), commandHandlers));
 
             container.Verify();
 
-            mainForm = container.GetInstance<MainWindow>();
+            // FIXME Breaks "n" design principles. Needs refactor.
+            mainForm = container.GetInstance<IMainWindow>() as Form;
+            throw new NotImplementedException();
 
             // Parse arguments and run the app
             var getopt = new GetOpt(Options);

@@ -13,7 +13,8 @@ namespace OShell.Core.Contracts
     /// Base for the Main Window of the application. Register process life time objects with
     /// this Window (if the object requires a Handle). 
     /// </summary>
-    public abstract class MainWindow : Form
+    public interface IMainWindow
     {
+        IntPtr GetHandle();
     }
 }

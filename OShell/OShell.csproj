@@ -64,9 +64,7 @@
     <Compile Include="Core\Contracts\ICommand.cs" />
     <Compile Include="Core\Contracts\ICommandService.cs" />
     <Compile Include="Core\Contracts\ICommandHandler.cs" />
-    <Compile Include="Core\Contracts\MainWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Core\Contracts\IMainWindow.cs" />
     <Compile Include="Core\Frame.cs" />
     <Compile Include="Core\Contracts\IKeyMapService.cs" />
     <Compile Include="Core\Contracts\INotificationService.cs" />
@@ -86,9 +84,7 @@
     <Compile Include="Core\Commands\Command.cs" />
     <Compile Include="Core\Commands\SourceCommand.cs" />
     <Compile Include="Core\Variable.cs" />
-    <Compile Include="Views\MainWindowImpl.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Views\MainWindowImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainWindowImpl.resx">

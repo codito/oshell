@@ -30,7 +30,7 @@ namespace OShell.Core.Services
         /// </summary>
         /// <param name="mainWindow">Reference to the Main window</param>
         /// <param name="notificationService">Instance of Notification Service</param>
-        public WindowManagerService(MainWindow mainWindow, INotificationService notificationService)
+        public WindowManagerService(IMainWindow mainWindow, INotificationService notificationService)
             : base(mainWindow)
         {
             this.notificationService = notificationService;
@@ -73,7 +73,7 @@ namespace OShell.Core.Services
             }
 
             // Register shell hooks for window created and destroyed
-            Interop.RegisterShellHookWindow(this.MainWindow.Handle);
+            Interop.RegisterShellHookWindow(this.MainWindow.GetHandle());
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace OShell.Core.Services
         public override void Stop()
         {
             // Unregister shell hooks
-            Interop.DeregisterShellHookWindow(this.MainWindow.Handle);
+            Interop.DeregisterShellHookWindow(this.MainWindow.GetHandle());
 
             // Unmanaged all managed windows
             foreach (Window window in this.ManagedWindows.Values)

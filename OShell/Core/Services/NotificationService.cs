@@ -20,7 +20,7 @@ namespace OShell.Core.Services
         /// Initializes an instance of the <see cref="NotificationService"/> class.
         /// </summary>
         /// <param name="mainWindow">Reference to the main window of the application</param>
-        public NotificationService(MainWindow mainWindow)
+        public NotificationService(IMainWindow mainWindow)
             : base(mainWindow)
         {
             this.logger = Logger.GetLogger();

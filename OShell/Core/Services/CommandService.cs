@@ -9,11 +9,9 @@ namespace OShell.Core.Services
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
 
     using OShell.Core.Contracts;
-using System.Collections;
 
     public class CommandService : ServiceBase, ICommandService
     {
@@ -22,7 +20,7 @@ using System.Collections;
         private readonly IEnumerable<object> commandHandlers;
 
         #region ServiceBase implementation
-        public CommandService(MainWindow mainWindow, IEnumerable<ICommand> commandInstances, IEnumerable<object> commandHandlers)
+        public CommandService(IMainWindow mainWindow, IEnumerable<ICommand> commandInstances, IEnumerable<object> commandHandlers)
             : base(mainWindow)
         {
             this.commandHandlers = commandHandlers;
@@ -72,7 +70,6 @@ using System.Collections;
                 throw ex;
             }
             command.Args = string.Join(" ", commandParts, 1, commandParts.Length - 1);
-
             // Invoke the command handler with the TCommand implementation
             return await commandHandler.Execute(command);
         }

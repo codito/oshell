@@ -20,13 +20,13 @@ namespace OShell.Core.Contracts
     /// </summary>
     public abstract class ServiceBase : IServiceBase
     {
-        protected ServiceBase(MainWindow mainWindow)
+        protected ServiceBase(IMainWindow mainWindow)
         {
             this.MainWindow = mainWindow;
         }
 
         #region Properties
-        public MainWindow MainWindow
+        public IMainWindow MainWindow
         {
             get;
             protected set;

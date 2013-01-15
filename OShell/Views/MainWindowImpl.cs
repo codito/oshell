@@ -6,6 +6,8 @@
 
 namespace OShell.Views
 {
+    using System;
+
     using OShell.Common;
     using OShell.Core;
     using OShell.Core.Contracts;
@@ -13,7 +15,7 @@ namespace OShell.Views
     using System.Drawing;
     using System.Windows.Forms;
 
-    internal sealed class MainWindowImpl : MainWindow
+    internal sealed class MainWindowImpl : Form, IMainWindow 
     {
 // ReSharper disable InconsistentNaming
         private static uint WM_SHELLHOOK;
@@ -148,5 +150,10 @@ namespace OShell.Views
             base.WndProc(ref m);
         }
         #endregion
+
+        public IntPtr GetHandle()
+        {
+            return this.Handle;
+        }
     }
 }

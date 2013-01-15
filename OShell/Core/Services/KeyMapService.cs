@@ -26,8 +26,8 @@ namespace OShell.Core.Services
         /// <summary>
         /// Creates an instance of <see cref="KeyMapService"/>.
         /// </summary>
-        /// <param name="mainWindow">Instance of <see cref="MainWindow"/></param>
-        public KeyMapService(MainWindow mainWindow)
+        /// <param name="mainWindow">Instance of <see cref="IMainWindow"/></param>
+        public KeyMapService(IMainWindow mainWindow)
             : base(mainWindow)
         {
             this.keyMaps = new Dictionary<Keys, KeyMap>();
@@ -50,7 +50,7 @@ namespace OShell.Core.Services
         {
             foreach (var keyMap in this.keyMaps.Values)
             {
-                Interop.UnregisterHotKey(this.MainWindow.Handle, keyMap.GetHashCode());
+                Interop.UnregisterHotKey(this.MainWindow.GetHandle(), keyMap.GetHashCode());
             }
 
             this.keyMaps.Clear();
@@ -69,7 +69,7 @@ namespace OShell.Core.Services
         public void AddKeyMap(Keys topKey)
         {
             var keyMap = new KeyMap(topKey);
-            if (!Interop.RegisterHotKey(this.MainWindow.Handle, topKey, keyMap.GetHashCode()))
+            if (!Interop.RegisterHotKey(this.MainWindow.GetHandle(), topKey, keyMap.GetHashCode()))
             {
                 Logger.GetLogger().Error("KeyMapService: Failed to register hot key. Keys = " + topKey);
                 throw new Exception("Binding a hot key failed.");
@@ -86,7 +86,7 @@ namespace OShell.Core.Services
         {
             var keyMapHash = this.GetKeyMap(topKey).GetHashCode();
             this.keyMaps.Remove(topKey);
-            if (!Interop.UnregisterHotKey(this.MainWindow.Handle, keyMapHash))
+            if (!Interop.UnregisterHotKey(this.MainWindow.GetHandle(), keyMapHash))
             {
                 Logger.GetLogger().Error("KeyMapService: Failed to unregister hot key. Keys = " + topKey);
                 throw new Exception("Unbinding a hot key failed.");
