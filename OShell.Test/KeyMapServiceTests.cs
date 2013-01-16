@@ -1,229 +1,176 @@
-﻿//namespace OShell.Test
-//{
-//    using System;
-//    using System.Collections.Generic;
-//    using System.Windows.Forms;
+﻿namespace OShell.Test
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Windows.Forms;
 
-//    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using FluentAssertions;
 
-//    using NSubstitute;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-//    using OShell.Common;
-//    using OShell.Core.Contracts;
-//    using OShell.Core.Services;
+    using NSubstitute;
 
-//    [TestClass]
-//    public class KeyMapServiceTests
-//    {
-//        private IKeyMapService keyMapService;
+    using OShell.Core;
+    using OShell.Core.Contracts;
+    using OShell.Core.Services;
 
-//        [TestInitialize]
-//        public void SetupTest()
-//        {
-//            var mainWindow = Substitute.For<IMainWindow>();
-//            this.keyMapService = new KeyMapService(mainWindow);
-//            (this.keyMapService as ServiceBase).Start();
-//        }
+    [TestClass]
+    public class KeyMapServiceTests
+    {
+        private IKeyMapService keyMapService;
 
-//        [TestCleanup]
-//        public void CleanTest()
-//        {
-//            if (this.keyMapService == null)
-//            {
-//                return;
-//            }
+        //[TestInitialize]
+        //public void SetupTest()
+        //{
+        //    var mainWindow = Substitute.For<IMainWindow>();
+        //    var platformFacade = Substitute.For<IPlatformFacade>();
+        //    this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+        //    (this.keyMapService as ServiceBase).Start();
+        //}
 
-//            var serviceBase = this.keyMapService as ServiceBase;
-//            if (serviceBase != null)
-//            {
-//                serviceBase.Stop();
-//            }
-//        }
+        [TestCleanup]
+        public void CleanTest()
+        {
+            if (this.keyMapService == null)
+            {
+                return;
+            }
 
-//        [TestMethod, Priority(0)]
-//        public void AddKeyMapAddsAHotKey()
-//        {
-//            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-//            var mockInterop = Substitute.For<Interop>();
-//            using (ShimsContext.Create())
-//            {
-//                var keyMapHash = 0;
-//                ShimInterop.RegisterHotKeyIntPtrKeysInt32 = (handle, keys, id) =>
-//                    {
-//                        Assert.AreEqual(topKey, keys);
-//                        keyMapHash = id;
-//                        return true;
-//                    };
+            var serviceBase = this.keyMapService as ServiceBase;
+            if (serviceBase != null)
+            {
+                serviceBase.Stop();
+            }
+        }
 
-//                this.keyMapService.AddKeyMap(topKey);
+        [TestMethod, Priority(0)]
+        public void AddKeyMapAddsAHotKey()
+        {
+            // FIXME Test smell. DRY violation.
+            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            var mainWindow = Substitute.For<IMainWindow>();
+            mainWindow.GetHandle().Returns(IntPtr.Zero);
 
-//                // Compare the key map instances
-//                Assert.AreEqual(keyMapHash, this.keyMapService.GetKeyMap(topKey).GetHashCode());
-//            }
-//        }
+            var platformFacade = Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+            (this.keyMapService as ServiceBase).Start();
 
-//        [TestMethod, Priority(1)]
-//        public void AddKeyMapForAlreadyExistingKeyThrowsArgumentException()
-//        {
-//            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-//            using (ShimsContext.Create())
-//            {
-//                var keyMapHash = 0;
-//                ShimInterop.RegisterHotKeyIntPtrKeysInt32 = (handle, keys, id) =>
-//                    {
-//                        Assert.AreEqual(topKey, keys);
-//                        keyMapHash = id;
-//                        return true;
-//                    };
+            platformFacade.RegisterHotKey(IntPtr.Zero, Keys.A, 0).ReturnsForAnyArgs(true);
+            this.keyMapService.AddKeyMap(topKey);
+            platformFacade.Received(1)
+                          .RegisterHotKey(IntPtr.Zero, topKey, this.keyMapService.GetKeyMap(topKey).GetHashCode());
+        }
 
-//                this.keyMapService.AddKeyMap(topKey);
+        [TestMethod, Priority(1)]
+        public void AddKeyMapForAlreadyExistingKeyThrowsArgumentException()
+        {
+            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            var mainWindow = Substitute.For<IMainWindow>();
+            mainWindow.GetHandle().Returns(IntPtr.Zero);
 
-//                try
-//                {
-//                    this.keyMapService.AddKeyMap(topKey);
-//                    Assert.Fail("Expected argument exception is not thrown.");
-//                }
-//                catch (ArgumentException)
-//                {
-//                }
-//            }
-//        }
+            var platformFacade = Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+            (this.keyMapService as ServiceBase).Start();
 
-//        [TestMethod, Priority(1)]
-//        public void AddKeyMapWithRuntimeErrorInRegisterThrowsException()
-//        {
-//            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-//            using (ShimsContext.Create())
-//            {
-//                var keyMapHash = 0;
-//                ShimInterop.RegisterHotKeyIntPtrKeysInt32 = (handle, keys, id) =>
-//                    {
-//                        Assert.AreEqual(topKey, keys);
-//                        // Simulate runtime error
-//                        return false;
-//                    };
+            platformFacade.RegisterHotKey(IntPtr.Zero, Keys.A, 0).ReturnsForAnyArgs(true);
+            this.keyMapService.AddKeyMap(topKey);
+            this.keyMapService.Invoking(t => t.AddKeyMap(topKey)).ShouldThrow<ArgumentException>();
+        }
 
-//                try
-//                {
-//                    this.keyMapService.AddKeyMap(topKey);
-//                    Assert.Fail("Expected exception is not thrown.");
-//                }
-//                catch (Exception ex)
-//                {
-//                    Assert.AreEqual(ex.Message, "Binding a hot key failed.");
-//                }
+        [TestMethod, Priority(1)]
+        public void AddKeyMapWithRuntimeErrorInRegisterThrowsException()
+        {
+            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            var mainWindow = Substitute.For<IMainWindow>();
+            mainWindow.GetHandle().Returns(IntPtr.Zero);
 
-//                // Ensure there is no KeyMap available
-//                try
-//                {
-//                    this.keyMapService.GetKeyMap(topKey);
-//                    Assert.Fail("Expected key not found exception is not thrown.");
-//                }
-//                catch (KeyNotFoundException)
-//                {
-//                }
-//            }
+            var platformFacade = Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+            (this.keyMapService as ServiceBase).Start();
 
-//        }
+            platformFacade.RegisterHotKey(IntPtr.Zero, Keys.A, 0).ReturnsForAnyArgs(false);
+            this.keyMapService
+                .Invoking(t => t.AddKeyMap(topKey)).ShouldThrow<Exception>()
+                .And.Message.Should().Be("Binding a hot key failed.");
 
-//        [TestMethod, Priority(0)]
-//        public void RemoveKeyMapRemovesTheHotKeyBinding()
-//        {
-//            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-//            using (ShimsContext.Create())
-//            {
-//                ShimInterop.RegisterHotKeyIntPtrKeysInt32 = (handle, keys, id) => true;
-//                this.keyMapService.AddKeyMap(topKey);
-//                var keyMapHash = this.keyMapService.GetKeyMap(topKey).GetHashCode();
+            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+        }
 
-//                ShimInterop.UnregisterHotKeyIntPtrInt32 = (handle, id) =>
-//                    {
-//                        Assert.AreEqual(keyMapHash, id);
-//                        return true;
-//                    };
+        [TestMethod, Priority(0)]
+        public void RemoveKeyMapRemovesTheHotKeyBinding()
+        {
+            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            var mainWindow = Substitute.For<IMainWindow>();
+            mainWindow.GetHandle().Returns(IntPtr.Zero);
 
-//                this.keyMapService.RemoveKeyMap(topKey);
+            var platformFacade = Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+            (this.keyMapService as ServiceBase).Start();
 
-//                // Validate that key is removed from internal data structures in KeyMapService
-//                try
-//                {
-//                    this.keyMapService.GetKeyMap(topKey);
-//                    Assert.Fail("Expected key not found exception is not thrown.");
-//                }
-//                catch (KeyNotFoundException)
-//                {
-//                }
-//            }
-//        }
+            platformFacade.RegisterHotKey(IntPtr.Zero, Keys.A, 0).ReturnsForAnyArgs(true);
+            platformFacade.UnregisterHotKey(IntPtr.Zero, 0).ReturnsForAnyArgs(true);
+            this.keyMapService.AddKeyMap(topKey);
+            var keyMapHash = this.keyMapService.GetKeyMap(topKey).GetHashCode();
 
-//        [TestMethod, Priority(1)]
-//        public void RemoveKeyMapForFailedUnregisterThrowsException()
-//        {
-//            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-//            using (ShimsContext.Create())
-//            {
-//                ShimInterop.RegisterHotKeyIntPtrKeysInt32 = (handle, keys, id) => true;
-//                this.keyMapService.AddKeyMap(topKey);
-//                var keyMapHash = this.keyMapService.GetKeyMap(topKey).GetHashCode();
+            // Validate we unregister the correct KeyMap
+            this.keyMapService.RemoveKeyMap(topKey);
+            platformFacade.Received(1).UnregisterHotKey(IntPtr.Zero, keyMapHash);
 
-//                ShimInterop.UnregisterHotKeyIntPtrInt32 = (handle, id) =>
-//                    {
-//                        Assert.AreEqual(keyMapHash, id);
+            // Validate that key is removed from internal data structures in KeyMapService
+            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+        }
 
-//                        // Simulate runtime error
-//                        return false;
-//                    };
+        [TestMethod, Priority(1)]
+        public void RemoveKeyMapForFailedUnregisterThrowsException()
+        {
+            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            var mainWindow = Substitute.For<IMainWindow>();
+            mainWindow.GetHandle().Returns(IntPtr.Zero);
 
+            var platformFacade = Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+            (this.keyMapService as ServiceBase).Start();
 
-//                try
-//                {
-//                    this.keyMapService.RemoveKeyMap(topKey);
-//                    Assert.Fail("Expected exception is not thrown.");
-//                }
-//                catch (Exception ex)
-//                {
-//                    Assert.AreEqual("Unbinding a hot key failed.", ex.Message);
-//                }
+            platformFacade.RegisterHotKey(IntPtr.Zero, Keys.A, 0).ReturnsForAnyArgs(true);
+            platformFacade.UnregisterHotKey(IntPtr.Zero, 0).ReturnsForAnyArgs(false);
+            this.keyMapService.AddKeyMap(topKey);
+            this.keyMapService.Invoking(t => t.RemoveKeyMap(topKey))
+                .ShouldThrow<Exception>()
+                .And.Message.Should()
+                .Be("Unbinding a hot key failed.");
 
-//                // Validate that GetKeyMap fails with KeyNotFoundException
-//                try
-//                {
-//                    this.keyMapService.GetKeyMap(topKey);
-//                    Assert.Fail("Expected key not found exception is not thrown.");
-//                }
-//                catch (KeyNotFoundException)
-//                {
-//                }
-//            }
-//        }
+            // Validate that GetKeyMap fails with KeyNotFoundException
+            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+        }
 
-//        [TestMethod, Priority(0)]
-//        public void GetKeyMapReturnsTheCorrectKeyMapInstance()
-//        {
-//            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-//            using (ShimsContext.Create())
-//            {
-//                ShimInterop.RegisterHotKeyIntPtrKeysInt32 = (handle, keys, id) => true;
-//                this.keyMapService.AddKeyMap(topKey);
-//                var keyMap = this.keyMapService.GetKeyMap(topKey);
+        [TestMethod, Priority(0)]
+        public void GetKeyMapReturnsTheCorrectKeyMapInstance()
+        {
+            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            var mainWindow = Substitute.For<IMainWindow>();
+            mainWindow.GetHandle().Returns(IntPtr.Zero);
 
-//                Assert.AreEqual(topKey, keyMap.TopKey);
-//            }
-//        }
+            var platformFacade = Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+            (this.keyMapService as ServiceBase).Start();
 
-//        [TestMethod, Priority(1)]
-//        public void GetKeyMapForNotBoundKeyThrowsKeyNotFoundException()
-//        {
-//            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            platformFacade.RegisterHotKey(IntPtr.Zero, Keys.A, 0).ReturnsForAnyArgs(true);
+            this.keyMapService.AddKeyMap(topKey);
+            this.keyMapService.GetKeyMap(topKey).TopKey.Should().Be(topKey);
+        }
 
-//            try
-//            {
-//                var keyMap = this.keyMapService.GetKeyMap(topKey);
-//                Assert.Fail("Expected key not found exception is not thrown.");
-//            }
-//            catch (KeyNotFoundException)
-//            {
-//            }
-//        }
-//    }
-//}
+        [TestMethod, Priority(1)]
+        public void GetKeyMapForNotBoundKeyThrowsKeyNotFoundException()
+        {
+            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            var mainWindow = Substitute.For<IMainWindow>();
+            mainWindow.GetHandle().Returns(IntPtr.Zero);
+
+            var platformFacade = Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(mainWindow, platformFacade);
+            (this.keyMapService as ServiceBase).Start();
+
+            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+        }
+    }
+}

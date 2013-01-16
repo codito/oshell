@@ -1,4 +1,4 @@
-﻿namespace OShell.Test.Assets
+﻿namespace OShell.Test.Doubles
 {
     using OShell.Core.Contracts;
 

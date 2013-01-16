@@ -8,12 +8,13 @@ namespace OShell.Views
 {
     using System;
 
-    using OShell.Common;
     using OShell.Core;
     using OShell.Core.Contracts;
 
     using System.Drawing;
     using System.Windows.Forms;
+
+    using OShell.Core.Internal;
 
     internal sealed class MainWindowImpl : Form, IMainWindow 
     {

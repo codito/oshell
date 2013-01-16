@@ -6,8 +6,8 @@
 
 namespace OShell.Core.Services
 {
-    using OShell.Common;
     using OShell.Core.Contracts;
+    using OShell.Core.Internal;
 
     /// <summary>
     /// Implements the notification service. Used to send messages to the message bar.

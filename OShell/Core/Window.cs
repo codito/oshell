@@ -9,8 +9,9 @@ namespace OShell.Core
     using System;
     using System.Drawing;
     using System.Text;
-    using OShell.Common;
+
     using OShell.Core.Contracts;
+    using OShell.Core.Internal;
 
     /// <summary>
     /// Represents a Window in the system.

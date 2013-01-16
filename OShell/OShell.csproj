@@ -65,26 +65,30 @@
     <Compile Include="Core\Contracts\ICommandService.cs" />
     <Compile Include="Core\Contracts\ICommandHandler.cs" />
     <Compile Include="Core\Contracts\IMainWindow.cs" />
+    <Compile Include="Core\Contracts\IPlatformFacade.cs" />
     <Compile Include="Core\Frame.cs" />
     <Compile Include="Core\Contracts\IKeyMapService.cs" />
     <Compile Include="Core\Contracts\INotificationService.cs" />
     <Compile Include="Core\Contracts\IWindowManagerService.cs" />
+    <Compile Include="Core\WindowsPlatform.cs" />
     <Compile Include="Core\KeyMap.cs" />
     <Compile Include="Core\Services\NotificationService.cs" />
     <Compile Include="Core\Contracts\ServiceBase.cs" />
     <Compile Include="Core\Services\WindowManagerService.cs" />
     <Compile Include="Core\Window.cs" />
-    <Compile Include="Common\Interop.cs" />
+    <Compile Include="Core\Internal\Interop.cs" />
     <Compile Include="Core\Services\KeyMapService.cs" />
     <Compile Include="Core\Services\CommandService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Common\GetOpt.cs" />
-    <Compile Include="Common\Logger.cs" />
+    <Compile Include="Core\Internal\GetOpt.cs" />
+    <Compile Include="Core\Internal\Logger.cs" />
     <Compile Include="Core\Commands\Command.cs" />
     <Compile Include="Core\Commands\SourceCommand.cs" />
     <Compile Include="Core\Variable.cs" />
-    <Compile Include="Views\MainWindowImpl.cs" />
+    <Compile Include="Views\MainWindowImpl.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\MainWindowImpl.resx">

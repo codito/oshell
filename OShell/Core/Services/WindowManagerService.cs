@@ -10,8 +10,9 @@ namespace OShell.Core.Services
     using System.Collections.Generic;
     using System.Threading;
     using System.Windows.Forms;
-    using OShell.Common;
+
     using OShell.Core.Contracts;
+    using OShell.Core.Internal;
 
     /// <summary>
     /// Implementation of the Window Manager service.

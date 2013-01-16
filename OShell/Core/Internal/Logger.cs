@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OShell.Common
+namespace OShell.Core.Internal
 {
     using System;
     using System.IO;
@@ -31,7 +31,7 @@ namespace OShell.Common
     /// <summary>
     /// Utility class to maintain activities log.
     /// </summary>
-    public class Logger: IDisposable
+    internal class Logger: IDisposable
     {
         private FileStream logStream;
         private StreamWriter logWriter;
@@ -48,7 +48,7 @@ namespace OShell.Common
                 else
                     this.logStream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.Read);
 
-                this.logWriter = new StreamWriter(logStream);
+                this.logWriter = new StreamWriter(this.logStream);
             }
             catch(Exception e)
             {
@@ -56,7 +56,7 @@ namespace OShell.Common
                 Console.WriteLine("Exception: " + e + ". " + e.Message);
 
                 // write all output to console
-                logWriter = new StreamWriter(Console.OpenStandardOutput());
+                this.logWriter = new StreamWriter(Console.OpenStandardOutput());
             }
         }
 

@@ -7,19 +7,16 @@
 namespace OShell
 {
     using System;
-    using System.Collections.Generic;
-    using System.Data;
     using System.IO;
     using System.Linq;
     using System.Reflection;
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
-    using OShell.Core.Commands;
+    using OShell.Core.Internal;
 
     using SimpleInjector.Extensions;
 
-    using OShell.Common;
     using OShell.Core.Contracts;
     using OShell.Core.Services;
     using OShell.Views;

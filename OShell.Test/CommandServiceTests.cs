@@ -11,7 +11,7 @@
 
     using OShell.Core.Contracts;
     using OShell.Core.Services;
-    using OShell.Test.Assets;
+    using OShell.Test.Doubles;
 
     [TestClass]
     public class CommandServiceTests

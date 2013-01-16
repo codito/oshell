@@ -4,7 +4,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OShell.Common
+namespace OShell.Core.Internal
 {
     using System;
     using System.Collections.Generic;
@@ -12,7 +12,7 @@ namespace OShell.Common
     /// <summary>
     /// A simple command line parser
     /// </summary>
-    public class GetOpt
+    internal class GetOpt
     {
         // shortOptions and longOptions map the _short_option_char_ and _long_option_string_ to their ids.
         // the _id_ will be +ve if the _option_ has argument else the id will be -ve, we would return 
