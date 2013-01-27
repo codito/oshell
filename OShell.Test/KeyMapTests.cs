@@ -1,13 +1,15 @@
 ﻿namespace OShell.Test
 {
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+
+    using FluentAssertions;
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OShell.Core;
-    using OShell.Core.Services;
 
     [TestClass]
     public class KeyMapTests
@@ -16,14 +18,14 @@
         public void CreateKeyMapWithTopKey()
         {
             var km = new KeyMap(Keys.A);
-            Assert.AreEqual(Keys.A, km.TopKey);
+            km.TopKey.Should().Be(Keys.A);
         }
 
         [TestMethod, Priority(0)]
         public void CreateKeyMapWithTopKeyCombination()
         {
             var keys = Keys.Alt | Keys.Shift | Keys.NumPad0;
-            Assert.AreEqual(keys, new KeyMap(keys).TopKey);
+            new KeyMap(keys).TopKey.Should().Be(keys);
         }
 
         [TestMethod, Priority(0)]
@@ -34,59 +36,46 @@
 
             km.RegisterAction(Keys.A, args => false);
             var result = await km.Execute(Keys.A, string.Empty);
-            Assert.IsFalse(result);
+            result.Should().BeFalse();
 
             km.RegisterAction(Keys.B, args => args.Equals("Hello"));
             result = await km.Execute(Keys.B, "Hello");
-            Assert.IsTrue(result);
+            result.Should().BeTrue();
         }
 
         [TestMethod, Priority(1)]
-        public async Task ExecuteActionWithUnboundKeyThrowsKeyNotBoundException()
+        public void ExecuteActionWithUnboundKeyThrowsKeyNotBoundException()
         {
             var topKey = Keys.LWin | Keys.A;
             var km = new KeyMap(topKey);
 
-            try
-            {
-                await km.Execute(Keys.B, "dummy args");
-                Assert.Fail("Expected KeyNotBoundException is not thrown.");
-            }
-            catch (KeyNotBoundException ex)
-            {
-                Assert.AreEqual(topKey, ex.Data["TopKey"]);
-                Assert.AreEqual(Keys.B, ex.Data["KeyData"]);
-            }
+            Func<Task> keyMapExecute = async () =>
+                {
+                    await km.Execute(Keys.B, "dummy args");
+                };
+            keyMapExecute.ShouldThrow<KeyNotBoundException>()
+                .And.Data.ShouldBeEquivalentTo(new Dictionary<string, object>
+                                                   {
+                                                       {"TopKey", topKey},
+                                                       {"KeyData", Keys.B}
+                                                   });
         }
 
         [TestMethod, Priority(1)]
         public void RegisterActionWithExistingKeyThrowsDuplicateKeyBindingException()
         {
-            try
-            {
-                var km = new KeyMap(Keys.Alt);
-                km.RegisterAction(Keys.A, args => true);
-                km.RegisterAction(Keys.A, args => false);
-                Assert.Fail("Expected DuplicateKeyBindingException is not thrown.");
-            }
-            catch (DuplicateKeyBindingException ex)
-            {
-                Assert.AreEqual(Keys.A, ex.Data["KeyData"]);
-            }
+            var km = new KeyMap(Keys.Alt);
+            km.RegisterAction(Keys.A, args => true);
+            km.Invoking(t => t.RegisterAction(Keys.A, args => false))
+              .ShouldThrow<DuplicateKeyBindingException>()
+              .And.Data.ShouldBeEquivalentTo(new Dictionary<string, object> { { "KeyData", Keys.A } });
         }
 
         [TestMethod, Priority(1)]
         public void RegisterActionWithNullThrowsArgumentException()
         {
-            try
-            {
-                var km = new KeyMap(Keys.A);
-                km.RegisterAction(Keys.B, null);
-                Assert.Fail("Expected ArgumentException is not thrown");
-            }
-            catch (ArgumentException)
-            {
-            }
+            var km = new KeyMap(Keys.A);
+            km.Invoking(t => t.RegisterAction(Keys.B, null)).ShouldThrow<ArgumentException>();
         }
     }
 }
