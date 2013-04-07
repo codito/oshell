@@ -116,23 +116,4 @@ namespace OShell.Core
             return await Task.Run(() => this.actionMap[keyData](args));
         }
     }
-
-    public sealed class DuplicateKeyBindingException : Exception
-    {
-        public DuplicateKeyBindingException(Keys keyData)
-            : base(String.Format("definekey: binding already exists for '{0}' key", keyData))
-        {
-            this.Data.Add("KeyData", keyData);
-        }
-    }
-
-    public sealed class KeyNotBoundException : Exception
-    {
-        public KeyNotBoundException(Keys topKey, Keys keyData)
-            : base(String.Format("readkey: undefined '{0}' key", keyData))
-        {
-            this.Data.Add("TopKey", topKey);
-            this.Data.Add("KeyData", keyData);
-        }
-    }
 }

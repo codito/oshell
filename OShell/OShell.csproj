@@ -66,10 +66,13 @@
     <Compile Include="Core\Contracts\ICommandHandler.cs" />
     <Compile Include="Core\Contracts\IMainWindow.cs" />
     <Compile Include="Core\Contracts\IPlatformFacade.cs" />
+    <Compile Include="Core\DuplicateKeyBindingException.cs" />
     <Compile Include="Core\Frame.cs" />
     <Compile Include="Core\Contracts\IKeyMapService.cs" />
     <Compile Include="Core\Contracts\INotificationService.cs" />
     <Compile Include="Core\Contracts\IWindowManagerService.cs" />
+    <Compile Include="Core\InvalidCommandException.cs" />
+    <Compile Include="Core\KeyNotBoundException.cs" />
     <Compile Include="Core\WindowsPlatform.cs" />
     <Compile Include="Core\KeyMap.cs" />
     <Compile Include="Core\Services\NotificationService.cs" />

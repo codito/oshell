@@ -1,5 +1,6 @@
 ﻿namespace OShell.Test.Doubles
 {
+    using System;
     using System.Threading.Tasks;
 
     using FluentAssertions;
@@ -12,16 +13,19 @@
     public class ICommandHandlerStub : ICommandHandler<ICommandStub>
     {
         public string ExpectedCommandName { get; set; }
+
         public string ExpectedCommandArgs { get; set; }
+
         public string ExpectedCommandHelp { get; set; }
-        public bool ExpectedExecuteResult { get; set; }
+
+        public Func<bool> ExpectedExecuteResult { get; set; }
 
         public Task<bool> Execute(ICommandStub command)
         {
             command.Name.Should().Be(this.ExpectedCommandName);
             command.Args.Should().Be(this.ExpectedCommandArgs);
             command.Help.Should().Be(this.ExpectedCommandHelp);
-            return Task.Run(() => this.ExpectedExecuteResult);
+            return Task.Run(this.ExpectedExecuteResult);
         }
     }
 }

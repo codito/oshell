@@ -1,18 +1,23 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PlatformFacade.cs" company="OShell Development Team">
+// <copyright file="WindowsPlatform.cs" company="OShell Development Team">
 //     Copyright (c) OShell Development Team. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace OShell.Core.Internal
+namespace OShell.Core
 {
     using System;
     using System.Windows.Forms;
 
     using OShell.Core.Contracts;
+    using OShell.Core.Internal;
 
+    /// <summary>
+    /// Implementation of platform specific routines for the Windows OS.
+    /// </summary>
     public class WindowsPlatform : IPlatformFacade
     {
+        /// <inheritdoc/>
         public bool RegisterHotKey(IntPtr handle, Keys key, int keyId)
         {
             int modifiers = 0;
@@ -36,6 +41,7 @@ namespace OShell.Core.Internal
             return Interop.RegisterHotKey(handle, keyId, (uint)modifiers, (uint)k);
         }
 
+        /// <inheritdoc/>
         public bool UnregisterHotKey(IntPtr handle, int keyId)
         {
             return Interop.UnregisterHotKey(handle, keyId);

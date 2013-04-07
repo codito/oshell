@@ -1,6 +1,8 @@
 ﻿namespace OShell.Test
 {
+    using System;
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using FluentAssertions;
@@ -9,6 +11,7 @@
 
     using NSubstitute;
 
+    using OShell.Core;
     using OShell.Core.Contracts;
     using OShell.Core.Services;
     using OShell.Test.Doubles;
@@ -16,54 +19,110 @@
     [TestClass]
     public class CommandServiceTests
     {
+        private readonly ICommandStub commandStub;
+
+        private readonly ICommandHandlerStub commandHandlerStubReturnsFalse;
+
+        private readonly ICommandHandlerStub commandHandlerStubReturnsTrue;
+
+        public CommandServiceTests()
+        {
+            this.commandStub = new ICommandStub
+                                    {
+                                        Args = "arg1 arg2 arg3",
+                                        Name = "stubcmd",
+                                        Help = "sample help!"
+                                    };
+            this.commandHandlerStubReturnsFalse = this.GetCommandHandler(this.commandStub, () => false);
+            this.commandHandlerStubReturnsTrue = this.GetCommandHandler(this.commandStub, () => true);
+        }
+
         [TestMethod, Priority(0)]
         public async Task RunSingleCommand()
         {
-            string commandName = "stubcmd";
-            string commandArgs = "arg1 arg2 arg3";
-            string commandHelp = "sample help!";
-            var command = new ICommandStub { Args = commandArgs, Name = commandName, Help = commandHelp };
-            var commandHandler = new ICommandHandlerStub
-                                     {
-                                         ExpectedCommandArgs = commandArgs,
-                                         ExpectedCommandName = commandName,
-                                         ExpectedCommandHelp = commandHelp,
-                                         ExpectedExecuteResult = false
-                                     };
-            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { command }, new List<object> { commandHandler });
-            var result = await cmdsvc.Run(commandName + " " + commandArgs);
+            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            var result = await cmdsvc.Run(this.commandStub.Name + " " + this.commandStub.Args);
 
             result.Should().BeFalse();
         }
 
         [TestMethod, Priority(0)]
-        public void RunMultipleCommandWithDifferentRunTime()
+        public async Task RunMultipleCommandWithDifferentRunTime()
         {
-            Assert.Fail();
+            // Create a command stub which sleeps for some time
+            var commandStub2 = new ICommandStub
+                                    {
+                                        Args = "arg1 arg2 arg3",
+                                        Name = "stubcmd2",
+                                        Help = "sample help!"
+                                    };
+            var commandHandler2 = this.GetCommandHandler(
+                commandStub2,
+                () =>
+                    {
+                        Thread.Sleep(20 * 1000);
+                        return false;
+                    });
+
+            var cmdsvc = new CommandService(
+                Substitute.For<IMainWindow>(),
+                new List<ICommand> { this.commandStub, commandStub2 },
+                new List<object> { this.commandHandlerStubReturnsFalse, commandHandler2 });
+            var result = cmdsvc.Run(this.commandStub.Name + " " + this.commandStub.Args);
+
+            // Trigger a second command meanwhile, validate that it shouldn't block
+            var result2 = await cmdsvc.Run(commandStub2.Name + " " + commandStub2.Args);
+            result2.Should().BeTrue();
+
+            result.Wait();
+            result.Result.Should().BeFalse();
         }
 
         [TestMethod, Priority(1)]
         public void NullCommandSpecThrowsArgumentException()
         {
-            Assert.Fail();
+            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            Func<Task> run = async () => await cmdsvc.Run(null);
+            run.ShouldThrow<ArgumentException>();
         }
 
         [TestMethod, Priority(1)]
         public void EmptyCommandSpecThrowsArgumentException()
         {
-            Assert.Fail();
+            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            Func<Task> run = async () => await cmdsvc.Run(string.Empty);
+            run.ShouldThrow<ArgumentException>();
         }
 
         [TestMethod, Priority(1)]
         public void UnregisteredCommandInCommandSpecThrowsInvalidCommandException()
         {
-            Assert.Fail();
+            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            const string InputCmd = "cmdnotregistered arg1 arg2";
+            Func<Task> run = async () => await cmdsvc.Run(InputCmd);
+            run.ShouldThrow<InvalidCommandException>().And.Data["InputCommand"].Should().Be(InputCmd);
         }
 
         [TestMethod, Priority(1)]
         public void MalformedCommandSpecThrowsInvalidCommandException()
         {
-            Assert.Fail();
+            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            const string InputCmd = " ";
+            Func<Task> run = async () => await cmdsvc.Run(InputCmd);
+            run.ShouldThrow<InvalidCommandException>().And.Data["InputCommand"].Should().Be(InputCmd);
         }
+
+        #region Helper methods
+        private ICommandHandlerStub GetCommandHandler(ICommandStub cmdStub, Func<bool> result)
+        {
+            return new ICommandHandlerStub
+                       {
+                           ExpectedCommandArgs = cmdStub.Args,
+                           ExpectedCommandName = cmdStub.Name,
+                           ExpectedCommandHelp = cmdStub.Help,
+                           ExpectedExecuteResult = result
+                       };
+        }
+        #endregion
     }
 }
