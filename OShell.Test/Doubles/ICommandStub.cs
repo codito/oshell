@@ -13,4 +13,16 @@
 
         public string Help { get; set; }
     }
+
+    /// <summary>
+    /// Yet another command stub.
+    /// </summary>
+    public class ICommandStub2 : ICommand
+    {
+        public string Name { get; set; }
+
+        public string Args { get; set; }
+
+        public string Help { get; set; }
+    }
 }

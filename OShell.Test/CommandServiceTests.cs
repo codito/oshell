@@ -38,7 +38,7 @@
         }
 
         [TestMethod, Priority(0)]
-        public async Task RunSingleCommand()
+        public async Task RunASingleCommandWhichReturnsFalse()
         {
             var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
             var result = await cmdsvc.Run(this.commandStub.Name + " " + this.commandStub.Args);
@@ -47,35 +47,39 @@
         }
 
         [TestMethod, Priority(0)]
-        public async Task RunMultipleCommandWithDifferentRunTime()
+        public async Task RunASecondCommandWhileFirstCommandIsRunning()
         {
             // Create a command stub which sleeps for some time
-            var commandStub2 = new ICommandStub
+            var commandStub2 = new ICommandStub2
                                     {
                                         Args = "arg1 arg2 arg3",
                                         Name = "stubcmd2",
                                         Help = "sample help!"
                                     };
-            var commandHandler2 = this.GetCommandHandler(
-                commandStub2,
-                () =>
-                    {
-                        Thread.Sleep(20 * 1000);
-                        return false;
-                    });
+            var commandHandler2 = new ICommandHandlerStub2
+                                      {
+                                          ExpectedCommandArgs = commandStub2.Args,
+                                          ExpectedCommandName = commandStub2.Name,
+                                          ExpectedCommandHelp = commandStub2.Help,
+                                          ExpectedExecuteResult = () =>
+                                              {
+                                                  Thread.Sleep(5 * 1000);
+                                                  return false;
+                                              }
+                                      };
 
             var cmdsvc = new CommandService(
                 Substitute.For<IMainWindow>(),
                 new List<ICommand> { this.commandStub, commandStub2 },
-                new List<object> { this.commandHandlerStubReturnsFalse, commandHandler2 });
-            var result = cmdsvc.Run(this.commandStub.Name + " " + this.commandStub.Args);
+                new List<object> { this.commandHandlerStubReturnsTrue, commandHandler2 });
+            var result2 = cmdsvc.Run(commandStub2.Name + " " + commandStub2.Args);
 
             // Trigger a second command meanwhile, validate that it shouldn't block
-            var result2 = await cmdsvc.Run(commandStub2.Name + " " + commandStub2.Args);
-            result2.Should().BeTrue();
+            var result = await cmdsvc.Run(this.commandStub.Name + " " + this.commandStub.Args);
+            result.Should().BeTrue();
 
-            result.Wait();
-            result.Result.Should().BeFalse();
+            result2.Wait();
+            result2.Result.Should().BeFalse();
         }
 
         [TestMethod, Priority(1)]

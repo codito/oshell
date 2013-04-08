@@ -88,7 +88,7 @@ namespace OShell.Core.Services
             // Get the ICommandHandler<TCommand> instance
             var commandHandlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
             dynamic commandHandler = (from handler in this.commandHandlers
-                                      where handler.GetType().GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
+                                      where handler.GetType().GetInterfaces().Any(i => i.UnderlyingSystemType.Equals(commandHandlerType))
                                       select handler).FirstOrDefault();
             if (commandHandler == null)
             {
