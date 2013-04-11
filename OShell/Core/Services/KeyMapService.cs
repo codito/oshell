@@ -19,22 +19,22 @@ namespace OShell.Core.Services
     public class KeyMapService : ServiceBase, IKeyMapService
     {
         /// <summary>
-        /// Map of top key sequences and associated <see cref="KeyMap"/>.
-        /// </summary>
-        private Dictionary<Keys, KeyMap> keyMaps;
-
-        /// <summary>
         /// An implementation for the underlying platform specific routines.
         /// </summary>
         private readonly IPlatformFacade platformFacade;
 
         /// <summary>
+        /// Map of top key sequences and associated <see cref="KeyMap"/>.
+        /// </summary>
+        private Dictionary<Keys, KeyMap> keyMaps;
+
+        /// <summary>
         /// Creates an instance of <see cref="KeyMapService"/>.
         /// </summary>
-        /// <param name="mainWindow">Instance of <see cref="IMainWindow"/></param>
-        /// <param name="platformFacade">An <see cref="IPlatformFacade"/> implementation</param>
-        public KeyMapService(IMainWindow mainWindow, IPlatformFacade platformFacade)
-            : base(mainWindow)
+        /// <param name="platformFacade">
+        /// An <see cref="IPlatformFacade"/> implementation
+        /// </param>
+        public KeyMapService(IPlatformFacade platformFacade)
         {
             this.keyMaps = new Dictionary<Keys, KeyMap>();
             this.platformFacade = platformFacade;
@@ -57,7 +57,7 @@ namespace OShell.Core.Services
         {
             foreach (var keyMap in this.keyMaps.Values)
             {
-                this.platformFacade.UnregisterHotKey(this.MainWindow.GetHandle(), keyMap.GetHashCode());
+                this.platformFacade.UnregisterHotKey(keyMap.GetHashCode());
             }
 
             this.keyMaps.Clear();
@@ -76,7 +76,7 @@ namespace OShell.Core.Services
         public void AddKeyMap(Keys topKey)
         {
             var keyMap = new KeyMap(topKey);
-            if (!this.platformFacade.RegisterHotKey(this.MainWindow.GetHandle(), topKey, keyMap.GetHashCode()))
+            if (!this.platformFacade.RegisterHotKey(topKey, keyMap.GetHashCode()))
             {
                 Logger.GetLogger().Error("KeyMapService: Failed to register hot key. Keys = " + topKey);
                 throw new Exception("Binding a hot key failed.");
@@ -93,7 +93,7 @@ namespace OShell.Core.Services
         {
             var keyMapHash = this.GetKeyMap(topKey).GetHashCode();
             this.keyMaps.Remove(topKey);
-            if (!this.platformFacade.UnregisterHotKey(this.MainWindow.GetHandle(), keyMapHash))
+            if (!this.platformFacade.UnregisterHotKey(keyMapHash))
             {
                 Logger.GetLogger().Error("KeyMapService: Failed to unregister hot key. Keys = " + topKey);
                 throw new Exception("Unbinding a hot key failed.");

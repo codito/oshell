@@ -14,14 +14,12 @@ namespace OShell.Core.Services
     /// </summary>
     public class NotificationService : ServiceBase, INotificationService
     {
-        private Logger logger;
+        private readonly Logger logger;
 
         /// <summary>
         /// Initializes an instance of the <see cref="NotificationService"/> class.
         /// </summary>
-        /// <param name="mainWindow">Reference to the main window of the application</param>
-        public NotificationService(IMainWindow mainWindow)
-            : base(mainWindow)
+        public NotificationService()
         {
             this.logger = Logger.GetLogger();
             this.logger.UseConsole = true;

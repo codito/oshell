@@ -8,7 +8,6 @@ namespace OShell.Core.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -34,17 +33,13 @@ namespace OShell.Core.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandService"/> class.
         /// </summary>
-        /// <param name="mainWindow">
-        /// The main window.
-        /// </param>
         /// <param name="commandInstances">
         /// The command instances.
         /// </param>
         /// <param name="commandHandlers">
         /// The command handlers.
         /// </param>
-        public CommandService(IMainWindow mainWindow, IEnumerable<ICommand> commandInstances, IEnumerable<object> commandHandlers)
-            : base(mainWindow)
+        public CommandService(IEnumerable<ICommand> commandInstances, IEnumerable<object> commandHandlers)
         {
             this.commandHandlers = commandHandlers;
             this.commandInstances = new Dictionary<string, ICommand>();
@@ -84,6 +79,7 @@ namespace OShell.Core.Services
 
             // Dynamic magic ensures the 'command' object is of TCommand
             dynamic command = this.commandInstances[commandName];
+            command.Args = string.Join(" ", commandParts, 1, commandParts.Length - 1);
 
             // Get the ICommandHandler<TCommand> instance
             var commandHandlerType = typeof(ICommandHandler<>).MakeGenericType(command.GetType());
@@ -102,8 +98,6 @@ namespace OShell.Core.Services
                 ex.Data.Add("commandHandlerType", commandHandlerType);
                 throw ex;
             }
-
-            command.Args = string.Join(" ", commandParts, 1, commandParts.Length - 1);
 
             // Invoke the command handler with the TCommand implementation
             return await commandHandler.Execute(command);

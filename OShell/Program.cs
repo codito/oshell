@@ -13,13 +13,13 @@ namespace OShell
     using System.Runtime.InteropServices;
     using System.Windows.Forms;
 
-    using OShell.Core.Internal;
-
-    using SimpleInjector.Extensions;
-
+    using OShell.Core;
     using OShell.Core.Contracts;
+    using OShell.Core.Internal;
     using OShell.Core.Services;
     using OShell.Views;
+
+    using SimpleInjector.Extensions;
 
     static class Program
     {
@@ -86,10 +86,11 @@ namespace OShell
             // Bootstrap container
             container = new SimpleInjector.Container();
 
-            container.RegisterSingle<IMainWindow, MainWindowImpl>();
+            container.RegisterSingle<IPlatformFacade, WindowsPlatform>();
             container.RegisterSingle<IWindowManagerService, WindowManagerService>();
             container.RegisterSingle<IKeyMapService, KeyMapService>();
             container.RegisterSingle<INotificationService, NotificationService>();
+            container.RegisterSingle<IMainWindow, MainWindowImpl>();
             
             // Register default command set
             var commands =
@@ -107,8 +108,7 @@ namespace OShell
             var commandHandlers =
                 commands.Select(command => container.GetInstance(typeof(ICommandHandler<>).MakeGenericType(command)));
             container.RegisterSingle<ICommandService>(
-                () => new CommandService(
-                          container.GetInstance<IMainWindow>(), container.GetAllInstances<ICommand>(), commandHandlers));
+                () => new CommandService(container.GetAllInstances<ICommand>(), commandHandlers));
 
             container.Verify();
 

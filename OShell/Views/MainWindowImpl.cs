@@ -28,13 +28,13 @@ namespace OShell.Views
 
         private readonly IWindowManagerService windowManagerService;
 
-        public MainWindowImpl()//(IKeyMapService keyMapService, IWindowManagerService windowManagerService)
+        public MainWindowImpl(IKeyMapService keyMapService, IWindowManagerService windowManagerService)
         {
             // FIXME Ugly, needs refactor
             //this.keyMapService = Program.GetInstance<IKeyMapService>();
             //this.windowManagerService = Program.GetInstance<IWindowManagerService>();
-            //this.keyMapService = keyMapService;
-            //this.windowManagerService = windowManagerService;
+            this.keyMapService = keyMapService;
+            this.windowManagerService = windowManagerService;
 
             WM_SHELLHOOK = Interop.RegisterWindowMessage("SHELLHOOK");
 
@@ -50,7 +50,12 @@ namespace OShell.Views
             this.Activated += this.MainWindowActivated;
         }
 
-        void MainWindowActivated(object sender, System.EventArgs e)
+        public IntPtr GetHandle()
+        {
+            return this.Handle;
+        }
+
+        private void MainWindowActivated(object sender, System.EventArgs e)
         {
             this.WindowState = FormWindowState.Maximized;
             //Cursor.Position = new Point(Screen.PrimaryScreen.Bounds.Width / 2,
@@ -68,8 +73,8 @@ namespace OShell.Views
             }
 
             // FIXME
-            //var activeKeyMap = this.keyMapService.GetKeyMap(keyData);
-            var activeKeyMap = Program.GetInstance<IKeyMapService>().GetKeyMap(keyData);
+            var activeKeyMap = this.keyMapService.GetKeyMap(keyData);
+            ////var activeKeyMap = Program.GetInstance<IKeyMapService>().GetKeyMap(keyData);
 
             activeKeyMap.Execute(keyData, string.Empty);
 
@@ -97,15 +102,13 @@ namespace OShell.Views
                         break;
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWCREATED:
                         Logger.GetLogger().Debug("MainWindow: Shell hook: Window created. HWnd = " + m.LParam);
-                        // FIXME
-                        //this.windowManagerService.AddWindow(m.LParam);
-                        Program.GetInstance<IWindowManagerService>().AddWindow(m.LParam);
+                        this.windowManagerService.AddWindow(m.LParam);
+                        ////Program.GetInstance<IWindowManagerService>().AddWindow(m.LParam);
                         break;
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWDESTROYED:
                         Logger.GetLogger().Debug("MainWindow: Shell hook: Window destroyed. HWnd = " + m.LParam);
-                        // FIXME
-                        //this.windowManagerService.RemoveWindow(m.LParam);
-                        Program.GetInstance<IWindowManagerService>().RemoveWindow(m.LParam);
+                        this.windowManagerService.RemoveWindow(m.LParam);
+                        ////Program.GetInstance<IWindowManagerService>().RemoveWindow(m.LParam);
                         break;
                 }
             }
@@ -151,10 +154,5 @@ namespace OShell.Views
             base.WndProc(ref m);
         }
         #endregion
-
-        public IntPtr GetHandle()
-        {
-            return this.Handle;
-        }
     }
 }

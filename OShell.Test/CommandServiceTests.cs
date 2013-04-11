@@ -9,8 +9,6 @@
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using NSubstitute;
-
     using OShell.Core;
     using OShell.Core.Contracts;
     using OShell.Core.Services;
@@ -40,7 +38,7 @@
         [TestMethod, Priority(0)]
         public async Task RunASingleCommandWhichReturnsFalse()
         {
-            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
             var result = await cmdsvc.Run(this.commandStub.Name + " " + this.commandStub.Args);
 
             result.Should().BeFalse();
@@ -69,7 +67,6 @@
                                       };
 
             var cmdsvc = new CommandService(
-                Substitute.For<IMainWindow>(),
                 new List<ICommand> { this.commandStub, commandStub2 },
                 new List<object> { this.commandHandlerStubReturnsTrue, commandHandler2 });
             var result2 = cmdsvc.Run(commandStub2.Name + " " + commandStub2.Args);
@@ -85,7 +82,7 @@
         [TestMethod, Priority(1)]
         public void NullCommandSpecThrowsArgumentException()
         {
-            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
             Func<Task> run = async () => await cmdsvc.Run(null);
             run.ShouldThrow<ArgumentException>();
         }
@@ -93,7 +90,7 @@
         [TestMethod, Priority(1)]
         public void EmptyCommandSpecThrowsArgumentException()
         {
-            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
             Func<Task> run = async () => await cmdsvc.Run(string.Empty);
             run.ShouldThrow<ArgumentException>();
         }
@@ -101,7 +98,7 @@
         [TestMethod, Priority(1)]
         public void UnregisteredCommandInCommandSpecThrowsInvalidCommandException()
         {
-            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
             const string InputCmd = "cmdnotregistered arg1 arg2";
             Func<Task> run = async () => await cmdsvc.Run(InputCmd);
             run.ShouldThrow<InvalidCommandException>().And.Data["InputCommand"].Should().Be(InputCmd);
@@ -110,7 +107,7 @@
         [TestMethod, Priority(1)]
         public void MalformedCommandSpecThrowsInvalidCommandException()
         {
-            var cmdsvc = new CommandService(Substitute.For<IMainWindow>(), new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
+            var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
             const string InputCmd = " ";
             Func<Task> run = async () => await cmdsvc.Run(InputCmd);
             run.ShouldThrow<InvalidCommandException>().And.Data["InputCommand"].Should().Be(InputCmd);

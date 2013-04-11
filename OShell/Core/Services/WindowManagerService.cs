@@ -8,7 +8,6 @@ namespace OShell.Core.Services
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading;
     using System.Windows.Forms;
 
     using OShell.Core.Contracts;
@@ -20,20 +19,25 @@ namespace OShell.Core.Services
     public class WindowManagerService : ServiceBase, IWindowManagerService
     {
         /// <summary>
+        /// The platform facade instance.
+        /// </summary>
+        private readonly IPlatformFacade platformFacade;
+
+        /// <summary>
         /// Notification service instance.
         /// </summary>
-        private INotificationService notificationService;
+        private readonly INotificationService notificationService;
 
         #region Constructor
 
         /// <summary>
         /// Initializes an instance of the <see cref="WindowManagerService"/> class.
         /// </summary>
-        /// <param name="mainWindow">Reference to the Main window</param>
+        /// <param name="platformFacade">Instance of the Platform implementation facade</param>
         /// <param name="notificationService">Instance of Notification Service</param>
-        public WindowManagerService(IMainWindow mainWindow, INotificationService notificationService)
-            : base(mainWindow)
+        public WindowManagerService(IPlatformFacade platformFacade, INotificationService notificationService)
         {
+            this.platformFacade = platformFacade;
             this.notificationService = notificationService;
             this.ManagedWindows = new Dictionary<IntPtr, Window>();
             this.Frames = new List<Frame>();
@@ -74,7 +78,7 @@ namespace OShell.Core.Services
             }
 
             // Register shell hooks for window created and destroyed
-            Interop.RegisterShellHookWindow(this.MainWindow.GetHandle());
+            this.platformFacade.RegisterShellHookWindow();
         }
 
         /// <summary>
@@ -83,7 +87,7 @@ namespace OShell.Core.Services
         public override void Stop()
         {
             // Unregister shell hooks
-            Interop.DeregisterShellHookWindow(this.MainWindow.GetHandle());
+            this.platformFacade.DeregisterShellHookWindow();
 
             // Unmanaged all managed windows
             foreach (Window window in this.ManagedWindows.Values)

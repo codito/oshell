@@ -6,7 +6,6 @@
 
 namespace OShell.Core
 {
-    using System;
     using System.Windows.Forms;
 
     using OShell.Core.Contracts;
@@ -18,7 +17,10 @@ namespace OShell.Core
     public class WindowsPlatform : IPlatformFacade
     {
         /// <inheritdoc/>
-        public bool RegisterHotKey(IntPtr handle, Keys key, int keyId)
+        public IMainWindow MainWindow { get; set; }
+
+        /// <inheritdoc/>
+        public bool RegisterHotKey(Keys key, int keyId)
         {
             int modifiers = 0;
 
@@ -38,13 +40,25 @@ namespace OShell.Core
             }
 
             Keys k = key & ~Keys.Control & ~Keys.Shift & ~Keys.Alt;
-            return Interop.RegisterHotKey(handle, keyId, (uint)modifiers, (uint)k);
+            return Interop.RegisterHotKey(this.MainWindow.GetHandle(), keyId, (uint)modifiers, (uint)k);
         }
 
         /// <inheritdoc/>
-        public bool UnregisterHotKey(IntPtr handle, int keyId)
+        public bool UnregisterHotKey(int keyId)
         {
-            return Interop.UnregisterHotKey(handle, keyId);
+            return Interop.UnregisterHotKey(this.MainWindow.GetHandle(), keyId);
+        }
+
+        /// <inheritdoc/>
+        public bool RegisterShellHookWindow()
+        {
+            return Interop.RegisterShellHookWindow(this.MainWindow.GetHandle());
+        }
+
+        /// <inheritdoc/>
+        public bool DeregisterShellHookWindow()
+        {
+            return Interop.DeregisterShellHookWindow(this.MainWindow.GetHandle());
         }
     }
 }

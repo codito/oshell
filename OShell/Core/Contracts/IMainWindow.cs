@@ -1,8 +1,11 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="MainWindow.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IMainWindow.cs" company="OShell Development Team">
+//   Copyright (c) OShell Development Team. All rights reserved.
 // </copyright>
-//-----------------------------------------------------------------------
+// <summary>
+//   
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace OShell.Core.Contracts
 {
