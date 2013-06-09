@@ -59,6 +59,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CommandTests\SourceCommandTests.cs" />
     <Compile Include="Doubles\ICommandHandlerStub.cs" />
     <Compile Include="Doubles\ICommandStub.cs" />
     <Compile Include="KeyMapServiceTests.cs" />
@@ -66,9 +67,7 @@
     <Compile Include="KeyMapTests.cs" />
     <Compile Include="CommandServiceTests.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CommandTests\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\oshell\OShell.csproj">
       <Project>{5c93b457-35a0-4432-8620-5b939dabfa5e}</Project>

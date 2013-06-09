@@ -89,13 +89,13 @@
     <Compile Include="Core\Commands\Command.cs" />
     <Compile Include="Core\Commands\SourceCommand.cs" />
     <Compile Include="Core\Variable.cs" />
-    <Compile Include="Views\MainWindowImpl.cs">
+    <Compile Include="Views\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Views\MainWindowImpl.resx">
-      <DependentUpon>MainWindowImpl.cs</DependentUpon>
+    <EmbeddedResource Include="Views\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

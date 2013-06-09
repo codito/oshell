@@ -1,42 +1,117 @@
-﻿namespace OShell.Core.Commands
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="SourceCommand.cs" company="OShell Development Team">
+//     Copyright (c) OShell Development Team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+namespace OShell.Core.Commands
 {
     using System;
     using System.IO;
+    using System.Threading.Tasks;
 
-    internal class SourceCommand
+    using OShell.Core.Contracts;
+
+    /// <summary>
+    /// The source command.
+    /// </summary>
+    public class SourceCommand : ICommand
     {
-        public bool Execute(string args)
+        /// <inheritdoc/>
+        public string Name
         {
-            throw new System.NotImplementedException();
+            get
+            {
+                return "source";
+            }
+        }
+
+        /// <inheritdoc/>
+        public string Args { get; set; }
+
+        /// <inheritdoc/>
+        public string Help
+        {
+            get
+            {
+                return "source file\nRead file and execute each line as ratpoison command.";
+            }
+        }
+    }
+
+    /// <summary>
+    /// The source command handler.
+    /// </summary>
+    public class SourceCommandHandler : ICommandHandler<SourceCommand>
+    {
+        private readonly ICommandService commandService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SourceCommandHandler"/> class.
+        /// </summary>
+        /// <param name="commandService">
+        /// The command service.
+        /// </param>
+        public SourceCommandHandler(ICommandService commandService)
+        {
+            this.commandService = commandService;
         }
 
         /// <summary>
-        /// Reads the init file for oshell
+        /// Gets the error message for the command execution.
         /// </summary>
-        /// <param name="path">Path to the oshell config file</param>
-        private void ReadInitFile(string path)
+        public string ErrorMessage { get; private set; }
+
+        /// <inheritdoc/>
+        public Task<bool> Execute(SourceCommand command)
         {
-            int linenum = 0;
-
-            try
-            {
-                using (StreamReader rcreader = new StreamReader(path.ToString()))
-                {
-                    String line;
-                    while (++linenum != 0 && (line = rcreader.ReadLine()) != null)
+            return Task.Run(
+                () =>
                     {
-                        if (line.StartsWith("#") || line.Equals(' '))
-                            continue;
+                        try
+                        {
+                            this.ErrorMessage = this.ReadInitFile(command.Args).Result;
+                            return string.IsNullOrEmpty(this.ErrorMessage);
+                        }
+                        catch (AggregateException ae)
+                        {
+                            throw ae.InnerException;
+                        }
+                    });
+        }
 
-                        string[] args = line.Split(' ');
-                        //Command.SendCommand(args[0], args);
+        /// <summary>
+        /// Reads the configuration file.
+        /// </summary>
+        /// <param name="path">
+        /// Path to the file
+        /// </param>
+        /// <returns>
+        /// The <see cref="Task"/>.
+        /// </returns>
+        private async Task<string> ReadInitFile(string path)
+        {
+            var linenum = 0;
+            var errorMessage = string.Empty;
+
+            using (var rcreader = new StreamReader(path))
+            {
+                String line;
+                while (++linenum != 0 && (line = rcreader.ReadLine()) != null)
+                {
+                    if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))
+                    {
+                        continue;
+                    }
+
+                    var result = await this.commandService.Run(line);
+                    if (result == false)
+                    {
+                        errorMessage = string.Format(@"Line: {0}: Failed to run command: {1}", linenum, line);
                     }
                 }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+
+            return errorMessage;
         }
     }
 }

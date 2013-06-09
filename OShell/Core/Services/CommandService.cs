@@ -29,7 +29,6 @@ namespace OShell.Core.Services
         private Dictionary<string, ICommand> commandInstances;
 
         #region ServiceBase implementation
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandService"/> class.
         /// </summary>
@@ -49,10 +48,12 @@ namespace OShell.Core.Services
             }
         }
 
+        /// <inheritdoc/>
         public override void Start()
         {
         }
 
+        /// <inheritdoc/>
         public override void Stop()
         {
             this.commandInstances.Clear();

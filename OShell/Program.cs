@@ -21,13 +21,14 @@ namespace OShell
 
     using SimpleInjector.Extensions;
 
-    static class Program
+    /// <summary>
+    /// OShell entry point.
+    /// </summary>
+    internal static class Program
     {
-        private static string configFile = Path.Combine(Environment.CurrentDirectory, "oshellrc");
-        private static Form mainForm;
-
         // Command line Options for oshell
-        private static readonly GetOpt.Option[] Options = {
+        private static readonly GetOpt.Option[] Options = 
+        {
             new GetOpt.Option('h', false, "help", "Displays this help"),
             new GetOpt.Option('v', false, "version", "Display version information"),
             new GetOpt.Option('c', true, "command", "Send a command to running instance of OShell"),
@@ -35,6 +36,8 @@ namespace OShell
             new GetOpt.Option('r', true, "rescue", "Resets all windows to regular style, in case things get bad")
         };
 
+        private static string configFile = Path.Combine(Environment.CurrentDirectory, "oshellrc");
+        private static Form mainForm;
         private static SimpleInjector.Container container;
 
         #region Constructor
@@ -45,18 +48,12 @@ namespace OShell
         }
         #endregion
 
-        [System.Diagnostics.DebuggerStepThrough]
-        // XXX Must be private
-        internal static TService GetInstance<TService>() where TService : class
-        {
-            return container.GetInstance<TService>();
-        }
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
+        /// <param name="args">Command line arguments.</param>
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Application.ApplicationExit += OnExit;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomainUnhandledException;
@@ -65,21 +62,18 @@ namespace OShell
             OnStartup(args);
         }
 
-        static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Logger.GetLogger().Debug("Program: Unhandled exception: " + (Exception)e.ExceptionObject);
+            Logger.GetLogger().Debug("Program: Unhandled exception: " + e.ExceptionObject);
             OnExit(sender, e);
         }
 
         #region Startup and Shutdown
-        static void OnExit(object sender, EventArgs e)
+        private static void OnExit(object sender, EventArgs e)
         {
-            ((IServiceBase)GetInstance<IKeyMapService>()).Start();
-            ((IServiceBase)GetInstance<IWindowManagerService>()).Start();
-            ((IServiceBase)GetInstance<INotificationService>()).Start();
         }
 
-        static async void OnStartup(string[] args)
+        private static async void OnStartup(string[] args)
         {
             // TODO free console for UI execution
 
@@ -90,7 +84,7 @@ namespace OShell
             container.RegisterSingle<IWindowManagerService, WindowManagerService>();
             container.RegisterSingle<IKeyMapService, KeyMapService>();
             container.RegisterSingle<INotificationService, NotificationService>();
-            container.RegisterSingle<IMainWindow, MainWindowImpl>();
+            container.RegisterSingle<IMainWindow, MainWindow>();
             
             // Register default command set
             var commands =
@@ -100,7 +94,7 @@ namespace OShell
                          .ToList();
             container.RegisterAll<ICommand>(commands);
             container.RegisterManyForOpenGeneric(
-                typeof(ICommandHandler<>), 
+                typeof(ICommandHandler<>),
                 AccessibilityOption.PublicTypesOnly,
                 Assembly.GetExecutingAssembly());
 
@@ -112,9 +106,7 @@ namespace OShell
 
             container.Verify();
 
-            // FIXME Breaks "n" design principles. Needs refactor.
             mainForm = container.GetInstance<IMainWindow>() as Form;
-            throw new NotImplementedException();
 
             // Parse arguments and run the app
             var getopt = new GetOpt(Options);
@@ -148,8 +140,10 @@ namespace OShell
                             WindowManagerService.Reset();
                             break;
                     }
+
                     returnChar = getopt.Parse(args, ref optionIndex, out optionArg);
-                } while (returnChar != ' ');
+                }
+                while (returnChar != ' ');
             }
             catch (GetOpt.InvalidOptionException e)
             {
@@ -160,16 +154,16 @@ namespace OShell
             if (startWindowManager)
             {
                 // Start the services
-                //((IServiceBase)GetInstance<IKeyMapService>()).Start();
-                //((IServiceBase)GetInstance<IWindowManagerService>()).Start();
-                //((IServiceBase)GetInstance<INotificationService>()).Start();
+                ((IServiceBase)container.GetInstance<IKeyMapService>()).Start();
+                ((IServiceBase)container.GetInstance<IWindowManagerService>()).Start();
+                ((IServiceBase)container.GetInstance<INotificationService>()).Start();
 
                 // set the internal variables
                 // set the data structures
                 // read rc file
-                //CommandManager.Execute((int)CommandManager.OtherCommands.source, new string[] { _configFile });
-                //GetInstance<IKeyMapService>().AddKeyMap(Keys.Control | Keys.T);
-                //Application.Run(mainForm);
+                ////CommandManager.Execute((int)CommandManager.OtherCommands.source, new string[] { _configFile });
+                container.GetInstance<IKeyMapService>().AddKeyMap(Keys.Control | Keys.T);
+                Application.Run(mainForm);
             }
             else
             {
@@ -188,7 +182,7 @@ namespace OShell
         /// </summary>
         private static void AllocateConsole()
         {
-            var notifSvc = GetInstance<INotificationService>();
+            var notifSvc = container.GetInstance<INotificationService>();
             if (!Interop.AttachConsole(Interop.ATTACH_PARENT_PROCESS) && Marshal.GetLastWin32Error() == Interop.ERROR_ACCESS_DENIED)
             {
                 // A console was not allocated, so we need to make one
@@ -200,7 +194,6 @@ namespace OShell
                 {
                     notifSvc.NotifyDebug("Attached console.");
                 }
-
             }
         }
         #endregion

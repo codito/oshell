@@ -7,32 +7,38 @@
 namespace OShell.Views
 {
     using System;
-
-    using OShell.Core;
-    using OShell.Core.Contracts;
-
     using System.Drawing;
     using System.Windows.Forms;
 
+    using OShell.Core;
+    using OShell.Core.Contracts;
     using OShell.Core.Internal;
 
-    internal sealed class MainWindowImpl : Form, IMainWindow 
+    /// <summary>
+    /// The main window.
+    /// </summary>
+    internal sealed class MainWindow : Form, IMainWindow 
     {
 // ReSharper disable InconsistentNaming
         private static uint WM_SHELLHOOK;
 // ReSharper restore InconsistentNaming
-
-        private Keys activeHotKey;
-
         private readonly IKeyMapService keyMapService;
 
         private readonly IWindowManagerService windowManagerService;
 
-        public MainWindowImpl(IKeyMapService keyMapService, IWindowManagerService windowManagerService)
+        private Keys activeHotKey;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
+        /// <param name="keyMapService">
+        /// The key map service.
+        /// </param>
+        /// <param name="windowManagerService">
+        /// The window manager service.
+        /// </param>
+        public MainWindow(IKeyMapService keyMapService, IWindowManagerService windowManagerService)
         {
-            // FIXME Ugly, needs refactor
-            //this.keyMapService = Program.GetInstance<IKeyMapService>();
-            //this.windowManagerService = Program.GetInstance<IWindowManagerService>();
             this.keyMapService = keyMapService;
             this.windowManagerService = windowManagerService;
 
@@ -50,19 +56,16 @@ namespace OShell.Views
             this.Activated += this.MainWindowActivated;
         }
 
+        #region IMainWindow Implmentation
+        /// <inheritdoc/>
         public IntPtr GetHandle()
         {
             return this.Handle;
         }
-
-        private void MainWindowActivated(object sender, System.EventArgs e)
-        {
-            this.WindowState = FormWindowState.Maximized;
-            //Cursor.Position = new Point(Screen.PrimaryScreen.Bounds.Width / 2,
-            //                Screen.PrimaryScreen.Bounds.Height / 2);
-        }
+        #endregion
 
         #region Form Overrides
+        /// <inheritdoc/>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             this.Hide();
@@ -72,10 +75,7 @@ namespace OShell.Views
                 return base.ProcessCmdKey(ref msg, keyData);
             }
 
-            // FIXME
             var activeKeyMap = this.keyMapService.GetKeyMap(keyData);
-            ////var activeKeyMap = Program.GetInstance<IKeyMapService>().GetKeyMap(keyData);
-
             activeKeyMap.Execute(keyData, string.Empty);
 
             this.activeHotKey = Keys.None;
@@ -83,6 +83,7 @@ namespace OShell.Views
             return true;
         }
 
+        /// <inheritdoc/>
         protected override void WndProc(ref Message m)
         {
 // ReSharper disable InconsistentNaming
@@ -90,10 +91,8 @@ namespace OShell.Views
             const int WM_SETTINGCHANGE = 0x001A;
             const int WM_HOTKEY = 0x312;
 // ReSharper restore InconsistentNaming
-
             if (m.Msg == WM_SHELLHOOK)
             {
-                //Logger.GetLogger().Debug(String.Format("MainWindow: Shell hook: Message. Type = {0}, HWnd = {1}, App = {2}", m.WParam, m.LParam, OShell.Core.Window.GetApplicationName(m.LParam)));
                 switch (m.WParam.ToInt64())
                 {
                     case (long)Interop.ShellHookMessages.HSHELL_RUDEAPPACTIVATED:
@@ -103,12 +102,10 @@ namespace OShell.Views
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWCREATED:
                         Logger.GetLogger().Debug("MainWindow: Shell hook: Window created. HWnd = " + m.LParam);
                         this.windowManagerService.AddWindow(m.LParam);
-                        ////Program.GetInstance<IWindowManagerService>().AddWindow(m.LParam);
                         break;
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWDESTROYED:
                         Logger.GetLogger().Debug("MainWindow: Shell hook: Window destroyed. HWnd = " + m.LParam);
                         this.windowManagerService.RemoveWindow(m.LParam);
-                        ////Program.GetInstance<IWindowManagerService>().RemoveWindow(m.LParam);
                         break;
                 }
             }
@@ -151,8 +148,16 @@ namespace OShell.Views
                     // TODO Handle add/remove of monitors to system
                     break;
             }
+
             base.WndProc(ref m);
         }
         #endregion
+
+        private void MainWindowActivated(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Maximized;
+            ////Cursor.Position = new Point(Screen.PrimaryScreen.Bounds.Width / 2,
+            ////                Screen.PrimaryScreen.Bounds.Height / 2);
+        }
     }
 }

@@ -10,7 +10,6 @@
 namespace OShell.Core.Contracts
 {
     using System;
-    using System.Windows.Forms;
 
     /// <summary>
     /// Base for the Main Window of the application. Register process life time objects with
@@ -18,6 +17,10 @@ namespace OShell.Core.Contracts
     /// </summary>
     public interface IMainWindow
     {
+        /// <summary>
+        /// Gets the underlying windows handle for this MainWindow.
+        /// </summary>
+        /// <returns>Window Handle</returns>
         IntPtr GetHandle();
     }
 }
