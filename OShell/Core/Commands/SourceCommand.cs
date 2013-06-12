@@ -62,9 +62,9 @@ namespace OShell.Core.Commands
         public string ErrorMessage { get; private set; }
 
         /// <inheritdoc/>
-        public Task<bool> Execute(SourceCommand command)
+        public async Task<bool> Execute(SourceCommand command)
         {
-            return Task.Run(
+            return await Task.Run(
                 () =>
                     {
                         try

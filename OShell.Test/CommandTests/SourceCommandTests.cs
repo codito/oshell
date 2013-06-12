@@ -58,6 +58,13 @@
             this.sourceCommandHandler = new SourceCommandHandler(this.commandService);
         }
 
+        [TestMethod, Priority(0)]
+        public void SourceCommandHasNameAsSource()
+        {
+            var sourceCommand = new SourceCommand();
+            sourceCommand.Name.Should().Be("source");
+        }
+
         #region Parsing scenarios
         [TestMethod, Priority(0)]
         public void LineWithCommandAndArgumentIsParsedFromTheSourceFile()

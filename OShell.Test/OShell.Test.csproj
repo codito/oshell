@@ -59,9 +59,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CommandTests\NewKMapCommandTests.cs" />
     <Compile Include="CommandTests\SourceCommandTests.cs" />
     <Compile Include="Doubles\ICommandHandlerStub.cs" />
     <Compile Include="Doubles\ICommandStub.cs" />
+    <Compile Include="Doubles\TestablePlatform.cs" />
     <Compile Include="KeyMapServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KeyMapTests.cs" />
