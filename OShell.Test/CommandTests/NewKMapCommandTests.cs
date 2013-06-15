@@ -9,13 +9,22 @@
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     using OShell.Core.Commands;
+    using OShell.Core.Contracts;
     using OShell.Core.Services;
     using OShell.Test.Doubles;
 
     [TestClass]
     public class NewKMapCommandTests
     {
-        private readonly KeyMapService keyMapService = new KeyMapService(new TestablePlatform());
+        private readonly KeyMapService keyMapService;
+
+        private readonly IPlatformFacade platformFacade;
+
+        public NewKMapCommandTests()
+        {
+            this.platformFacade = NSubstitute.Substitute.For<IPlatformFacade>();
+            this.keyMapService = new KeyMapService(this.platformFacade);
+        }
 
         [TestMethod]
         public void NewKMapCommandHasNameAsNewKMap()

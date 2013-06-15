@@ -8,14 +8,25 @@
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+    using NSubstitute;
+
     using OShell.Core.Commands;
+    using OShell.Core.Contracts;
     using OShell.Core.Services;
-    using OShell.Test.Doubles;
 
     [TestClass]
     public class DelKMapCommandTests
     {
-        private readonly KeyMapService keyMapService = new KeyMapService(new TestablePlatform());
+        private readonly KeyMapService keyMapService;
+
+        private readonly IPlatformFacade platformFacade;
+
+        public DelKMapCommandTests()
+        {
+            this.platformFacade = Substitute.For<IPlatformFacade>();
+            this.platformFacade.UnregisterHotKey(0).ReturnsForAnyArgs(true);
+            this.keyMapService = new KeyMapService(this.platformFacade);
+        }
 
         [TestMethod]
         public void DelKMapCommandHasNameAsDelKMap()

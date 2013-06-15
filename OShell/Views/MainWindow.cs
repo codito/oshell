@@ -62,6 +62,14 @@ namespace OShell.Views
         {
             return this.Handle;
         }
+
+        /// <inheritdoc/>
+        public void WaitForNextKey(Keys topKey)
+        {
+            this.activeHotKey = topKey;
+            this.Activate();
+            this.Show();
+        }
         #endregion
 
         #region Form Overrides
@@ -139,10 +147,7 @@ namespace OShell.Views
                     {
                         keyData = keyData | Keys.Shift;
                     }
-
-                    this.activeHotKey = keyData;
-                    this.Activate();
-                    this.Show();
+                    this.WaitForNextKey(keyData);
                     break;
                 case WM_SETTINGCHANGE:
                     // TODO Handle add/remove of monitors to system

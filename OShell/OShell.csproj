@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="Core\Commands\DelKMapCommand.cs" />
     <Compile Include="Core\Commands\NewKMapCommand.cs" />
+    <Compile Include="Core\Commands\ReadkeyCommand.cs" />
     <Compile Include="Core\Commands\SetCommand.cs" />
     <Compile Include="Core\Contracts\ICommand.cs" />
     <Compile Include="Core\Contracts\ICommandService.cs" />
