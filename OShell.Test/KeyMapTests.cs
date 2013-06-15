@@ -14,10 +14,28 @@
     [TestClass]
     public class KeyMapTests
     {
+        [TestMethod]
+        public void KeyMapThrowsForAnEmptyName()
+        {
+            var action = new Action(() => new KeyMap(null));
+            action.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("name");
+
+            action = () => new KeyMap(string.Empty);
+            action.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("name");
+        }
+
+        [TestMethod]
+        public void KeyMapCreatesAKeyMapInstanceWithDefaultTopKey()
+        {
+            var keymap = new KeyMap("dummyKeyMap");
+            keymap.Name.Should().Be("dummyKeyMap");
+            keymap.TopKey.ShouldBeEquivalentTo(Keys.None);
+        }
+
         [TestMethod, Priority(0)]
         public void CreateKeyMapWithTopKey()
         {
-            var km = new KeyMap(Keys.A);
+            var km = CreateKeyMapWithTopKey(Keys.A);
             km.TopKey.Should().Be(Keys.A);
         }
 
@@ -25,14 +43,14 @@
         public void CreateKeyMapWithTopKeyCombination()
         {
             var keys = Keys.Alt | Keys.Shift | Keys.NumPad0;
-            new KeyMap(keys).TopKey.Should().Be(keys);
+            CreateKeyMapWithTopKey(keys).TopKey.Should().Be(keys);
         }
 
         [TestMethod, Priority(0)]
         public async Task ExecuteActionInvokesTheUserAction()
         {
             var topKey = Keys.Alt | Keys.LWin;
-            var km = new KeyMap(topKey);
+            var km = CreateKeyMapWithTopKey(topKey);
 
             km.RegisterAction(Keys.A, args => false);
             var result = await km.Execute(Keys.A, string.Empty);
@@ -47,7 +65,7 @@
         public void ExecuteActionWithUnboundKeyThrowsKeyNotBoundException()
         {
             var topKey = Keys.LWin | Keys.A;
-            var km = new KeyMap(topKey);
+            var km = CreateKeyMapWithTopKey(topKey);
 
             Func<Task> keyMapExecute = async () =>
                 {
@@ -56,15 +74,15 @@
             keyMapExecute.ShouldThrow<KeyNotBoundException>()
                 .And.Data.ShouldBeEquivalentTo(new Dictionary<string, object>
                                                    {
-                                                       {"TopKey", topKey},
-                                                       {"KeyData", Keys.B}
+                                                       { "TopKey", topKey },
+                                                       { "KeyData", Keys.B }
                                                    });
         }
 
         [TestMethod, Priority(1)]
         public void RegisterActionWithExistingKeyThrowsDuplicateKeyBindingException()
         {
-            var km = new KeyMap(Keys.Alt);
+            var km = CreateKeyMapWithTopKey(Keys.Alt);
             km.RegisterAction(Keys.A, args => true);
             km.Invoking(t => t.RegisterAction(Keys.A, args => false))
               .ShouldThrow<DuplicateKeyBindingException>()
@@ -74,8 +92,13 @@
         [TestMethod, Priority(1)]
         public void RegisterActionWithNullThrowsArgumentException()
         {
-            var km = new KeyMap(Keys.A);
+            var km = CreateKeyMapWithTopKey(Keys.A);
             km.Invoking(t => t.RegisterAction(Keys.B, null)).ShouldThrow<ArgumentException>();
+        }
+
+        private static KeyMap CreateKeyMapWithTopKey(Keys topKey)
+        {
+            return new KeyMap("testKeyMap") { TopKey = topKey };
         }
     }
 }

@@ -11,8 +11,6 @@ namespace OShell.Core
     using System.Threading.Tasks;
     using System.Windows.Forms;
 
-    using OShell.Core.Services;
-
     /// <summary>
     /// Available modifier keys.
     /// </summary>
@@ -51,22 +49,37 @@ namespace OShell.Core
         private readonly Dictionary<Keys, Func<string, bool>> actionMap;
 
         /// <summary>
-        /// Creates an instance of <see cref="KeyMap"/>.
+        /// Initializes a new instance of the <see cref="KeyMap"/> class.
         /// </summary>
-        /// <param name="topKey">Root key sequence to trigger this key map</param>
-        public KeyMap(Keys topKey)
+        /// <param name="name">
+        /// Name of the <see cref="KeyMap"/>.
+        /// </param>
+        public KeyMap(string name)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            this.Name = name;
+            this.TopKey = Keys.None;
             this.actionMap = new Dictionary<Keys, Func<string, bool>>();
-            this.TopKey = topKey;
         }
 
         /// <summary>
-        /// Gets the root key which triggers this <see cref="KeyMap"/>.
+        /// Gets the name of <see cref="KeyMap"/>.
+        /// </summary>
+        public string Name
+        {
+            get; private set;
+        }
+
+        /// <summary>
+        /// Gets or sets the root key which triggers this <see cref="KeyMap"/>.
         /// </summary>
         public Keys TopKey
         {
-            get;
-            private set;
+            get; set;
         }
 
         /// <summary>

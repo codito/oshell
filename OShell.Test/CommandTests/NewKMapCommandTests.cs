@@ -67,6 +67,5 @@
             Func<Task> action = async () => await commandHandler.Execute(command);
             action.ShouldThrow<ArgumentException>();
         }
-
     }
 }

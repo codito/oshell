@@ -75,7 +75,7 @@ namespace OShell.Core.Services
         /// <param name="topKey">Hot key sequence</param>
         public void AddKeyMap(Keys topKey)
         {
-            var keyMap = new KeyMap(topKey);
+            var keyMap = new KeyMap("keymap") { TopKey = topKey };
             if (!this.platformFacade.RegisterHotKey(topKey, keyMap.GetHashCode()))
             {
                 Logger.GetLogger().Error("KeyMapService: Failed to register hot key. Keys = " + topKey);
