@@ -32,31 +32,14 @@
         }
 
         [TestMethod]
-        public void ExecuteShouldThrowForNullCommand()
+        public void NewKMapCommandHandlerExecuteShouldThrowForNullCommand()
         {
             Func<Task> action = async () => await new NewKMapCommandHandler(this.keyMapService).Execute(null);
             action.ShouldThrow<ArgumentNullException>().And.ParamName.Should().Be("command");
         }
 
         [TestMethod]
-        public async Task ExecuteShouldReturnFalseForCommandWithoutArguments()
-        {
-            var command = new NewKMapCommand { Args = null };
-            var commandHandler = new NewKMapCommandHandler(this.keyMapService);
-            (await commandHandler.Execute(command)).Should().BeFalse();
-        }
-
-        [TestMethod]
-        public void ExecuteShouldThrowForCommandWithInvalidTopKey()
-        {
-            var command = new NewKMapCommand { Args = "notakey" };
-            var commandHandler = new NewKMapCommandHandler(this.keyMapService);
-            Func<Task> action = async () => await commandHandler.Execute(command);
-            action.ShouldThrow<ArgumentException>();
-        }
-
-        [TestMethod]
-        public async Task ExecuteShouldCreateANewKeyMapWithDefinedTopKey()
+        public async Task NewKMapCommandHandlerExecuteShouldCreateANewKeyMapWithDefinedTopKey()
         {
             var command = new NewKMapCommand { Args = (Keys.Control | Keys.T).ToString() };
             var commandHandler = new NewKMapCommandHandler(this.keyMapService);
@@ -67,5 +50,23 @@
             keyMap.Should().NotBeNull();
             keyMap.TopKey.ShouldBeEquivalentTo(Keys.Control | Keys.T);
         }
+
+        [TestMethod]
+        public async Task NewKMapCommandHandlerExecuteShouldReturnFalseForCommandWithoutArguments()
+        {
+            var command = new NewKMapCommand { Args = null };
+            var commandHandler = new NewKMapCommandHandler(this.keyMapService);
+            (await commandHandler.Execute(command)).Should().BeFalse();
+        }
+
+        [TestMethod]
+        public void NewKMapCommandHandlerExecuteShouldThrowForCommandWithInvalidTopKey()
+        {
+            var command = new NewKMapCommand { Args = "notakey" };
+            var commandHandler = new NewKMapCommandHandler(this.keyMapService);
+            Func<Task> action = async () => await commandHandler.Execute(command);
+            action.ShouldThrow<ArgumentException>();
+        }
+
     }
 }

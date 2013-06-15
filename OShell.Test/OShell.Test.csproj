@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="CommandTests\NewKMapCommandTests.cs" />
     <Compile Include="CommandTests\SourceCommandTests.cs" />
+    <Compile Include="CommandTests\DelKMapCommandTests.cs" />
     <Compile Include="Doubles\ICommandHandlerStub.cs" />
     <Compile Include="Doubles\ICommandStub.cs" />
     <Compile Include="Doubles\TestablePlatform.cs" />
