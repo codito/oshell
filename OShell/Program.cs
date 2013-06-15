@@ -162,7 +162,9 @@ namespace OShell
                 // set the data structures
                 // read rc file
                 ////CommandManager.Execute((int)CommandManager.OtherCommands.source, new string[] { _configFile });
-                container.GetInstance<IKeyMapService>().AddKeyMap(Keys.Control | Keys.T);
+                var keyMapService = container.GetInstance<IKeyMapService>();
+                keyMapService.AddKeyMap("top");
+                keyMapService.SetTopKey("top", Keys.Control | Keys.T);
                 Application.Run(mainForm);
             }
             else

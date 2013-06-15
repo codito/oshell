@@ -10,9 +10,7 @@
 namespace OShell.Core.Commands
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows.Forms;
 
     using OShell.Core.Contracts;
 
@@ -83,8 +81,7 @@ namespace OShell.Core.Commands
                             return false;
                         }
 
-                        var topKey = command.Args.Split(',').Aggregate(Keys.None, (current, key) => current | (Keys)Enum.Parse(typeof(Keys), key));
-                        this.keyMapService.RemoveKeyMap(topKey);
+                        this.keyMapService.RemoveKeyMap(command.Args);
                         return true;
                     });
         }

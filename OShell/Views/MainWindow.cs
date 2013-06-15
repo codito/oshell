@@ -75,7 +75,7 @@ namespace OShell.Views
                 return base.ProcessCmdKey(ref msg, keyData);
             }
 
-            var activeKeyMap = this.keyMapService.GetKeyMap(keyData);
+            var activeKeyMap = this.keyMapService.GetKeyMapByTopKey(keyData);
             activeKeyMap.Execute(keyData, string.Empty);
 
             this.activeHotKey = Keys.None;

@@ -16,6 +16,10 @@
     [TestClass]
     public class KeyMapServiceTests
     {
+        private const string TestKeyMapName = "testKeyMap";
+
+        private const Keys TestTopKey = Keys.Shift | Keys.Alt | Keys.A;
+
         private IKeyMapService keyMapService;
 
         private IPlatformFacade platformFacade;
@@ -28,8 +32,12 @@
 
             this.platformFacade = Substitute.For<IPlatformFacade>();
             this.platformFacade.MainWindow.Returns(mainWindow);
+            this.platformFacade.RegisterHotKey(Keys.A, 0).ReturnsForAnyArgs(true);
+            this.platformFacade.UnregisterHotKey(0).ReturnsForAnyArgs(true);
+
             this.keyMapService = new KeyMapService(this.platformFacade);
             (this.keyMapService as ServiceBase).Start();
+            this.keyMapService.AddKeyMap(TestKeyMapName);
         }
 
         [TestCleanup]
@@ -48,90 +56,180 @@
         }
 
         [TestMethod, Priority(0)]
-        public void AddKeyMapAddsAHotKey()
+        public void StopClearsKeyMapRegistry()
         {
-            // FIXME Test smell. DRY violation.
-            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            this.keyMapService.AddKeyMap("dummyKeyMap");
+            this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
+            this.keyMapService.SetTopKey("dummyKeyMap", Keys.N);
 
-            this.platformFacade.RegisterHotKey(Keys.A, 0).ReturnsForAnyArgs(true);
-            this.keyMapService.AddKeyMap(topKey);
-            this.platformFacade.Received(1)
-                          .RegisterHotKey(topKey, this.keyMapService.GetKeyMap(topKey).GetHashCode());
+            (this.keyMapService as ServiceBase).Stop();
+
+            this.keyMapService.Invoking(t => t.GetKeyMapByName(TestKeyMapName)).ShouldThrow<NullReferenceException>();
+            this.keyMapService.Invoking(t => t.GetKeyMapByName("dummyKeyMap")).ShouldThrow<NullReferenceException>();
+            this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(TestTopKey)).ShouldThrow<NullReferenceException>();
+            this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(Keys.N)).ShouldThrow<NullReferenceException>();
         }
 
         [TestMethod, Priority(1)]
-        public void AddKeyMapForAlreadyExistingKeyThrowsArgumentException()
+        public void StopCalledMultipleTimesShouldNotThrow()
         {
-            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-
-            this.platformFacade.RegisterHotKey(Keys.A, 0).ReturnsForAnyArgs(true);
-            this.keyMapService.AddKeyMap(topKey);
-            this.keyMapService.Invoking(t => t.AddKeyMap(topKey)).ShouldThrow<ArgumentException>();
-        }
-
-        [TestMethod, Priority(1)]
-        public void AddKeyMapWithRuntimeErrorInRegisterThrowsException()
-        {
-            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-
-            this.platformFacade.RegisterHotKey(Keys.A, 0).ReturnsForAnyArgs(false);
-            this.keyMapService
-                .Invoking(t => t.AddKeyMap(topKey)).ShouldThrow<Exception>()
-                .And.Message.Should().Be("Binding a hot key failed.");
-
-            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+            (this.keyMapService as ServiceBase).Stop();
+            (this.keyMapService as ServiceBase).Invoking(t => t.Stop()).ShouldNotThrow();
         }
 
         [TestMethod, Priority(0)]
-        public void RemoveKeyMapRemovesTheHotKeyBinding()
+        public void AddKeyMapThrowsForNullOrEmptyKeyMapName()
         {
-            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            foreach (var name in new[] { null, string.Empty })
+            {
+                this.keyMapService.Invoking(t => t.AddKeyMap(name))
+                .ShouldThrow<ArgumentNullException>()
+                .And.ParamName.Should()
+                .Be("name");
+            }
+        }
 
-            this.platformFacade.RegisterHotKey(Keys.A, 0).ReturnsForAnyArgs(true);
-            this.platformFacade.UnregisterHotKey(0).ReturnsForAnyArgs(true);
-            this.keyMapService.AddKeyMap(topKey);
-            var keyMapHash = this.keyMapService.GetKeyMap(topKey).GetHashCode();
+        [TestMethod, Priority(0)]
+        public void SetTopKeyThrowsForNullOrEmptyKeyMapName()
+        {
+            foreach (var name in new[] { null, string.Empty })
+            {
+                this.keyMapService.Invoking(t => t.SetTopKey(name, Keys.A))
+                .ShouldThrow<ArgumentNullException>()
+                .And.ParamName.Should()
+                .Be("name");
+            }
+        }
+
+        [TestMethod, Priority(0)]
+        public void SetTopKeyThrowsForInvalidTopKey()
+        {
+            foreach (var key in new[] { Keys.None, Keys.NoName })
+            {
+                this.keyMapService.Invoking(t => t.SetTopKey(TestKeyMapName, key))
+                    .ShouldThrow<ArgumentException>()
+                    .And.ParamName.Should()
+                    .Be("topKey");
+            }
+        }
+
+        [TestMethod, Priority(0)]
+        public void SetTopKeySetsTheTopKeyForAKeyMap()
+        {
+            this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
+            this.platformFacade.Received(1)
+                .RegisterHotKey(TestTopKey, this.keyMapService.GetKeyMapByName(TestKeyMapName).GetHashCode());
+        }
+
+        [TestMethod, Priority(0)]
+        public void SetTopKeyForAlreadyExistingKeyThrowsArgumentException()
+        {
+            this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
+            this.keyMapService.Invoking(t => t.SetTopKey(TestKeyMapName, TestTopKey)).ShouldThrow<ArgumentException>();
+        }
+
+        [TestMethod, Priority(1)]
+        public void SetTopKeyWithRuntimeErrorInRegisterThrowsException()
+        {
+            this.platformFacade.RegisterHotKey(Keys.None, 0).ReturnsForAnyArgs(false);
+            this.keyMapService
+                .Invoking(t => t.SetTopKey(TestKeyMapName, TestTopKey)).ShouldThrow<Exception>()
+                .And.Message.Should().Be("Binding a hot key failed.");
+
+            this.keyMapService.GetKeyMapByName(TestKeyMapName).TopKey.ShouldBeEquivalentTo(Keys.None);
+        }
+
+        [TestMethod, Priority(1)]
+        public void RemoveKeyMapThrowsForNullKeyMapName()
+        {
+            foreach (var name in new[] { null, string.Empty })
+            {
+                this.keyMapService.Invoking(t => t.RemoveKeyMap(name))
+                    .ShouldThrow<ArgumentNullException>()
+                    .And.ParamName.Should()
+                    .Be("name");
+            }
+        }
+
+        [TestMethod, Priority(0)]
+        public void RemoveKeyMapRemovesHotKeyBindingForTopKeyOfKeyMap()
+        {
+            this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
+            var keyMapHash = this.keyMapService.GetKeyMapByName(TestKeyMapName).GetHashCode();
 
             // Validate we unregister the correct KeyMap
-            this.keyMapService.RemoveKeyMap(topKey);
+            this.keyMapService.RemoveKeyMap(TestKeyMapName);
             this.platformFacade.Received(1).UnregisterHotKey(keyMapHash);
 
             // Validate that key is removed from internal data structures in KeyMapService
-            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+            this.keyMapService.Invoking(t => t.GetKeyMapByName(TestKeyMapName)).ShouldThrow<KeyNotFoundException>();
+            this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(TestTopKey)).ShouldThrow<KeyNotFoundException>();
         }
 
         [TestMethod, Priority(1)]
         public void RemoveKeyMapForFailedUnregisterThrowsException()
         {
-            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-
-            this.platformFacade.RegisterHotKey(Keys.A, 0).ReturnsForAnyArgs(true);
             this.platformFacade.UnregisterHotKey(0).ReturnsForAnyArgs(false);
-            this.keyMapService.AddKeyMap(topKey);
-            this.keyMapService.Invoking(t => t.RemoveKeyMap(topKey))
+            this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
+            this.keyMapService.Invoking(t => t.RemoveKeyMap(TestKeyMapName))
                 .ShouldThrow<Exception>()
                 .And.Message.Should()
                 .Be("Unbinding a hot key failed.");
 
-            // Validate that GetKeyMap fails with KeyNotFoundException
-            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+            // Validate that GetKeyMapByName fails with KeyNotFoundException
+            this.keyMapService.Invoking(t => t.GetKeyMapByName(TestKeyMapName)).ShouldThrow<KeyNotFoundException>();
+            this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(TestTopKey)).ShouldThrow<KeyNotFoundException>();
         }
 
         [TestMethod, Priority(0)]
-        public void GetKeyMapReturnsTheCorrectKeyMapInstance()
+        public void GetKeyMapByNameThrowsForNullKeyMapName()
         {
-            var topKey = Keys.Shift | Keys.Alt | Keys.A;
+            foreach (var name in new[] { null, string.Empty })
+            {
+                this.keyMapService.Invoking(t => t.GetKeyMapByName(name))
+                    .ShouldThrow<ArgumentNullException>()
+                    .And.ParamName.Should()
+                    .Be("name");
+            }
+        }
 
-            this.platformFacade.RegisterHotKey(Keys.A, 0).ReturnsForAnyArgs(true);
-            this.keyMapService.AddKeyMap(topKey);
-            this.keyMapService.GetKeyMap(topKey).TopKey.Should().Be(topKey);
+        [TestMethod, Priority(0)]
+        public void GetKeyMapByNameReturnsTheCorrectKeyMapInstance()
+        {
+            this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
+            this.keyMapService.GetKeyMapByName(TestKeyMapName).TopKey.Should().Be(TestTopKey);
         }
 
         [TestMethod, Priority(1)]
-        public void GetKeyMapForNotBoundKeyThrowsKeyNotFoundException()
+        public void GetKeyMapByNameForNonExistentKeyMapThrowsKeyNotFoundException()
         {
-            var topKey = Keys.Shift | Keys.Alt | Keys.A;
-            this.keyMapService.Invoking(t => t.GetKeyMap(topKey)).ShouldThrow<KeyNotFoundException>();
+            this.keyMapService.Invoking(t => t.GetKeyMapByName("notExistingKeyMap")).ShouldThrow<KeyNotFoundException>();
+        }
+
+        [TestMethod, Priority(0)]
+        public void GetKeyMapByTopKeyThrowsForInvalidTopKey()
+        {
+            foreach (var key in new[] { Keys.None, Keys.NoName })
+            {
+                this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(key))
+                    .ShouldThrow<ArgumentException>()
+                    .And.ParamName.Should()
+                    .Be("topKey");
+            }
+        }
+
+        [TestMethod, Priority(0)]
+        public void GetKeyMapByTopKeyReturnsAKeyMapForTheTopKey()
+        {
+            this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
+            this.keyMapService.GetKeyMapByTopKey(TestTopKey)
+                .ShouldBeEquivalentTo(this.keyMapService.GetKeyMapByName(TestKeyMapName));
+        }
+
+        [TestMethod, Priority(1)]
+        public void GetKeyMapByTopKeyForNonExistentKeyMapThrowsKeyNotFoundException()
+        {
+            this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(Keys.NumLock)).ShouldThrow<KeyNotFoundException>();
         }
     }
 }

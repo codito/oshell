@@ -24,9 +24,14 @@ namespace OShell.Core.Services
         private readonly IPlatformFacade platformFacade;
 
         /// <summary>
-        /// Map of top key sequences and associated <see cref="KeyMap"/>.
+        /// Map of names and associated <see cref="KeyMap"/>.
         /// </summary>
-        private Dictionary<Keys, KeyMap> keyMaps;
+        private Dictionary<string, KeyMap> nameToKeyMapMapping;
+
+        /// <summary>
+        /// Map of hot key sequences and associated <see cref="KeyMap"/>.
+        /// </summary>
+        private Dictionary<Keys, KeyMap> topKeyToKeyMapMapping;
 
         /// <summary>
         /// Creates an instance of <see cref="KeyMapService"/>.
@@ -36,7 +41,8 @@ namespace OShell.Core.Services
         /// </param>
         public KeyMapService(IPlatformFacade platformFacade)
         {
-            this.keyMaps = new Dictionary<Keys, KeyMap>();
+            this.nameToKeyMapMapping = new Dictionary<string, KeyMap>();
+            this.topKeyToKeyMapMapping = new Dictionary<Keys, KeyMap>();
             this.platformFacade = platformFacade;
         }
 
@@ -55,59 +61,106 @@ namespace OShell.Core.Services
         /// </summary>
         public override void Stop()
         {
-            foreach (var keyMap in this.keyMaps.Values)
+            if (this.nameToKeyMapMapping != null)
             {
-                this.platformFacade.UnregisterHotKey(keyMap.GetHashCode());
+                foreach (var keyMap in this.nameToKeyMapMapping.Values)
+                {
+                    this.platformFacade.UnregisterHotKey(keyMap.GetHashCode());
+                }
+
+                this.nameToKeyMapMapping.Clear();
+                this.nameToKeyMapMapping = null;
             }
 
-            this.keyMaps.Clear();
-            this.keyMaps = null;
+            if (this.topKeyToKeyMapMapping != null)
+            {
+                this.topKeyToKeyMapMapping.Clear();
+                this.topKeyToKeyMapMapping = null;
+            }
         }
 
         #endregion
 
         #region Public methods
 
-        /// <summary>
-        /// Registers the <paramref name="topKey"/> key sequence as a hot key. Associates
-        /// a <see cref="KeyMap"/> instance to this hot key.
-        /// </summary>
-        /// <param name="topKey">Hot key sequence</param>
-        public void AddKeyMap(Keys topKey)
+        /// <inheritdoc/>
+        public void AddKeyMap(string name)
         {
-            var keyMap = new KeyMap("keymap") { TopKey = topKey };
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            var keyMap = new KeyMap("keymap");
+            this.nameToKeyMapMapping.Add(name, keyMap);
+        }
+
+        /// <inheritdoc/>
+        public void SetTopKey(string name, Keys topKey)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            if (topKey == Keys.None || topKey == Keys.NoName)
+            {
+                throw new ArgumentException("Top key must be a valid Key sequence.", "topKey");
+            }
+
+            var keyMap = this.GetKeyMapByName(name);
             if (!this.platformFacade.RegisterHotKey(topKey, keyMap.GetHashCode()))
             {
                 Logger.GetLogger().Error("KeyMapService: Failed to register hot key. Keys = " + topKey);
                 throw new Exception("Binding a hot key failed.");
             }
 
-            this.keyMaps.Add(topKey, keyMap);
+            this.topKeyToKeyMapMapping.Add(topKey, keyMap);
+            keyMap.TopKey = topKey;
         }
 
-        /// <summary>
-        /// Unregisters the hot key sequence binding and removes the associated <see cref="KeyMap"/>.
-        /// </summary>
-        /// <param name="topKey">Registered hot key sequence</param>
-        public void RemoveKeyMap(Keys topKey)
+        /// <inheritdoc/>
+        public void RemoveKeyMap(string name)
         {
-            var keyMapHash = this.GetKeyMap(topKey).GetHashCode();
-            this.keyMaps.Remove(topKey);
-            if (!this.platformFacade.UnregisterHotKey(keyMapHash))
+            if (string.IsNullOrEmpty(name))
             {
-                Logger.GetLogger().Error("KeyMapService: Failed to unregister hot key. Keys = " + topKey);
+                throw new ArgumentNullException("name");
+            }
+
+            var keyMap = this.GetKeyMapByName(name);
+            this.nameToKeyMapMapping.Remove(name);
+            if (keyMap.TopKey != Keys.None)
+            {
+                this.topKeyToKeyMapMapping.Remove(keyMap.TopKey);
+            }
+
+            if (!this.platformFacade.UnregisterHotKey(keyMap.GetHashCode()))
+            {
+                Logger.GetLogger().Error("KeyMapService: Failed to unregister hot key. Keys = " + name);
                 throw new Exception("Unbinding a hot key failed.");
             }
         }
 
-        /// <summary>
-        /// Gets the <see cref="KeyMap"/> associated with <paramref name="topKey"/> key sequence.
-        /// </summary>
-        /// <param name="topKey">Registered hot key sequence</param>
-        /// <returns><see cref="KeyMap"/> instance associated with hot key</returns>
-        public KeyMap GetKeyMap(Keys topKey)
+        /// <inheritdoc/>
+        public KeyMap GetKeyMapByName(string name)
         {
-            return this.keyMaps[topKey];
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            return this.nameToKeyMapMapping[name];
+        }
+
+        /// <inheritdoc/>
+        public KeyMap GetKeyMapByTopKey(Keys topKey)
+        {
+            if (topKey == Keys.None || topKey == Keys.NoName)
+            {
+                throw new ArgumentException("Top key must be a valid Key sequence.", "topKey");
+            }
+
+            return this.topKeyToKeyMapMapping[topKey];
         }
 
         #endregion

@@ -41,14 +41,14 @@
         [TestMethod]
         public async Task NewKMapCommandHandlerExecuteShouldCreateANewKeyMapWithDefinedTopKey()
         {
-            var command = new NewKMapCommand { Args = (Keys.Control | Keys.T).ToString() };
+            var command = new NewKMapCommand { Args = "dummyKeyMap" };
             var commandHandler = new NewKMapCommandHandler(this.keyMapService);
             var result = await commandHandler.Execute(command);
             result.Should().BeTrue();
 
-            var keyMap = this.keyMapService.GetKeyMap(Keys.Control | Keys.T);
+            var keyMap = this.keyMapService.GetKeyMapByName("dummyKeyMap");
             keyMap.Should().NotBeNull();
-            keyMap.TopKey.ShouldBeEquivalentTo(Keys.Control | Keys.T);
+            keyMap.TopKey.ShouldBeEquivalentTo(Keys.None);
         }
 
         [TestMethod]
@@ -60,10 +60,12 @@
         }
 
         [TestMethod]
-        public void NewKMapCommandHandlerExecuteShouldThrowForCommandWithInvalidTopKey()
+        public async Task NewKMapCommandHandlerExecuteThrowsForExistingKeyMap()
         {
-            var command = new NewKMapCommand { Args = "notakey" };
+            var command = new NewKMapCommand { Args = "dummyKeyMap" };
             var commandHandler = new NewKMapCommandHandler(this.keyMapService);
+            (await commandHandler.Execute(command)).Should().BeTrue();
+
             Func<Task> action = async () => await commandHandler.Execute(command);
             action.ShouldThrow<ArgumentException>();
         }

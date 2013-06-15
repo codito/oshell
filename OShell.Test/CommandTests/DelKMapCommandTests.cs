@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using System.Windows.Forms;
 
     using FluentAssertions;
 
@@ -40,31 +39,16 @@
         }
 
         [TestMethod]
-        public async Task DelKMapCommandHandlerExecuteShouldDeleteAKeyMapWithTopKey()
+        public async Task DelKMapCommandHandlerExecuteShouldDeleteAKeyMapWithGivenName()
         {
             var delkmapHandler = new DelKMapCommandHandler(this.keyMapService);
             var newkmapHandler = new NewKMapCommandHandler(this.keyMapService);
-            (await newkmapHandler.Execute(new NewKMapCommand { Args = Keys.Control.ToString() })).Should().BeTrue();
+            (await newkmapHandler.Execute(new NewKMapCommand { Args = "dummyKeyMap" })).Should().BeTrue();
 
-            var result = await delkmapHandler.Execute(new DelKMapCommand { Args = Keys.Control.ToString() });
+            var result = await delkmapHandler.Execute(new DelKMapCommand { Args = "dummyKeyMap" });
             result.Should().BeTrue();
 
-            var getKeyMap = new Action(() => this.keyMapService.GetKeyMap(Keys.Control));
-            getKeyMap.ShouldThrow<KeyNotFoundException>();
-        }
-
-        [TestMethod]
-        public async Task DelKMapCommandHandlerExecuteShouldDeleteAKeyMapWithTopKeyCombination()
-        {
-            var delkmapHandler = new DelKMapCommandHandler(this.keyMapService);
-            var newkmapHandler = new NewKMapCommandHandler(this.keyMapService);
-            var topKey = (Keys.Control | Keys.T).ToString();
-            (await newkmapHandler.Execute(new NewKMapCommand { Args = topKey })).Should().BeTrue();
-
-            var result = await delkmapHandler.Execute(new DelKMapCommand { Args = topKey });
-            result.Should().BeTrue();
-
-            var getKeyMap = new Action(() => this.keyMapService.GetKeyMap(Keys.Control | Keys.T));
+            var getKeyMap = new Action(() => this.keyMapService.GetKeyMapByName("dummyKeyMap"));
             getKeyMap.ShouldThrow<KeyNotFoundException>();
         }
 
@@ -76,11 +60,11 @@
         }
 
         [TestMethod]
-        public void DelKMapCommandHandlerExecuteShouldThrowForInvalidCommandArguments()
+        public void DelKMapCommandHandlerExecuteShouldThrowForNonExistentKeyMap()
         {
             var delkmapHandler = new DelKMapCommandHandler(this.keyMapService);
-            Func<Task> action = async () => await delkmapHandler.Execute(new DelKMapCommand { Args = "dummyTopKey" });
-            action.ShouldThrow<ArgumentException>();
+            Func<Task> action = async () => await delkmapHandler.Execute(new DelKMapCommand { Args = "dummyKeyMap" });
+            action.ShouldThrow<KeyNotFoundException>();
         }
     }
 }

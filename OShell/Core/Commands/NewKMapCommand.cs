@@ -83,8 +83,7 @@ namespace OShell.Core.Commands
                             return false;
                         }
 
-                        var topKey = command.Args.Split(',').Aggregate(Keys.None, (current, key) => current | (Keys)Enum.Parse(typeof(Keys), key));
-                        this.keyMapService.AddKeyMap(topKey);
+                        this.keyMapService.AddKeyMap(command.Args);
                         return true;
                     });
         }
