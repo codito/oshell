@@ -46,7 +46,7 @@ namespace OShell.Core
         /// <summary>
         /// Map of key sequence triggers and actions.
         /// </summary>
-        private readonly Dictionary<Keys, Func<string, bool>> actionMap;
+        private readonly Dictionary<Keys, Func<string, Task<bool>>> actionMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="KeyMap"/> class.
@@ -63,7 +63,7 @@ namespace OShell.Core
 
             this.Name = name;
             this.TopKey = Keys.None;
-            this.actionMap = new Dictionary<Keys, Func<string, bool>>();
+            this.actionMap = new Dictionary<Keys, Func<string, Task<bool>>>();
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace OShell.Core
         /// </summary>
         /// <param name="keyData">Trigger key sequence</param>
         /// <param name="action">Action to execute on trigger</param>
-        public void RegisterAction(Keys keyData, Func<string, bool> action)
+        public void RegisterAction(Keys keyData, Func<string, Task<bool>> action)
         {
             if (action == null)
             {
@@ -126,7 +126,7 @@ namespace OShell.Core
                 throw new KeyNotBoundException(this.TopKey, keyData);
             }
 
-            return await Task.Run(() => this.actionMap[keyData](args));
+            return await this.actionMap[keyData](args);
         }
     }
 }

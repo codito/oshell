@@ -52,11 +52,11 @@
             var topKey = Keys.Alt | Keys.LWin;
             var km = CreateKeyMapWithTopKey(topKey);
 
-            km.RegisterAction(Keys.A, args => false);
+            km.RegisterAction(Keys.A, args => Task.Run(() => false));
             var result = await km.Execute(Keys.A, string.Empty);
             result.Should().BeFalse();
 
-            km.RegisterAction(Keys.B, args => args.Equals("Hello"));
+            km.RegisterAction(Keys.B, args => Task.Run(() => args.Equals("Hello")));
             result = await km.Execute(Keys.B, "Hello");
             result.Should().BeTrue();
         }
@@ -83,8 +83,8 @@
         public void RegisterActionWithExistingKeyThrowsDuplicateKeyBindingException()
         {
             var km = CreateKeyMapWithTopKey(Keys.Alt);
-            km.RegisterAction(Keys.A, args => true);
-            km.Invoking(t => t.RegisterAction(Keys.A, args => false))
+            km.RegisterAction(Keys.A, args => Task.Run(() => true));
+            km.Invoking(t => t.RegisterAction(Keys.A, args => Task.Run(() => false)))
               .ShouldThrow<DuplicateKeyBindingException>()
               .And.Data.ShouldBeEquivalentTo(new Dictionary<string, object> { { "KeyData", Keys.A } });
         }
