@@ -64,6 +64,7 @@
     <Compile Include="CommandTests\DelKMapCommandTests.cs" />
     <Compile Include="CommandTests\ReadkeyCommandTests.cs" />
     <Compile Include="CommandTests\DefinekeyCommandTests.cs" />
+    <Compile Include="CommandTests\UndefinekeyCommandTests.cs" />
     <Compile Include="Doubles\ICommandHandlerStub.cs" />
     <Compile Include="Doubles\ICommandStub.cs" />
     <Compile Include="KeyMapServiceTests.cs" />
