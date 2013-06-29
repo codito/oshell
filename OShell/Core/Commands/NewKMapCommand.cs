@@ -10,9 +10,7 @@
 namespace OShell.Core.Commands
 {
     using System;
-    using System.Linq;
     using System.Threading.Tasks;
-    using System.Windows.Forms;
 
     using OShell.Core.Contracts;
 
@@ -38,8 +36,7 @@ namespace OShell.Core.Commands
         {
             get
             {
-                return "newkmap keymap\nGenerate a new keymap names keymap. This keymap can be used to add new" + 
-                       " key-command mapping to it with definekey and can be called with readkey.";
+                return Properties.Resources.Command_Readkey_Help;
             }
         }
     }

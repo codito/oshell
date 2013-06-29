@@ -38,11 +38,7 @@ namespace OShell.Core.Commands
         {
             get
             {
-                return "definekey keymap key command\nAdd a new key binding in keymap for key to execute command."
-                       + " Default keymaps are top normally only containing C-t, which reads a key from root, containing"
-                       + " all the normal commands.\n\nNote that you have to describe ':' by 'colon', '!' by 'exclam' and"
-                       + " so on. If you cannot guess a name of a key, try either C-t key and look at the error message, "
-                       + "or try :describekey root and pressing the key.";
+                return Properties.Resources.Command_Definekey_Help;
             }
         }
     }

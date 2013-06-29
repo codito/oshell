@@ -68,7 +68,7 @@ namespace OShell.Core.Services
             // Sanitize command spec
             if (string.IsNullOrEmpty(commandSpec))
             {
-                throw new ArgumentException("CommandService: Command specification cannot be null.", "commandSpec");
+                throw new ArgumentException(@"CommandService: Command specification cannot be null.", "commandSpec");
             }
 
             var commandParts = commandSpec.Trim().Split(new[] { ' ' });

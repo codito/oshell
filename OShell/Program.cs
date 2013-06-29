@@ -29,11 +29,11 @@ namespace OShell
         // Command line Options for oshell
         private static readonly GetOpt.Option[] Options = 
         {
-            new GetOpt.Option('h', false, "help", "Displays this help"),
-            new GetOpt.Option('v', false, "version", "Display version information"),
-            new GetOpt.Option('c', true, "command", "Send a command to running instance of OShell"),
-            new GetOpt.Option('f', true, "file", "Location of alternate rc file"),
-            new GetOpt.Option('r', true, "rescue", "Resets all windows to regular style, in case things get bad")
+            new GetOpt.Option('h', false, "help", Properties.Resources.Option_Help_Description),
+            new GetOpt.Option('v', false, "version", Properties.Resources.Option_Version_Description),
+            new GetOpt.Option('c', true, "command", Properties.Resources.Option_File_Description),
+            new GetOpt.Option('f', true, "file", Properties.Resources.Option_File_Description),
+            new GetOpt.Option('r', true, "rescue", Properties.Resources.Option_Rescue_Description)
         };
 
         private static string configFile = Path.Combine(Environment.CurrentDirectory, "oshellrc");
@@ -147,7 +147,8 @@ namespace OShell
             }
             catch (GetOpt.InvalidOptionException e)
             {
-                Console.WriteLine(e.Message + "\nUse -h or --help for instructions");
+                Console.WriteLine(Properties.Resources.Option_Help_Error);
+                Console.WriteLine(e);
                 return;
             }
 

@@ -36,9 +36,7 @@ namespace OShell.Core.Commands
         {
             get
             {
-                return "readkey keymap\nGrab the next key pressed, and execute the command associated to this key in keymap. To show it is waiting for a key, ratpoison will change the rat cursor to a square if waitcursor is set.\n"
-                + "This command is perhaps best described with its usage in the default configuration: By pressing C-t, which is the only key in the keymap top, the command readkey root is executed. The next key then executes the "
-                + "command in keymap root belonging to this command.";
+                return Properties.Resources.Command_Readkey_Help;
             }
         }
     }

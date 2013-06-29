@@ -91,7 +91,7 @@ namespace OShell.Core
         {
             if (action == null)
             {
-                throw new ArgumentException("Action cannot be null.", "action");
+                throw new ArgumentException(@"Action cannot be null.", "action");
             }
 
             try

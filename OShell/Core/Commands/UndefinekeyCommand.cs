@@ -38,7 +38,7 @@ namespace OShell.Core.Commands
         {
             get
             {
-                return "undefinekey keymap key\nRemove the binding for key from keymap.";
+                return Properties.Resources.Command_Undefinekey_Help;
             }
         }
     }

@@ -33,7 +33,7 @@ namespace OShell.Core.Commands
         {
             get
             {
-                return "source file\nRead file and execute each line as ratpoison command.";
+                return Properties.Resources.Command_Source_Help;
             }
         }
     }

@@ -105,7 +105,7 @@ namespace OShell.Core.Services
 
             if (topKey == Keys.None || topKey == Keys.NoName)
             {
-                throw new ArgumentException("Top key must be a valid Key sequence.", "topKey");
+                throw new ArgumentException(@"Top key must be a valid Key sequence.", "topKey");
             }
 
             var keyMap = this.GetKeyMapByName(name);
@@ -157,7 +157,7 @@ namespace OShell.Core.Services
         {
             if (topKey == Keys.None || topKey == Keys.NoName)
             {
-                throw new ArgumentException("Top key must be a valid Key sequence.", "topKey");
+                throw new ArgumentException(@"Top key must be a valid Key sequence.", "topKey");
             }
 
             return this.topKeyToKeyMapMapping[topKey];

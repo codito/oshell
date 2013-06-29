@@ -36,8 +36,7 @@ namespace OShell.Core.Commands
         {
             get
             {
-                return "Syntax: delkmap keymap. Deletes the keymap named keymap, that was generated with newkmap."
-                       + " The keymaps top (or whatever was specified by set topkmap) and root cannot be deleted.";
+                return Properties.Resources.Command_DelKMap_Help;
             }
         }
     }
