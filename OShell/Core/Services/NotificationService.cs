@@ -21,7 +21,7 @@ namespace OShell.Core.Services
         /// </summary>
         public NotificationService()
         {
-            this.logger = Logger.GetLogger();
+            this.logger = Logger.Instance;
             this.logger.UseConsole = true;
             this.HasMessageBar = false;
         }

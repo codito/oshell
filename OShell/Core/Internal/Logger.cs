@@ -36,7 +36,7 @@ namespace OShell.Core.Internal
     /// </summary>
     internal class Logger : IDisposable
     {
-        private static readonly Logger Instance = new Logger("oshell.log");
+        private static readonly Logger LoggerInstance = new Logger("oshell.log");
 
         private readonly FileStream logStream;
         private readonly StreamWriter logWriter;
@@ -69,6 +69,18 @@ namespace OShell.Core.Internal
         #region Properties
 
         /// <summary>
+        /// Gets an instance of the active logger.
+        /// </summary>
+        /// <value>The <see cref="Logger"/> instance.</value>
+        public static Logger Instance
+        {
+            get
+            {
+                return LoggerInstance;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to use console for log messages.
         /// </summary>
         public bool UseConsole
@@ -78,15 +90,6 @@ namespace OShell.Core.Internal
         }
 
         #endregion
-
-        /// <summary>
-        /// Gets an instance of the active logger.
-        /// </summary>
-        /// <returns>The <see cref="Logger"/> instance.</returns>
-        public static Logger GetLogger()
-        {
-            return Instance;
-        }
 
         /// <summary>
         /// Write the log message with Debug verbosity.
@@ -138,6 +141,7 @@ namespace OShell.Core.Internal
             {
                 Console.WriteLine(prettyMessage);
             }
+
             this.logWriter.WriteLine(prettyMessage);
         }
 

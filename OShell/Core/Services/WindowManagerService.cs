@@ -74,7 +74,7 @@ namespace OShell.Core.Services
             // Add existing windows to the frame in primary monitor
             if (!Interop.EnumWindows(this.EnumWndProc, IntPtr.Zero))
             {
-                Logger.GetLogger().Debug("WMService: Failed to add existing windows.");
+                Logger.Instance.Debug("WMService: Failed to add existing windows.");
             }
 
             // Register shell hooks for window created and destroyed
@@ -121,13 +121,13 @@ namespace OShell.Core.Services
             }
             catch
             {
-                Logger.GetLogger().Error("WMService: Failed to add existing window. HWnd: " + handle);
+                Logger.Instance.Error("WMService: Failed to add existing window. HWnd: " + handle);
                 window.Unmanage();
                 return;
             }
 
             this.ManagedWindows.Add(handle, window);
-            Logger.GetLogger()
+            Logger.Instance
                   .Debug(
                       "WMService: Added window. HWnd = {0}, Name = {1}, Application Name = {2}",
                       window.Handle,
@@ -152,7 +152,7 @@ namespace OShell.Core.Services
             }
 
             this.ManagedWindows.Remove(handle);
-            Logger.GetLogger().Debug("WMService: Removed window from managed windows list. HWnd = " + handle);
+            Logger.Instance.Debug("WMService: Removed window from managed windows list. HWnd = " + handle);
         }
         #endregion
 
@@ -165,7 +165,7 @@ namespace OShell.Core.Services
         {
             if (!Interop.EnumWindows(ResetEnumWndProc, IntPtr.Zero))
             {
-                Logger.GetLogger().Debug("WMService: Failed to reset existing windows.");
+                Logger.Instance.Debug("WMService: Failed to reset existing windows.");
             }
         }
 

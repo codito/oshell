@@ -111,7 +111,7 @@ namespace OShell.Core.Services
             var keyMap = this.GetKeyMapByName(name);
             if (!this.platformFacade.RegisterHotKey(topKey, keyMap.GetHashCode()))
             {
-                Logger.GetLogger().Error("KeyMapService: Failed to register hot key. Keys = " + topKey);
+                Logger.Instance.Error("KeyMapService: Failed to register hot key. Keys = " + topKey);
                 throw new Exception("Binding a hot key failed.");
             }
 
@@ -136,7 +136,7 @@ namespace OShell.Core.Services
 
             if (!this.platformFacade.UnregisterHotKey(keyMap.GetHashCode()))
             {
-                Logger.GetLogger().Error("KeyMapService: Failed to unregister hot key. Keys = " + name);
+                Logger.Instance.Error("KeyMapService: Failed to unregister hot key. Keys = " + name);
                 throw new Exception("Unbinding a hot key failed.");
             }
         }

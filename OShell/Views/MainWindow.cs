@@ -89,7 +89,7 @@ namespace OShell.Views
                 .ContinueWith(
                 (task) =>
                     {
-                        Logger.GetLogger()
+                        Logger.Instance
                               .Info(String.Format(
                                       "Fault on key press action. Key sequence: {0}. Exception: {1}",
                                       keyData,
@@ -116,14 +116,14 @@ namespace OShell.Views
                 {
                     case (long)Interop.ShellHookMessages.HSHELL_RUDEAPPACTIVATED:
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWACTIVATED:
-                        Logger.GetLogger().Debug("MainWindow: Shell hook: Window activated. HWnd = {0}", m.LParam);
+                        Logger.Instance.Debug("MainWindow: Shell hook: Window activated. HWnd = {0}", m.LParam);
                         break;
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWCREATED:
-                        Logger.GetLogger().Debug("MainWindow: Shell hook: Window created. HWnd = {0}", m.LParam);
+                        Logger.Instance.Debug("MainWindow: Shell hook: Window created. HWnd = {0}", m.LParam);
                         this.windowManagerService.AddWindow(m.LParam);
                         break;
                     case (long)Interop.ShellHookMessages.HSHELL_WINDOWDESTROYED:
-                        Logger.GetLogger().Debug("MainWindow: Shell hook: Window destroyed. HWnd = {0}", m.LParam);
+                        Logger.Instance.Debug("MainWindow: Shell hook: Window destroyed. HWnd = {0}", m.LParam);
                         this.windowManagerService.RemoveWindow(m.LParam);
                         break;
                 }

@@ -64,7 +64,7 @@ namespace OShell
 
         private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Logger.GetLogger().Debug("Program: Unhandled exception: {0}", e.ExceptionObject);
+            Logger.Instance.Debug("Program: Unhandled exception: {0}", e.ExceptionObject);
             OnExit(sender, e);
         }
 
