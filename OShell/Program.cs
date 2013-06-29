@@ -64,7 +64,7 @@ namespace OShell
 
         private static void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            Logger.GetLogger().Debug("Program: Unhandled exception: " + e.ExceptionObject);
+            Logger.GetLogger().Debug("Program: Unhandled exception: {0}", e.ExceptionObject);
             OnExit(sender, e);
         }
 
@@ -73,7 +73,7 @@ namespace OShell
         {
         }
 
-        private static async void OnStartup(string[] args)
+        private static void OnStartup(string[] args)
         {
             // TODO free console for UI execution
 

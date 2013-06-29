@@ -127,8 +127,12 @@ namespace OShell.Core.Services
             }
 
             this.ManagedWindows.Add(handle, window);
-            Logger.GetLogger().Debug(
-                String.Format("WMService: Added window. HWnd = {0}, Name = {1}, Application Name = {2}", window.Handle, window.Name, window.ApplicationName));
+            Logger.GetLogger()
+                  .Debug(
+                      "WMService: Added window. HWnd = {0}, Name = {1}, Application Name = {2}",
+                      window.Handle,
+                      window.Name,
+                      window.ApplicationName);
         }
 
         /// <summary>

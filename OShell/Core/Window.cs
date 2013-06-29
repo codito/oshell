@@ -153,39 +153,40 @@ namespace OShell.Core
             this.cachedStyle = Interop.GetWindowLongPtr(this.Handle, Interop.GWL_STYLE);
             if (this.cachedStyle == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to get style. HWnd = {0}, Name = {1}", this.Handle, this.Name));
+                Logger.GetLogger().Debug("Window: Failed to get style. HWnd = {0}, Name = {1}", this.Handle, this.Name);
                 return;
             }
 
             this.cachedExStyle = Interop.GetWindowLongPtr(this.Handle, Interop.GWL_EXSTYLE);
             if (this.cachedExStyle == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to get extended style. HWnd = {0}, Name = {1}", this.Handle, this.Name));
+                Logger.GetLogger().Debug("Window: Failed to get extended style. HWnd = {0}, Name = {1}", this.Handle, this.Name);
                 return;
             }
 
-            Logger.GetLogger().Debug("Window: Cached attributes: \n" + Window.DumpWindowStyle(this.Handle));
+            Logger.GetLogger().Debug("Window: Cached attributes: \n{0}", Window.DumpWindowStyle(this.Handle));
 
             // Apply new style
             var newStyle = this.cachedStyle.ToInt64() & ~Window.WindowStyle;
             if (Interop.SetWindowLongPtr(this.Handle, Interop.GWL_STYLE, new IntPtr(newStyle)) == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to undecorate. HWnd = {0}, Name = {1}, Style = {2}", this.Handle, this.Name, newStyle));
+                Logger.GetLogger().Debug("Window: Failed to undecorate. HWnd = {0}, Name = {1}, Style = {2}", this.Handle, this.Name, newStyle);
                 return;
             }
 
             newStyle = this.cachedExStyle.ToInt64() & ~Window.WindowExStyle;
             if (Interop.SetWindowLongPtr(this.Handle, Interop.GWL_EXSTYLE, new IntPtr(newStyle)) == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to undecorate extended styles. HWnd = {0}, Name = {1}, Style = {2}", this.Handle, this.Name, newStyle));
+                Logger.GetLogger()
+                      .Debug(
+                          "Window: Failed to undecorate extended styles. HWnd = {0}, Name = {1}, Style = {2}",
+                          this.Handle,
+                          this.Name,
+                          newStyle);
                 return;
             }
 
-            Logger.GetLogger().Debug("Window: Applied attributes: \n" + Window.DumpWindowStyle(this.Handle));
+            Logger.GetLogger().Debug("Window: Applied attributes: \n{0}", Window.DumpWindowStyle(this.Handle));
 
             // Cache current size and position
             this.cachedSize = Window.GetWindowSize(this.Handle);
@@ -203,15 +204,13 @@ namespace OShell.Core
             var newStyle = this.cachedStyle.ToInt64();
             if (Interop.SetWindowLongPtr(this.Handle, Interop.GWL_STYLE, new IntPtr(newStyle)) == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to decorate. HWnd = {0}, Name = {1}, Style = {2}", this.Handle, this.Name, newStyle));
+                Logger.GetLogger().Debug("Window: Failed to decorate. HWnd = {0}, Name = {1}, Style = {2}", this.Handle, this.Name, newStyle);
             }
 
             newStyle = this.cachedExStyle.ToInt64();
             if (Interop.SetWindowLongPtr(this.Handle, Interop.GWL_EXSTYLE, new IntPtr(newStyle)) == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to decorate extended style. HWnd = {0}, Name = {1}, Style = {2}", this.Handle, this.Name, newStyle));
+                Logger.GetLogger().Debug("Window: Failed to decorate extended style. HWnd = {0}, Name = {1}, Style = {2}", this.Handle, this.Name, newStyle);
             }
 
             // Apply the cached size
@@ -246,8 +245,7 @@ namespace OShell.Core
             var gwlstyle = Interop.GetWindowLongPtr(hwnd, Interop.GWL_STYLE);
             if (gwlstyle == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to get GWL_STYLE. HWnd = {0}, Name = {1}", hwnd, Window.GetCaptionText(hwnd)));
+                Logger.GetLogger().Debug("Window: Failed to get GWL_STYLE. HWnd = {0}, Name = {1}", hwnd, Window.GetCaptionText(hwnd));
                 return String.Empty;
             }
 
@@ -263,8 +261,9 @@ namespace OShell.Core
             var exstyle = Interop.GetWindowLongPtr(hwnd, Interop.GWL_EXSTYLE);
             if (exstyle == IntPtr.Zero)
             {
-                Logger.GetLogger().Debug(
-                    String.Format("Window: Failed to get GWL_EXSTYLE. HWnd = {0}, Name = {1}", hwnd, Window.GetCaptionText(hwnd)));
+                Logger.GetLogger()
+                      .Debug(
+                          "Window: Failed to get GWL_EXSTYLE. HWnd = {0}, Name = {1}", hwnd, Window.GetCaptionText(hwnd));
                 return String.Empty;
             }
 
@@ -323,7 +322,7 @@ namespace OShell.Core
             var sb = new StringBuilder(512);
             if (Interop.GetClassName(hwnd, sb, sb.Capacity) == 0)
             {
-                Logger.GetLogger().Debug("Window: Failed to get class name. HWnd = " + hwnd);
+                Logger.GetLogger().Debug("Window: Failed to get class name. HWnd = {0}", hwnd);
             }
 
             return sb.ToString();
@@ -402,26 +401,26 @@ namespace OShell.Core
             var currentStyle = Interop.GetWindowLongPtr(hwnd, Interop.GWL_STYLE);
             if (currentStyle == IntPtr.Zero)
             {
-                Logger.GetLogger().Error(String.Format("Window: Failed to get style. HWnd = {0}", hwnd));
+                Logger.GetLogger().Error("Window: Failed to get style. HWnd = {0}", hwnd);
             }
 
             var newStyle = currentStyle.ToInt64() | Window.WindowStyle;
             if (Interop.SetWindowLongPtr(hwnd, Interop.GWL_STYLE, new IntPtr(newStyle)) == IntPtr.Zero)
             {
-                Logger.GetLogger().Error(String.Format("Window: Failed to decorate. HWnd = {0}, Style = {1}", hwnd, newStyle));
+                Logger.GetLogger().Error("Window: Failed to decorate. HWnd = {0}, Style = {1}", hwnd, newStyle);
             }
 
             // Reset GWL_EXSTYLE
             currentStyle = Interop.GetWindowLongPtr(hwnd, Interop.GWL_EXSTYLE);
             if (currentStyle == IntPtr.Zero)
             {
-                Logger.GetLogger().Error(String.Format("Window: Failed to get extended style. HWnd = {0}", hwnd));
+                Logger.GetLogger().Error("Window: Failed to get extended style. HWnd = {0}", hwnd);
             }
 
             newStyle = currentStyle.ToInt64() | Window.WindowExStyle;
             if (Interop.SetWindowLongPtr(hwnd, Interop.GWL_STYLE, new IntPtr(newStyle)) == IntPtr.Zero)
             {
-                Logger.GetLogger().Error(String.Format("Window: Failed to decorate extended style. HWnd = {0}, Style = {1}", hwnd, newStyle));
+                Logger.GetLogger().Error("Window: Failed to decorate extended style. HWnd = {0}, Style = {1}", hwnd, newStyle);
             }
         }
 

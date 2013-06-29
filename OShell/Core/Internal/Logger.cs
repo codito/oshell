@@ -91,38 +91,42 @@ namespace OShell.Core.Internal
         /// <summary>
         /// Write the log message with Debug verbosity.
         /// </summary>
-        /// <param name="message">The message.</param>
-        public void Debug(string message)
+        /// <param name="format">Message format</param>
+        /// <param name="args">Additional arguments</param>
+        public void Debug(string format, params object[] args)
         {
-            this.Write(Verbosity.Debug, message);
+            this.Write(Verbosity.Debug, format, args);
         }
 
         /// <summary>
         /// Write the log message with Error verbosity.
         /// </summary>
-        /// <param name="message">The message.</param>
-        public void Error(string message)
+        /// <param name="format">Message format</param>
+        /// <param name="args">Additional arguments</param>
+        public void Error(string format, params object[] args)
         {
-            this.Write(Verbosity.Error, message);
+            this.Write(Verbosity.Error, format, args);
         }
 
         /// <summary>
         /// Write the log message with Info verbosity.
         /// </summary>
-        /// <param name="message">The message.</param>
-        public void Info(string message)
+        /// <param name="format">Message format</param>
+        /// <param name="args">Additional arguments</param>
+        public void Info(string format, params object[] args)
         {
-            this.Write(Verbosity.Info, message);
+            this.Write(Verbosity.Info, format, args);
         }
 
         /// <summary>
         /// Write the log message with <paramref name="level"/> verbosity.
         /// </summary>
         /// <param name="level">Verbosity level.</param>
-        /// <param name="message">Log message.</param>
-        public void Write(Verbosity level, string message)
+        /// <param name="format">Message format</param>
+        /// <param name="args">Additional arguments</param>
+        public void Write(Verbosity level, string format, params object[] args)
         {
-            var prettyMessage = String.Format("{0}: {1}", level, message);
+            var prettyMessage = String.Format("{0}: {1}", level, String.Format(format, args));
 
             // Add additional debug data for DEBUG messages
             if (level == Verbosity.Error)
