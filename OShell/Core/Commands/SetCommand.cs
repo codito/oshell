@@ -6,8 +6,7 @@
 
 namespace OShell.Core.Commands
 {
-    using OShell.Core.Commands;
-
+    /*
     public class SetCommand
     {
         public enum Options
@@ -45,4 +44,5 @@ namespace OShell.Core.Commands
             throw new System.NotImplementedException();
         }
     }
+    */
 }

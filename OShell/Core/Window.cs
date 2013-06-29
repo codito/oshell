@@ -242,7 +242,7 @@ namespace OShell.Core
         /// <returns>Style for the window</returns>
         internal static string DumpWindowStyle(IntPtr hwnd)
         {
-            StringBuilder style = new StringBuilder(512);
+            var style = new StringBuilder(512);
             var gwlstyle = Interop.GetWindowLongPtr(hwnd, Interop.GWL_STYLE);
             if (gwlstyle == IntPtr.Zero)
             {
@@ -434,8 +434,8 @@ namespace OShell.Core
         /// <param name="position">New position of the window</param>
         internal static void SetWindowPosition(IntPtr hwnd, Rectangle position)
         {
-            uint flags = (uint)(Interop.SetWindowPosFlags.FrameChanged | Interop.SetWindowPosFlags.DoNotActivate);
-            if (!Interop.SetWindowPos(hwnd, IntPtr.Zero, position.X, position.Y, position.Width, position.Height, flags))
+            var windowsPositionFlags = (uint)(Interop.SetWindowPosFlags.FrameChanged | Interop.SetWindowPosFlags.DoNotActivate);
+            if (!Interop.SetWindowPos(hwnd, IntPtr.Zero, position.X, position.Y, position.Width, position.Height, windowsPositionFlags))
             {
                 Logger.GetLogger().Error("Window: Unable to set window position. HWnd = " + hwnd);
             }

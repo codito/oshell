@@ -11,7 +11,6 @@
     using OShell.Core.Commands;
     using OShell.Core.Contracts;
     using OShell.Core.Services;
-    using OShell.Test.Doubles;
 
     [TestClass]
     public class NewKMapCommandTests

@@ -8,6 +8,7 @@ namespace OShell.Views
 {
     using System;
     using System.Drawing;
+    using System.Threading.Tasks;
     using System.Windows.Forms;
 
     using OShell.Core;
@@ -84,7 +85,17 @@ namespace OShell.Views
             }
 
             var activeKeyMap = this.keyMapService.GetKeyMapByTopKey(keyData);
-            activeKeyMap.Execute(keyData, string.Empty);
+            Task.Run(() => activeKeyMap.Execute(keyData, string.Empty))
+                .ContinueWith(
+                (task) =>
+                    {
+                        Logger.GetLogger()
+                              .Info(String.Format(
+                                      "Fault on key press action. Key sequence: {0}. Exception: {1}",
+                                      keyData,
+                                      task.Exception));
+                    },
+                TaskContinuationOptions.OnlyOnFaulted);
 
             this.activeHotKey = Keys.None;
 
@@ -125,8 +136,8 @@ namespace OShell.Views
                     // WParam = bit depth
                     // LParam = Width and Height
                     // TODO how does width/height come for secondary monitor
-                    uint width = (uint)(m.LParam.ToInt32() & 0xffff);
-                    uint height = (uint)(m.LParam.ToInt32() >> 16);
+                    ////var width = (uint)(m.LParam.ToInt32() & 0xffff);
+                    ////var height = (uint)(m.LParam.ToInt32() >> 16);
                     break;
                 case WM_HOTKEY:
                     // WParam = key id of the hotkey which generated this message

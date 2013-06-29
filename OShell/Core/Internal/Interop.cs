@@ -9,13 +9,13 @@ namespace OShell.Core.Internal
     using System;
     using System.Runtime.InteropServices;
     using System.Text;
-    using System.Windows.Forms;
 
-    using OShell.Core;
-
+    /// <summary>
+    /// Encapsulates the interoperability with operating system native API.
+    /// </summary>
     internal static class Interop
     {
-        // ReSharper disable InconsistentNaming
+        //// ReSharper disable InconsistentNaming
 
         #region Console APIs
         /// <summary>

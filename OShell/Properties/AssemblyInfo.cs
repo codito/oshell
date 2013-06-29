@@ -1,6 +1,14 @@
-﻿#region Using directives
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AssemblyInfo.cs" company="OShell Development Team">
+//   Copyright (c) OShell Development Team. All rights reserved.
+// </copyright>
+// <summary>
+//   AssemblyInfo.cs
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-using System;
+#region Using directives
+
 using System.Reflection;
 using System.Runtime.InteropServices;
 

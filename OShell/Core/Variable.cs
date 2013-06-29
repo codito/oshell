@@ -29,96 +29,95 @@
 
 namespace OShell.Core
 {
-	using System;
-	using System.Drawing;
+    using System.Drawing;
 
-	/// <summary>
-	/// Represent the various variables in a oshell context
-	/// </summary>
-	public class Variables
-	{
-		private Variables _instance = new Variables();
-		public enum Gravity { NW, W, SW, S, SE, E, NE, N, C };
-		public enum Padding { LEFT, TOP, BOTTOM, RIGHT };
-		
-		public int MaxUndos
-		{
-			get { return MaxUndos; }
-			internal set { MaxUndos = value; }
-		}
-		
-		public int MaxSizeGravity
-		{
-			get { return MaxSizeGravity; }
-			internal set { MaxSizeGravity = value; }
-		}
-		
-		public Gravity BarGravity
-		{
-			get { return BarGravity; }
-			internal set { BarGravity = value; }
-		}
-		
-		public Font TypeFont
-		{
-			get { return TypeFont; }
-			internal set { TypeFont = value; }
-		}
-		
-		public Padding ScreenPadding
-		{
-			get { return ScreenPadding; }
-			internal set { ScreenPadding = value; }
-		}
-		
-		public int Border
-		{
-			get { return Border; }
-			internal set { Border = value; }
-		}
-		
-		public int BarBorder
-		{
-			get { return BarBorder; }
-			internal set { BarBorder = value; }
-		}
-		
-		public uint InputWidth
-		{
-			get { return InputWidth; }
-			internal set { InputWidth = value; }
-		}
-		
-		public bool WaitCursor
-		{
-			get { return WaitCursor; }
-			internal set { WaitCursor = value; }
-		}
-		
-		public string WinFmt
-		{
-			get { return WinFmt; }
-			internal set { WinFmt = value; }
-		}
-		
-		public int BarWidth
-		{
-			get { return BarWidth; }
-			internal set { BarWidth = value; }
-		}
-		
-		
-		/// <summary>
-		/// Initialize the variables to defaults
-		/// </summary>
-		protected Variables()
-		{
-			
-		}
-		
-		public Variables GetInstance()
-		{
-			return _instance;
-		}
-	}
+    /// <summary>
+    /// Represent the various variables in a oshell context
+    /// </summary>
+    public class Variables
+    {
+        private Variables _instance = new Variables();
+        public enum Gravity { NW, W, SW, S, SE, E, NE, N, C };
+        public enum Padding { LEFT, TOP, BOTTOM, RIGHT };
+
+        public int MaxUndos
+        {
+            get { return MaxUndos; }
+            internal set { MaxUndos = value; }
+        }
+
+        public int MaxSizeGravity
+        {
+            get { return MaxSizeGravity; }
+            internal set { MaxSizeGravity = value; }
+        }
+
+        public Gravity BarGravity
+        {
+            get { return BarGravity; }
+            internal set { BarGravity = value; }
+        }
+
+        public Font TypeFont
+        {
+            get { return TypeFont; }
+            internal set { TypeFont = value; }
+        }
+
+        public Padding ScreenPadding
+        {
+            get { return ScreenPadding; }
+            internal set { ScreenPadding = value; }
+        }
+
+        public int Border
+        {
+            get { return Border; }
+            internal set { Border = value; }
+        }
+
+        public int BarBorder
+        {
+            get { return BarBorder; }
+            internal set { BarBorder = value; }
+        }
+
+        public uint InputWidth
+        {
+            get { return InputWidth; }
+            internal set { InputWidth = value; }
+        }
+
+        public bool WaitCursor
+        {
+            get { return WaitCursor; }
+            internal set { WaitCursor = value; }
+        }
+
+        public string WinFmt
+        {
+            get { return WinFmt; }
+            internal set { WinFmt = value; }
+        }
+
+        public int BarWidth
+        {
+            get { return BarWidth; }
+            internal set { BarWidth = value; }
+        }
+
+
+        /// <summary>
+        /// Initialize the variables to defaults
+        /// </summary>
+        protected Variables()
+        {
+
+        }
+
+        public Variables GetInstance()
+        {
+            return _instance;
+        }
+    }
 }
