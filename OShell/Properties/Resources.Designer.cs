@@ -61,7 +61,10 @@ namespace OShell.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to definekey keymap key command\nAdd a new key binding in keymap for key to execute command. Default keymaps are top normally only containing C-t, which reads a key from root, containing all the normal commands.\n\nNote that you have to describe &apos;:&apos; by &apos;colon&apos;, &apos;!&apos; by &apos;exclam&apos; and so on. If you cannot guess a name of a key, try either C-t key and look at the error message, or try :describekey root and pressing the key..
+        ///   Looks up a localized string similar to definekey keymap key command
+        ///    Add a new key binding in keymap for key to execute command. Default keymaps are top normally only containing C-t, which reads a key from root, containing all the normal commands.
+        ///
+        ///    Note that you have to describe &apos;:&apos; by &apos;colon&apos;, &apos;!&apos; by &apos;exclam&apos; and so on. If you cannot guess a name of a key, try either C-t key and look at the error message, or try :describekey root and pressing the key..
         /// </summary>
         internal static string Command_Definekey_Help {
             get {
@@ -70,7 +73,8 @@ namespace OShell.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to delkmap keymap. Deletes the keymap named keymap, that was generated with newkmap. The keymaps top (or whatever was specified by set topkmap) and root cannot be deleted..
+        ///   Looks up a localized string similar to delkmap keymap.
+        ///    Deletes the keymap named keymap, that was generated with newkmap. The keymaps top (or whatever was specified by set topkmap) and root cannot be deleted..
         /// </summary>
         internal static string Command_DelKMap_Help {
             get {
@@ -79,7 +83,8 @@ namespace OShell.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to newkmap keymap\nGenerate a new keymap names keymap. This keymap can be used to add new key-command mapping to it with definekey and can be called with readkey..
+        ///   Looks up a localized string similar to newkmap keymap
+        ///    Generate a new keymap names keymap. This keymap can be used to add new key-command mapping to it with definekey and can be called with readkey..
         /// </summary>
         internal static string Command_NewKMap_Help {
             get {
@@ -88,7 +93,9 @@ namespace OShell.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to readkey keymap\nGrab the next key pressed, and execute the command associated to this key in keymap. To show it is waiting for a key, ratpoison will change the rat cursor to a square if waitcursor is set.\nThis command is perhaps best described with its usage in the default configuration: By pressing C-t, which is the only key in the keymap top, the command readkey root is executed. The next key then executes the command in keymap root belonging to this command..
+        ///   Looks up a localized string similar to readkey keymap
+        ///    Grab the next key pressed, and execute the command associated to this key in keymap. To show it is waiting for a key, ratpoison will change the rat cursor to a square if waitcursor is set.
+        ///    This command is perhaps best described with its usage in the default configuration: By pressing C-t, which is the only key in the keymap top, the command readkey root is executed. The next key then executes the command in keymap root belonging to this command..
         /// </summary>
         internal static string Command_Readkey_Help {
             get {
@@ -97,7 +104,8 @@ namespace OShell.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to source file\nRead file and execute each line as ratpoison command..
+        ///   Looks up a localized string similar to source file
+        ///    Read file and execute each line as ratpoison command..
         /// </summary>
         internal static string Command_Source_Help {
             get {
@@ -106,7 +114,18 @@ namespace OShell.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to undefinekey keymap key\nRemove the binding for key from keymap..
+        ///   Looks up a localized string similar to topkmap kmap
+        ///    Make kmap the top keymap ratpoison graps directly. The default value is top..
+        /// </summary>
+        internal static string Command_TopKMap_Help {
+            get {
+                return ResourceManager.GetString("Command_TopKMap_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to undefinekey keymap key
+        ///    Remove the binding for key from keymap..
         /// </summary>
         internal static string Command_Undefinekey_Help {
             get {

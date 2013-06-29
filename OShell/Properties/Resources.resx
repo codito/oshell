@@ -118,22 +118,35 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Command_Definekey_Help" xml:space="preserve">
-    <value>definekey keymap key command\nAdd a new key binding in keymap for key to execute command. Default keymaps are top normally only containing C-t, which reads a key from root, containing all the normal commands.\n\nNote that you have to describe ':' by 'colon', '!' by 'exclam' and so on. If you cannot guess a name of a key, try either C-t key and look at the error message, or try :describekey root and pressing the key.</value>
+    <value>definekey keymap key command
+    Add a new key binding in keymap for key to execute command. Default keymaps are top normally only containing C-t, which reads a key from root, containing all the normal commands.
+
+    Note that you have to describe ':' by 'colon', '!' by 'exclam' and so on. If you cannot guess a name of a key, try either C-t key and look at the error message, or try :describekey root and pressing the key.</value>
   </data>
   <data name="Command_DelKMap_Help" xml:space="preserve">
-    <value>delkmap keymap. Deletes the keymap named keymap, that was generated with newkmap. The keymaps top (or whatever was specified by set topkmap) and root cannot be deleted.</value>
+    <value>delkmap keymap.
+    Deletes the keymap named keymap, that was generated with newkmap. The keymaps top (or whatever was specified by set topkmap) and root cannot be deleted.</value>
   </data>
   <data name="Command_NewKMap_Help" xml:space="preserve">
-    <value>newkmap keymap\nGenerate a new keymap names keymap. This keymap can be used to add new key-command mapping to it with definekey and can be called with readkey.</value>
+    <value>newkmap keymap
+    Generate a new keymap names keymap. This keymap can be used to add new key-command mapping to it with definekey and can be called with readkey.</value>
   </data>
   <data name="Command_Readkey_Help" xml:space="preserve">
-    <value>readkey keymap\nGrab the next key pressed, and execute the command associated to this key in keymap. To show it is waiting for a key, ratpoison will change the rat cursor to a square if waitcursor is set.\nThis command is perhaps best described with its usage in the default configuration: By pressing C-t, which is the only key in the keymap top, the command readkey root is executed. The next key then executes the command in keymap root belonging to this command.</value>
+    <value>readkey keymap
+    Grab the next key pressed, and execute the command associated to this key in keymap. To show it is waiting for a key, ratpoison will change the rat cursor to a square if waitcursor is set.
+    This command is perhaps best described with its usage in the default configuration: By pressing C-t, which is the only key in the keymap top, the command readkey root is executed. The next key then executes the command in keymap root belonging to this command.</value>
   </data>
   <data name="Command_Source_Help" xml:space="preserve">
-    <value>source file\nRead file and execute each line as ratpoison command.</value>
+    <value>source file
+    Read file and execute each line as ratpoison command.</value>
+  </data>
+  <data name="Command_TopKMap_Help" xml:space="preserve">
+    <value>topkmap kmap
+    Make kmap the top keymap ratpoison graps directly. The default value is top.</value>
   </data>
   <data name="Command_Undefinekey_Help" xml:space="preserve">
-    <value>undefinekey keymap key\nRemove the binding for key from keymap.</value>
+    <value>undefinekey keymap key
+    Remove the binding for key from keymap.</value>
   </data>
   <data name="Logger_Error_CreatingFile" xml:space="preserve">
     <value>Error creating log file. Exception: {0}</value>
