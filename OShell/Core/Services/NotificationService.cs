@@ -50,38 +50,29 @@ namespace OShell.Core.Services
         }
         #endregion
 
-        /// <summary>
-        /// Sends a debug notification.
-        /// </summary>
-        /// <param name="message">Message string</param>
-        public void NotifyDebug(string message)
+        /// <inheritdoc/>
+        public void NotifyDebug(string format, params object[] args)
         {
-            this.NotifyInternal(Verbosity.Debug, message);
+            this.NotifyInternal(Verbosity.Debug, format, args);
         }
 
-        /// <summary>
-        /// Sends an error notification.
-        /// </summary>
-        /// <param name="message">Message string</param>
-        public void NotifyError(string message)
+        /// <inheritdoc/>
+        public void NotifyError(string format, params object[] args)
         {
-            this.NotifyInternal(Verbosity.Error, message);
+            this.NotifyInternal(Verbosity.Error, format, args);
         }
 
-        /// <summary>
-        /// Sends an information notification.
-        /// </summary>
-        /// <param name="message">Message string</param>
-        public void NotifyInfo(string message)
+        /// <inheritdoc/>
+        public void NotifyInfo(string format, params object[] args)
         {
-            this.NotifyInternal(Verbosity.Info, message);
+            this.NotifyInternal(Verbosity.Info, format, args);
         }
 
-        private void NotifyInternal(Verbosity level, string message)
+        private void NotifyInternal(Verbosity level, string format, params object[] args)
         {
             ////if (this.HasMessageBar)
             ////    ;
-            this.logger.Write(level, message);
+            this.logger.Write(level, format, args);
         }
     }
 }
