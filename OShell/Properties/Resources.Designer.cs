@@ -104,6 +104,18 @@ namespace OShell.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to set [variable [value]]
+        ///    If no argument is given, output all ratpoison variables and their values.
+        ///    If one argument is given, output the value of ratpoison variable variable.
+        ///    Otherwise set ratpoison variable variable to value. What values are valid depends on the variable. See the section VARIABLES later in this document for details..
+        /// </summary>
+        internal static string Command_Set_Help {
+            get {
+                return ResourceManager.GetString("Command_Set_Help", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to source file
         ///    Read file and execute each line as ratpoison command..
         /// </summary>

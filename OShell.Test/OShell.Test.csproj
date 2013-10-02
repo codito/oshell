@@ -66,8 +66,10 @@
     <Compile Include="CommandTests\DefinekeyCommandTests.cs" />
     <Compile Include="CommandTests\TopKMapCommandTests.cs" />
     <Compile Include="CommandTests\UndefinekeyCommandTests.cs" />
+    <Compile Include="CommandTests\SetCommandTests.cs" />
     <Compile Include="Doubles\ICommandHandlerStub.cs" />
     <Compile Include="Doubles\ICommandStub.cs" />
+    <Compile Include="Doubles\TestableNotificationService.cs" />
     <Compile Include="KeyMapServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="KeyMapTests.cs" />
