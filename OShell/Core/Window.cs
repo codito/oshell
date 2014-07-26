@@ -21,12 +21,14 @@ namespace OShell.Core
         /// <summary>
         /// Style options used for <see cref="Manage"/> and <see cref="Unmanage"/> routines.
         /// </summary>
-        private const long WindowStyle = (long)(Interop.GwlStyle.WS_MAXIMIZEBOX | Interop.GwlStyle.WS_MAXIMIZE | Interop.GwlStyle.WS_THICKFRAME);
+        //private const long WindowStyle = (long)(Interop.GwlStyle.WS_MAXIMIZEBOX | Interop.GwlStyle.WS_MAXIMIZE | Interop.GwlStyle.WS_THICKFRAME);
+        private const long WindowStyle = 0;
 
         /// <summary>
         /// Extended style options used for <see cref="Manage"/> and <see cref="Unmanage"/> routines.
         /// </summary>
-        private const long WindowExStyle = (long)(Interop.GwlExStyle.WS_EX_DLGMODALFRAME | Interop.GwlExStyle.WS_EX_CLIENTEDGE | Interop.GwlExStyle.WS_EX_STATICEDGE);
+        //private const long WindowExStyle = (long)(Interop.GwlExStyle.WS_EX_DLGMODALFRAME | Interop.GwlExStyle.WS_EX_CLIENTEDGE | Interop.GwlExStyle.WS_EX_STATICEDGE);
+        private const long WindowExStyle = 0;
 
         /// <summary>
         /// Backing field for the <see cref="ApplicationName"/> property.

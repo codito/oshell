@@ -38,8 +38,9 @@ namespace OShell.Views
         /// <param name="windowManagerService">
         /// The window manager service.
         /// </param>
-        public MainWindow(IKeyMapService keyMapService, IWindowManagerService windowManagerService)
+        public MainWindow(IPlatformFacade platformFacade, IKeyMapService keyMapService, IWindowManagerService windowManagerService)
         {
+            platformFacade.MainWindow = this;
             this.keyMapService = keyMapService;
             this.windowManagerService = windowManagerService;
 

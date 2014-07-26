@@ -145,8 +145,8 @@ namespace OShell.Core.Internal
             WS_DISABLED = 0x08000000L,
             WS_DLGFRAME = 0x00400000L,
             WS_HSCROLL = 0x00100000L,
-            WS_MAXIMIZE = 0x01000000L,
-            WS_MAXIMIZEBOX = 0x00010000L,   // Same as WS_TABSTOP
+            WS_MAXIMIZE = 0x01000000L,      // The window is initially maximized.
+            WS_MAXIMIZEBOX = 0x00010000L,   // Same as WS_TABSTOP. The window has a maximize button. Cannot be combined with the WS_EX_CONTEXTHELP style. The WS_SYSMENU style must also be specified.
             WS_MINIMIZE = 0x20000000L,      // Same as WS_ICONIC
             WS_MINIMIZEBOX = 0x00020000L,   // Same as WS_GROUP
             WS_OVERLAPPED = 0x00000000L,    // Same as WS_TILED
@@ -154,7 +154,7 @@ namespace OShell.Core.Internal
             WS_POPUP = 0x80000000L,
             WS_POPUPWINDOW = WS_POPUP | WS_BORDER | WS_SYSMENU,
             WS_SYSMENU = 0x00080000L,
-            WS_THICKFRAME = 0x00040000L,    // Same as WS_SIZEBOX
+            WS_THICKFRAME = 0x00040000L,    // Same as WS_SIZEBOX. The window has a sizing border.
             WS_VISIBLE = 0x10000000L,
             WS_VSCROLL = 0x00200000L
         }
@@ -167,11 +167,11 @@ namespace OShell.Core.Internal
         {
             WS_EX_ACCEPTFILES = 0x00000010L,
             WS_EX_APPWINDOW = 0x00040000L,
-            WS_EX_CLIENTEDGE = 0x00000200L,
+            WS_EX_CLIENTEDGE = 0x00000200L,     // The window has a border with a sunken edge.
             WS_EX_COMPOSITED = 0x02000000L,
             WS_EX_CONTEXTHELP = 0x00000400L,
             WS_EX_CONTROLPARENT = 0x00010000L,
-            WS_EX_DLGMODALFRAME = 0x00000001L,
+            WS_EX_DLGMODALFRAME = 0x00000001L,  // The window has a double border; the window can, optionally, be created with a title bar by specifying the WS_CAPTION style in the dwStyle parameter.
             WS_EX_LAYERED = 0x00080000,
             WS_EX_LAYOUTRTL = 0x00400000L,
             WS_EX_LEFT = 0x00000000L,           // Same as WS_EX_LTRREADING, WS_EX_RIGHTSCROLLBAR
@@ -185,7 +185,7 @@ namespace OShell.Core.Internal
             WS_EX_PALETTEWINDOW = (WS_EX_WINDOWEDGE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST),
             WS_EX_RIGHT = 0x00001000L,
             WS_EX_RTLREADING = 0x00002000L,
-            WS_EX_STATICEDGE = 0x00020000L,
+            WS_EX_STATICEDGE = 0x00020000L,     // The window has a three-dimensional border style intended to be used for items that do not accept user input.
             WS_EX_TOOLWINDOW = 0x00000080L,
             WS_EX_TOPMOST = 0x00000008L,
             WS_EX_TRANSPARENT = 0x00000020L,
