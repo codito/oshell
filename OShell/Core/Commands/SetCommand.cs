@@ -21,44 +21,6 @@ namespace OShell.Core.Commands
     /// </summary>
     public class SetCommand : ICommand
     {
-        /*
-            public enum Options
-            {
-                padding,
-                topkeymap,  // Key Maps
-                waitcursor,
-
-                // Manipulating Windows
-                border,
-                infofmt,
-                maxsizegravity,
-                transgravity,
-                winfmt,
-                wingravity,
-                winliststyle,
-                winname,
-
-                // Status bar
-                barborder,
-                bargravity,
-                barpadding,
-                bgcolor,
-                fgcolor,
-                font,
-                framefmt,
-                inputwidth,
-
-                // Resize frames
-                resizeunit
-            }
-
-            public bool Execute(string args)
-            {
-                throw new System.NotImplementedException();
-            }
-        }
-        */
-
         /// <inheritdoc/>
         public string Name
         {
@@ -90,6 +52,21 @@ namespace OShell.Core.Commands
 
         private readonly NameValueCollection configurationMap;
 
+        private static readonly NameValueCollection DefaultConfigurationMap = 
+            new NameValueCollection
+                    {
+                        { "topkmap", "top" },
+                    };
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SetCommandHandler"/> class.
+        /// </summary>
+        /// <param name="notificationService">Reference to NotificationService implementation</param>
+        public SetCommandHandler(INotificationService notificationService)
+            : this(notificationService, DefaultConfigurationMap)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SetCommandHandler"/> class.
         /// </summary>
@@ -98,7 +75,7 @@ namespace OShell.Core.Commands
         /// <exception cref="ArgumentNullException">
         /// <paramref name="configurationMap"/> is null or empty.
         /// </exception>
-        public SetCommandHandler(INotificationService notificationService, NameValueCollection configurationMap)
+        protected SetCommandHandler(INotificationService notificationService, NameValueCollection configurationMap)
         {
             if (notificationService == null)
             {
