@@ -154,6 +154,11 @@ namespace OShell.Core.Internal
             {
                 this.logWriter.Close();
             }
+
+            if (this.logStream != null)
+            {
+                this.logStream.Close();
+            }
         }
 
         #endregion
