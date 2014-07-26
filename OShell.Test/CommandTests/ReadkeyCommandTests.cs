@@ -2,6 +2,7 @@
 {
     using System;
     using System.Windows.Forms;
+    using System.Threading.Tasks;
 
     using FluentAssertions;
 
@@ -69,13 +70,13 @@
         }
 
         [TestMethod]
-        public void ReadkeyCommandHandlerExecuteWaitsForNextKeySequenceOfTopKey()
+        public async Task ReadkeyCommandHandlerExecuteWaitsForNextKeySequenceOfTopKey()
         {
             this.keyMapService.AddKeyMap("dummyKeyMap");
             this.keyMapService.SetTopKey("dummyKeyMap", Keys.T);
 
             var readkeyHandler = new ReadkeyCommandHandler(this.keyMapService, this.mainWindow);
-            readkeyHandler.Execute(new ReadkeyCommand { Args = "dummyKeyMap" });
+            await readkeyHandler.Execute(new ReadkeyCommand { Args = "dummyKeyMap" });
 
             this.mainWindow.Received(1).WaitForNextKey(Keys.T);
         }
