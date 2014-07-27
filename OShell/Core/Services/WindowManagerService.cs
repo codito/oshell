@@ -101,10 +101,7 @@ namespace OShell.Core.Services
         #endregion
 
         #region Functions
-        /// <summary>
-        /// Adds a window to currently managed windows list.
-        /// </summary>
-        /// <param name="handle">Native window handle</param>
+        /// <inheritdoc/>
         public void AddWindow(IntPtr handle)
         {
             if (Window.IsVisibleWindow(handle) == false)
@@ -135,10 +132,7 @@ namespace OShell.Core.Services
                       window.ApplicationName);
         }
 
-        /// <summary>
-        /// Removes a window from the currently managed list.
-        /// </summary>
-        /// <param name="handle">Native window handle</param>
+        /// <inheritdoc/>
         public void RemoveWindow(IntPtr handle)
         {
             if (this.ManagedWindows.ContainsKey(handle) == false)

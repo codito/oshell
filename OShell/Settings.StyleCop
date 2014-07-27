@@ -38,4 +38,33 @@
       <AnalyzerSettings />
     </Analyzer>
   </Analyzers>
+
+  <!-- Disable stylecop for interop source code -->
+  <SourceFileList>
+    <SourceFile>Command.cs</SourceFile>
+    <SourceFile>Interop.cs</SourceFile>
+    <SourceFile>MainWindow.cs</SourceFile>
+    <SourceFile>Variable.cs</SourceFile>
+    <Settings>
+      <GlobalSettings>
+        <BooleanProperty Name="RulesEnabledByDefault">False</BooleanProperty>
+      </GlobalSettings>
+    </Settings>
+  </SourceFileList>
+
+  <!-- Disable stylecop for generated code -->
+  <Parsers>
+    <Parser ParserId="Microsoft.StyleCop.CSharp.CsParser">
+      <ParserSettings>
+        <BooleanProperty Name="AnalyzeDesignerFiles">False</BooleanProperty>
+        <CollectionProperty Name="GeneratedFileFilters">
+          <Value>\.g\.cs$</Value>
+          <Value>\.generated\.cs$</Value>
+          <Value>\.g\.i\.cs$</Value>
+          <Value>TemporaryGeneratedFile_.*\.cs$</Value>
+        </CollectionProperty>
+      </ParserSettings>
+    </Parser>
+  </Parsers>
+
 </StyleCopSettings>

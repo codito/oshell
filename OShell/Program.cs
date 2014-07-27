@@ -155,17 +155,24 @@ namespace OShell
             if (startWindowManager)
             {
                 // Start the services
-                ((IServiceBase)container.GetInstance<IKeyMapService>()).Start();
-                ((IServiceBase)container.GetInstance<IWindowManagerService>()).Start();
-                ((IServiceBase)container.GetInstance<INotificationService>()).Start();
+                ((ServiceBase)container.GetInstance<IKeyMapService>()).Start();
+                ((ServiceBase)container.GetInstance<IWindowManagerService>()).Start();
+                ((ServiceBase)container.GetInstance<INotificationService>()).Start();
 
                 // set the internal variables
                 // set the data structures
                 // read rc file
                 ////CommandManager.Execute((int)CommandManager.OtherCommands.source, new string[] { _configFile });
                 var keyMapService = container.GetInstance<IKeyMapService>();
+
+                // Top keymap does not require the window on focus, they are global hot keys
+                // Prefix key must reside here
                 keyMapService.AddKeyMap("top");
-                keyMapService.SetTopKey("top", Keys.Control | Keys.T);
+
+                // Root keymap is the default keymap invoked via Prefix key with readkey command
+                // All other default shortcuts reside here
+                keyMapService.AddKeyMap("root");
+                keyMapService.SetTopKey("root", Keys.Control | Keys.T);
                 Application.Run(mainForm);
             }
             else

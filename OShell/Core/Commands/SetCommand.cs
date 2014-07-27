@@ -48,15 +48,15 @@ namespace OShell.Core.Commands
     /// </summary>
     public class SetCommandHandler : ICommandHandler<SetCommand>
     {
-        private readonly INotificationService notificationService;
-
-        private readonly NameValueCollection configurationMap;
-
         private static readonly NameValueCollection DefaultConfigurationMap = 
             new NameValueCollection
                     {
                         { "topkmap", "top" },
                     };
+
+        private readonly INotificationService notificationService;
+
+        private readonly NameValueCollection configurationMap;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SetCommandHandler"/> class.

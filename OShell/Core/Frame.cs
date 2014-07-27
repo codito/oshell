@@ -13,7 +13,7 @@ namespace OShell.Core
     /// Represents the concept of a Frame. A <see cref="Frame"/> can contain multiple 
     /// <see cref="Window"/> instances. User can split a frame vertically horizontally.
     /// </summary>
-    /// <remarks>See <url>http://www.nongnu.org/ratpoison/doc/Concepts.html#Concepts</url> for details</remarks>
+    /// <remarks>See <code>http://www.nongnu.org/ratpoison/doc/Concepts.html#Concepts</code> for details</remarks>
     public class Frame
     {
         /// <summary>

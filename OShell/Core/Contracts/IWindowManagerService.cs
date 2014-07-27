@@ -1,11 +1,28 @@
-﻿namespace OShell.Core.Contracts
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IWindowManagerService.cs" company="OShell Development Team">
+//   Copyright (c) OShell Development Team. All rights reserved.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace OShell.Core.Contracts
 {
     using System;
 
-    interface IWindowManagerService
+    /// <summary>
+    /// The IWindowManagerService interface.
+    /// </summary>
+    public interface IWindowManagerService
     {
-        void AddWindow(IntPtr intPtr);
+        /// <summary>
+        /// Adds a window to currently managed windows list.
+        /// </summary>
+        /// <param name="handle">Native window handle</param>
+        void AddWindow(IntPtr handle);
 
-        void RemoveWindow(IntPtr intPtr);
+        /// <summary>
+        /// Removes a window from the currently managed list.
+        /// </summary>
+        /// <param name="handle">Native window handle</param>
+        void RemoveWindow(IntPtr handle);
     }
 }
