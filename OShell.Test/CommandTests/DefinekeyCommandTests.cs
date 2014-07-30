@@ -81,15 +81,44 @@
         public void DefineKeyCommandHandlerExecuteThrowsForInvalidCommandArguments()
         {
             this.keyMapService.AddKeyMap("testKeyMap");
-            var invalidArguments = new[] { string.Empty, null, "a b", "testKeyMap invalid,,key c" };
+            var invalidArguments = new[] { string.Empty, null, "a b" };
             var definekeyHandler = new DefinekeyCommandHandler(this.keyMapService, this.commandService);
             foreach (var a in invalidArguments)
             {
                 var invalidArgument = a;
                 Func<Task> action = async () => await definekeyHandler.Execute(new DefinekeyCommand { Args = invalidArgument });
-                action.ShouldThrow<ArgumentException>();
+                action.ShouldThrow<ArgumentException>().And.ParamName.Should().Be("command.Args");
             }
         }
+
+        [TestMethod]
+        public void DefineKeyCommandHandlerExecuteThrowsForALowercaseKeySequence()
+        {
+            this.keyMapService.AddKeyMap("testKeyMap");
+
+            var commandArg = "testKeyMap t testCommand arg1";
+            var definekeyHandler = new DefinekeyCommandHandler(this.keyMapService, this.commandService);
+
+            Func<Task> action = async () => await definekeyHandler.Execute(new DefinekeyCommand { Args = commandArg });
+            action.ShouldThrow<ArgumentException>()
+                .WithInnerException<ArgumentException>()
+                .And.ParamName.Should().Be("command");
+        }
+
+        [TestMethod]
+        public void DefineKeyCommandHandlerExecuteThrowsForAInvalidKeySequence()
+        {
+            this.keyMapService.AddKeyMap("testKeyMap");
+
+            var commandArg = "testKeyMap T+T testCommand";
+            var definekeyHandler = new DefinekeyCommandHandler(this.keyMapService, this.commandService);
+
+            Func<Task> action = async () => await definekeyHandler.Execute(new DefinekeyCommand { Args = commandArg });
+            action.ShouldThrow<ArgumentException>()
+                .WithInnerException<FormatException>()
+                .And.ParamName.Should().Be("command");
+        }
+
 
         [TestMethod]
         public async Task DefineKeyCommandHandlerExecuteRegistersActionForAKeyMap()

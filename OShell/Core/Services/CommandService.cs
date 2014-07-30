@@ -100,6 +100,7 @@ namespace OShell.Core.Services
                 throw ex;
             }
 
+            // TODO Check for failure in this execution and report via INotificationService
             // Invoke the command handler with the TCommand implementation
             return await commandHandler.Execute(command);
         }
