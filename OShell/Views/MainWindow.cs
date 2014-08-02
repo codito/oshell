@@ -68,9 +68,12 @@ namespace OShell.Views
         /// <inheritdoc/>
         public void WaitForNextKey(Keys topKey)
         {
-            this.activeHotKey = topKey;
-            this.Activate();
-            this.Show();
+            this.ExecuteOnUIThread(() =>
+            {
+                this.activeHotKey = topKey;
+                this.Activate();
+                this.Show();
+            });
         }
         #endregion
 
@@ -85,7 +88,7 @@ namespace OShell.Views
                 return base.ProcessCmdKey(ref msg, keyData);
             }
 
-            var activeKeyMap = this.keyMapService.GetKeyMapByTopKey(keyData);
+            var activeKeyMap = this.keyMapService.GetKeyMapByTopKey(this.activeHotKey);
             Task.Run(() => activeKeyMap.Execute(keyData, string.Empty))
                 .ContinueWith(
                 (task) =>
@@ -175,6 +178,12 @@ namespace OShell.Views
             this.WindowState = FormWindowState.Maximized;
             ////Cursor.Position = new Point(Screen.PrimaryScreen.Bounds.Width / 2,
             ////                Screen.PrimaryScreen.Bounds.Height / 2);
+        }
+
+        private void ExecuteOnUIThread(Action action)
+        {
+            var result = this.BeginInvoke(action);
+            result.AsyncWaitHandle.WaitOne();
         }
     }
 }
