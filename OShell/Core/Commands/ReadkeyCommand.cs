@@ -90,7 +90,7 @@ namespace OShell.Core.Commands
                     {
                         // Activate the square cursor and wait for input
                         var keymap = this.keyMapService.GetKeyMapByName(command.Args);
-                        this.mainWindow.WaitForNextKey(keymap.TopKey);
+                        this.mainWindow.WaitForNextKeyAsync(keymap.TopKey);
                         return true;
                     });
         }

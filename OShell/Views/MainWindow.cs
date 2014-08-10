@@ -66,7 +66,7 @@ namespace OShell.Views
         }
 
         /// <inheritdoc/>
-        public void WaitForNextKey(Keys topKey)
+        public void WaitForNextKeyAsync(Keys topKey)
         {
             this.ExecuteOnUIThread(() =>
             {
@@ -162,7 +162,7 @@ namespace OShell.Views
                     {
                         keyData = keyData | Keys.Shift;
                     }
-                    this.WaitForNextKey(keyData);
+                    this.WaitForNextKeyAsync(keyData);
                     break;
                 case WM_SETTINGCHANGE:
                     // TODO Handle add/remove of monitors to system
@@ -183,7 +183,7 @@ namespace OShell.Views
         private void ExecuteOnUIThread(Action action)
         {
             var result = this.BeginInvoke(action);
-            result.AsyncWaitHandle.WaitOne();
+            ////result.AsyncWaitHandle.WaitOne();
         }
     }
 }

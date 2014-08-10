@@ -78,7 +78,7 @@
             var readkeyHandler = new ReadkeyCommandHandler(this.keyMapService, this.mainWindow);
             await readkeyHandler.Execute(new ReadkeyCommand { Args = "dummyKeyMap" });
 
-            this.mainWindow.Received(1).WaitForNextKey(Keys.T);
+            this.mainWindow.Received(1).WaitForNextKeyAsync(Keys.T);
         }
     }
 }

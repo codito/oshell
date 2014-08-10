@@ -168,11 +168,15 @@ namespace OShell
                 // Top keymap does not require the window on focus, they are global hot keys
                 // Prefix key must reside here
                 keyMapService.AddKeyMap("top");
+                keyMapService.SetTopKey("top", Keys.Control | Keys.B);
 
                 // Root keymap is the default keymap invoked via Prefix key with readkey command
                 // All other default shortcuts reside here
                 keyMapService.AddKeyMap("root");
-                keyMapService.SetTopKey("root", Keys.Control | Keys.T);
+
+                var commandService = container.GetInstance<ICommandService>();
+                commandService.Run("definekey top T readkey root");
+                ////keyMapService.SetTopKey("root", Keys.Control | Keys.T);
                 Application.Run(mainForm);
             }
             else

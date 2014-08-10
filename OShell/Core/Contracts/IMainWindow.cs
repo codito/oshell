@@ -28,6 +28,6 @@ namespace OShell.Core.Contracts
         /// Activate and show the <see cref="IMainWindow"/>, wait for next key sequence.
         /// </summary>
         /// <param name="topKey">Top key for the key sequence.</param>
-        void WaitForNextKey(Keys topKey);
+        void WaitForNextKeyAsync(Keys topKey);
     }
 }
