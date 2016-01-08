@@ -38,9 +38,9 @@ namespace OShell.Core.Commands
         {
             get
             {
-                return Properties.Resources.Command_Set_Help;
+                return OShell.Properties.Resources.Command_Set_Help;
             }
-        }
+        } 
     }
 
     /// <summary>
@@ -52,6 +52,7 @@ namespace OShell.Core.Commands
             new NameValueCollection
                     {
                         { "topkmap", "top" },
+                        { "border", "1" }
                     };
 
         private readonly INotificationService notificationService;
@@ -79,12 +80,12 @@ namespace OShell.Core.Commands
         {
             if (notificationService == null)
             {
-                throw new ArgumentNullException("notificationService");
+                throw new ArgumentNullException(nameof(notificationService));
             }
 
             if (configurationMap == null)
             {
-                throw new ArgumentNullException("configurationMap");
+                throw new ArgumentNullException(nameof(configurationMap));
             }
 
             this.notificationService = notificationService;
@@ -96,7 +97,7 @@ namespace OShell.Core.Commands
         {
             if (command == null)
             {
-                throw new ArgumentNullException("command");
+                throw new ArgumentNullException(nameof(command));
             }
 
             return Task.Run(() =>

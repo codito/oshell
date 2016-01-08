@@ -80,11 +80,11 @@ namespace OShell
             // Bootstrap container
             container = new SimpleInjector.Container();
 
-            container.RegisterSingle<IPlatformFacade, WindowsPlatform>();
-            container.RegisterSingle<IWindowManagerService, WindowManagerService>();
-            container.RegisterSingle<IKeyMapService, KeyMapService>();
-            container.RegisterSingle<INotificationService, NotificationService>();
-            container.RegisterSingle<IMainWindow, MainWindow>();
+            container.RegisterSingleton<IPlatformFacade, WindowsPlatform>();
+            container.RegisterSingleton<IWindowManagerService, WindowManagerService>();
+            container.RegisterSingleton<IKeyMapService, KeyMapService>();
+            container.RegisterSingleton<INotificationService, NotificationService>();
+            container.RegisterSingleton<IMainWindow, MainWindow>();
             
             // Register default command set
             var commands =
@@ -92,16 +92,16 @@ namespace OShell
                          .SelectMany(s => s.GetTypes())
                          .Where(p => p != typeof(ICommand) && typeof(ICommand).IsAssignableFrom(p))
                          .ToList();
-            container.RegisterAll<ICommand>(commands);
-            container.RegisterManyForOpenGeneric(
+            container.RegisterCollection<ICommand>(commands);
+            container.Register(
                 typeof(ICommandHandler<>),
-                AccessibilityOption.PublicTypesOnly,
-                Assembly.GetExecutingAssembly());
+                container.GetTypesToRegister(typeof(ICommandHandler<>), new[] { Assembly.GetExecutingAssembly() })
+                    .Where(t => t.IsPublic));
 
             // Register handlers
             var commandHandlers =
                 commands.Select(command => container.GetInstance(typeof(ICommandHandler<>).MakeGenericType(command)));
-            container.RegisterSingle<ICommandService>(
+            container.RegisterSingleton<ICommandService>(
                 () => new CommandService(container.GetAllInstances<ICommand>(), commandHandlers));
 
             container.Verify();
@@ -176,6 +176,9 @@ namespace OShell
 
                 var commandService = container.GetInstance<ICommandService>();
                 commandService.Run("definekey top T readkey root");
+
+                // Set default variables
+                // commandService.Run()
                 ////keyMapService.SetTopKey("root", Keys.Control | Keys.T);
                 Application.Run(mainForm);
             }

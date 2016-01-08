@@ -63,7 +63,7 @@
         [TestMethod]
         public async Task SetCommandHandlerDefaultConfigurationHasDefinedVariables()
         {
-            var definedVariables = new[] { "topkmap" };
+            var definedVariables = new[] { "border", "topkmap" };
             var setCommand = new SetCommand();
             var setCommandHandler = new SetCommandHandler(this.notificationService);
 
@@ -88,6 +88,17 @@
             (await setCommandHandler.Execute(setCommand)).Should().BeTrue();
 
             this.notificationService.InfoString.Should().Be("topkmap = top\r\n");
+        }
+
+        [TestMethod]
+        public async Task SetCommandHandlerHasDefaultValueForBorderVariable()
+        {
+            var setCommand = new SetCommand { Args = "border" };
+            var setCommandHandler = new SetCommandHandler(this.notificationService);
+
+            (await setCommandHandler.Execute(setCommand)).Should().BeTrue();
+
+            this.notificationService.InfoString.Should().Be("border = 1\r\n");
         }
         #endregion
 
