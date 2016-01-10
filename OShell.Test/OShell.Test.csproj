@@ -104,7 +104,6 @@
   <ItemGroup>
     <None Include="OShell.Test.ruleset" />
     <None Include="packages.config" />
-    <None Include="Settings.StyleCop" />
     <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
   <Choose>
