@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="SetCommand.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ namespace OShell.Core.Commands
             {
                 return OShell.Properties.Resources.Command_Set_Help;
             }
-        } 
+        }
     }
 
     /// <summary>
@@ -48,7 +49,7 @@ namespace OShell.Core.Commands
     /// </summary>
     public class SetCommandHandler : ICommandHandler<SetCommand>
     {
-        private static readonly NameValueCollection DefaultConfigurationMap = 
+        private static readonly NameValueCollection DefaultConfigurationMap =
             new NameValueCollection
                     {
                         { "topkmap", "top" },

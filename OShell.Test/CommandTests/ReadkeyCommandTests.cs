@@ -1,8 +1,13 @@
-﻿namespace OShell.Test.CommandTests
+﻿// <copyright file="ReadkeyCommandTests.cs" company="OShell Development Team">
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+// </copyright>
+
+namespace OShell.Test.CommandTests
 {
     using System;
-    using System.Windows.Forms;
     using System.Threading.Tasks;
+    using System.Windows.Forms;
 
     using FluentAssertions;
 

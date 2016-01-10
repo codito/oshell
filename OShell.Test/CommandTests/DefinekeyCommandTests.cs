@@ -1,4 +1,9 @@
-﻿namespace OShell.Test.CommandTests
+﻿// <copyright file="DefinekeyCommandTests.cs" company="OShell Development Team">
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+// </copyright>
+
+namespace OShell.Test.CommandTests
 {
     using System;
     using System.Collections.Generic;
@@ -118,7 +123,6 @@
                 .WithInnerException<FormatException>()
                 .And.ParamName.Should().Be("command");
         }
-
 
         [TestMethod]
         public async Task DefineKeyCommandHandlerExecuteRegistersActionForAKeyMap()

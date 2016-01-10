@@ -1,4 +1,9 @@
-﻿namespace OShell.Test.CommandTests
+﻿// <copyright file="SourceCommandTests.cs" company="OShell Development Team">
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+// </copyright>
+
+namespace OShell.Test.CommandTests
 {
     using System;
     using System.Collections.Generic;
@@ -58,7 +63,8 @@
             this.sourceCommandHandler = new SourceCommandHandler(this.commandService);
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void SourceCommandHasNameAsSource()
         {
             var sourceCommand = new SourceCommand();
@@ -66,7 +72,8 @@
         }
 
         #region Parsing scenarios
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void LineWithCommandAndArgumentIsParsedFromTheSourceFile()
         {
             var configFile = GetDummyConfigFile("stubcmd arg1 arg2 arg3");
@@ -75,7 +82,8 @@
             CleanupDummyConfigFile(configFile);
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void LineStartingWithHashIsTreatedAsComment()
         {
             var configFile = GetDummyConfigFile("#stubcmd arg1 arg2 invalid arg");
@@ -84,7 +92,8 @@
             CleanupDummyConfigFile(configFile);
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void LineWithNullOrEmptySpaceIsIgnored()
         {
             var configFile = GetDummyConfigFile("   \r\n\r\nstubcmd arg1 arg2 arg3");
@@ -93,7 +102,8 @@
             CleanupDummyConfigFile(configFile);
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void LineWithACommandWhichFailsReturnsCorrectLineNumberAndCommandName()
         {
             var configFile = GetDummyConfigFile("stubcmd arg1 arg2 arg3\rstubcmd2 arg1 arg2 arg3");
@@ -105,7 +115,8 @@
         #endregion
 
         #region Exception scenarios
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void FileNotFoundExceptionIsThrownIfSourceFileIsNotFound()
         {
             var sourceCmd = new SourceCommand { Args = @"z:\dummydummyfile" };
@@ -113,7 +124,8 @@
             result.ShouldThrow<AggregateException>().And.InnerException.Should().BeOfType<DirectoryNotFoundException>();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void InvalidCommandExceptionIsThrownIfUnrecognizedCommandIsFound()
         {
             var configFile = GetDummyConfigFile("dummycmd arg1 arg2 arg3");

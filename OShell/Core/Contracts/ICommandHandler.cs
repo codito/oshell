@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="ICommandHandler.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -15,9 +16,9 @@ namespace OShell.Core.Contracts
     public interface ICommandHandler<in TCommand>
     {
         /// <summary>
-        /// Execute the <see cref="TCommand"/>
+        /// Execute the command.
         /// </summary>
-        /// <param name="command">Command definition <see cref="TCommand"/>.</param>
+        /// <param name="command">Command definition.</param>
         /// <returns>A <see cref="Task"/> representing the command execution state.</returns>
         Task<bool> Execute(TCommand command);
     }

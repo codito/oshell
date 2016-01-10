@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="Window.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -64,7 +65,7 @@ namespace OShell.Core
         private string className;
 
         /// <summary>
-        /// Initializes an instance of <see cref="Window"/> class.
+        /// Initializes a new instance of the <see cref="Window"/> class.
         /// </summary>
         /// <param name="frame">Parent Frame for this Window</param>
         /// <param name="hwnd">Native window handle</param>
@@ -78,14 +79,15 @@ namespace OShell.Core
         }
 
         #region Properties
+
         /// <summary>
         /// Gets the name of the application which owns this <see cref="Window"/>.
         /// </summary>
         public string ApplicationName
-        { 
+        {
             get
             {
-                if (String.IsNullOrEmpty(this.applicationName))
+                if (string.IsNullOrEmpty(this.applicationName))
                 {
                     this.applicationName = GetApplicationName(this.Handle);
                 }
@@ -101,7 +103,7 @@ namespace OShell.Core
         {
             get
             {
-                if (String.IsNullOrEmpty(this.className))
+                if (string.IsNullOrEmpty(this.className))
                 {
                     this.className = GetClassName(this.Handle);
                 }
@@ -138,6 +140,7 @@ namespace OShell.Core
         #endregion
 
         #region Public methods
+
         /// <summary>
         /// Makes this a foreground window.
         /// </summary>
@@ -228,7 +231,7 @@ namespace OShell.Core
             if (!Interop.MoveWindow(this.Handle, f.Size.X, f.Size.Y, f.Size.Width, f.Size.Height, true))
             {
                 this.notificationService.NotifyError(
-                    String.Format("Window: Unable to move window. HWnd = {0}, Name = {1}", this.Handle, this.Name));
+                    string.Format("Window: Unable to move window. HWnd = {0}, Name = {1}", this.Handle, this.Name));
             }
 
             this.Size = f.Size;
@@ -236,6 +239,7 @@ namespace OShell.Core
         #endregion
 
         #region Utilities
+
         /// <summary>
         /// Dumps the current GWL_STYLE and GWL_EXSTYLE for the window.
         /// </summary>
@@ -248,7 +252,7 @@ namespace OShell.Core
             if (gwlstyle == IntPtr.Zero)
             {
                 Logger.Instance.Debug("Window: Failed to get GWL_STYLE. HWnd = {0}, Name = {1}", hwnd, Window.GetCaptionText(hwnd));
-                return String.Empty;
+                return string.Empty;
             }
 
             foreach (var s in Enum.GetValues(typeof(Interop.GwlStyle)))
@@ -266,7 +270,7 @@ namespace OShell.Core
                 Logger.Instance
                       .Debug(
                           "Window: Failed to get GWL_EXSTYLE. HWnd = {0}, Name = {1}", hwnd, Window.GetCaptionText(hwnd));
-                return String.Empty;
+                return string.Empty;
             }
 
             foreach (var s in Enum.GetValues(typeof(Interop.GwlExStyle)))
@@ -337,7 +341,7 @@ namespace OShell.Core
         /// <returns>Bounding rectangle</returns>
         internal static Rectangle GetWindowSize(IntPtr hwnd)
         {
-            var size = new Rectangle();
+            var size = default(Rectangle);
             Interop.RECT rct;
 
             if (!Interop.GetWindowRect(hwnd, out rct))

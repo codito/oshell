@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------
 // <copyright file="GetOpt.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -15,7 +16,7 @@ namespace OShell.Core.Internal
     internal class GetOpt
     {
         // shortOptions and longOptions map the _short_option_char_ and _long_option_string_ to their ids.
-        // the _id_ will be +ve if the _option_ has argument else the id will be -ve, we would return 
+        // the _id_ will be +ve if the _option_ has argument else the id will be -ve, we would return
         // the _short_option_char_ to the user once we parse an option using the _id_ and the map
         // shortOptionMap. All this complex stuff for O(1) map operations. Is it worth? Anything better?
         private Dictionary<char, int> shortOptions;
@@ -63,6 +64,7 @@ namespace OShell.Core.Internal
         }
 
         #region Properties
+
         /// <summary>
         /// Gets the description for the options.
         /// </summary>
@@ -97,7 +99,7 @@ namespace OShell.Core.Internal
                     try
                     {
                         id = this.longOptions[currentOption];
-                    } 
+                    }
                     catch (KeyNotFoundException e)
                     {
                         // stop the culprit
@@ -164,11 +166,12 @@ namespace OShell.Core.Internal
             }
 
             #region Properties
+
             /// <summary>
             /// Gets if the option is a short property.
             /// </summary>
-            public char ShortOption 
-            { 
+            public char ShortOption
+            {
                 get;
                 private set;
             }

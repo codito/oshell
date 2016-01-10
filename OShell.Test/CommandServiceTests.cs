@@ -1,4 +1,9 @@
-﻿namespace OShell.Test
+﻿// <copyright file="CommandServiceTests.cs" company="OShell Development Team">
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+// </copyright>
+
+namespace OShell.Test
 {
     using System;
     using System.Collections.Generic;
@@ -35,7 +40,8 @@
             this.commandHandlerStubReturnsTrue = this.GetCommandHandler(this.commandStub, () => true);
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public async Task RunASingleCommandWhichReturnsFalse()
         {
             var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
@@ -44,7 +50,8 @@
             result.Should().BeFalse();
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public async Task RunASecondCommandWhileFirstCommandIsRunning()
         {
             // Create a command stub which sleeps for some time
@@ -79,7 +86,8 @@
             result2.Result.Should().BeFalse();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void NullCommandSpecThrowsArgumentException()
         {
             var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
@@ -87,7 +95,8 @@
             run.ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void EmptyCommandSpecThrowsArgumentException()
         {
             var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
@@ -95,7 +104,8 @@
             run.ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void UnregisteredCommandInCommandSpecThrowsInvalidCommandException()
         {
             var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });
@@ -104,7 +114,8 @@
             run.ShouldThrow<InvalidCommandException>().And.Data["InputCommand"].Should().Be(InputCmd);
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void MalformedCommandSpecThrowsInvalidCommandException()
         {
             var cmdsvc = new CommandService(new List<ICommand> { this.commandStub }, new List<object> { this.commandHandlerStubReturnsFalse });

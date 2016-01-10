@@ -1,4 +1,9 @@
-﻿namespace OShell.Test
+﻿// <copyright file="KeyMapServiceTests.cs" company="OShell Development Team">
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+// </copyright>
+
+namespace OShell.Test
 {
     using System;
     using System.Collections.Generic;
@@ -55,7 +60,8 @@
             }
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void StopClearsKeyMapRegistry()
         {
             this.keyMapService.AddKeyMap("dummyKeyMap");
@@ -70,14 +76,16 @@
             this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(Keys.N)).ShouldThrow<NullReferenceException>();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void StopCalledMultipleTimesShouldNotThrow()
         {
             (this.keyMapService as ServiceBase).Stop();
             (this.keyMapService as ServiceBase).Invoking(t => t.Stop()).ShouldNotThrow();
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void AddKeyMapThrowsForNullOrEmptyKeyMapName()
         {
             foreach (var name in new[] { null, string.Empty })
@@ -89,7 +97,8 @@
             }
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void SetTopKeyThrowsForNullOrEmptyKeyMapName()
         {
             foreach (var name in new[] { null, string.Empty })
@@ -101,7 +110,8 @@
             }
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void SetTopKeyThrowsForInvalidTopKey()
         {
             foreach (var key in new[] { Keys.None, Keys.NoName })
@@ -113,7 +123,8 @@
             }
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void SetTopKeySetsTheTopKeyForAKeyMap()
         {
             this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
@@ -121,14 +132,16 @@
                 .RegisterHotKey(TestTopKey, this.keyMapService.GetKeyMapByName(TestKeyMapName).GetHashCode());
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void SetTopKeyForAlreadyExistingKeyThrowsArgumentException()
         {
             this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
             this.keyMapService.Invoking(t => t.SetTopKey(TestKeyMapName, TestTopKey)).ShouldThrow<ArgumentException>();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void SetTopKeyWithRuntimeErrorInRegisterThrowsException()
         {
             this.platformFacade.RegisterHotKey(Keys.None, 0).ReturnsForAnyArgs(false);
@@ -139,7 +152,8 @@
             this.keyMapService.GetKeyMapByName(TestKeyMapName).TopKey.ShouldBeEquivalentTo(Keys.None);
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void RemoveKeyMapThrowsForNullKeyMapName()
         {
             foreach (var name in new[] { null, string.Empty })
@@ -151,7 +165,8 @@
             }
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void RemoveKeyMapRemovesHotKeyBindingForTopKeyOfKeyMap()
         {
             this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
@@ -166,7 +181,8 @@
             this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(TestTopKey)).ShouldThrow<KeyNotFoundException>();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void RemoveKeyMapForFailedUnregisterThrowsException()
         {
             this.platformFacade.UnregisterHotKey(0).ReturnsForAnyArgs(false);
@@ -181,7 +197,8 @@
             this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(TestTopKey)).ShouldThrow<KeyNotFoundException>();
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void GetKeyMapByNameThrowsForNullKeyMapName()
         {
             foreach (var name in new[] { null, string.Empty })
@@ -193,20 +210,23 @@
             }
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void GetKeyMapByNameReturnsTheCorrectKeyMapInstance()
         {
             this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
             this.keyMapService.GetKeyMapByName(TestKeyMapName).TopKey.Should().Be(TestTopKey);
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void GetKeyMapByNameForNonExistentKeyMapThrowsKeyNotFoundException()
         {
             this.keyMapService.Invoking(t => t.GetKeyMapByName("notExistingKeyMap")).ShouldThrow<KeyNotFoundException>();
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void GetKeyMapByTopKeyThrowsForInvalidTopKey()
         {
             foreach (var key in new[] { Keys.None, Keys.NoName })
@@ -218,7 +238,8 @@
             }
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void GetKeyMapByTopKeyReturnsAKeyMapForTheTopKey()
         {
             this.keyMapService.SetTopKey(TestKeyMapName, TestTopKey);
@@ -226,7 +247,8 @@
                 .ShouldBeEquivalentTo(this.keyMapService.GetKeyMapByName(TestKeyMapName));
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void GetKeyMapByTopKeyForNonExistentKeyMapThrowsKeyNotFoundException()
         {
             this.keyMapService.Invoking(t => t.GetKeyMapByTopKey(Keys.NumLock)).ShouldThrow<KeyNotFoundException>();

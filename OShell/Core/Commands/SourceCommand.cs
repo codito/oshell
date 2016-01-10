@@ -1,6 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SourceCommand.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 namespace OShell.Core.Commands
@@ -95,7 +96,7 @@ namespace OShell.Core.Commands
 
             using (var rcreader = new StreamReader(path))
             {
-                String line;
+                string line;
                 while (++linenum != 0 && (line = rcreader.ReadLine()) != null)
                 {
                     if (string.IsNullOrWhiteSpace(line) || line.StartsWith("#"))

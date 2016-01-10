@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="ServiceBase.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -12,6 +13,7 @@ namespace OShell.Core.Contracts
     public abstract class ServiceBase
     {
         #region IServiceBase implementation
+
         /// <summary>
         /// Starts the service.
         /// </summary>

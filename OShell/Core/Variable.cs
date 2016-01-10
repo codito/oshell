@@ -1,6 +1,11 @@
+// <copyright file="Variable.cs" company="OShell Development Team">
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+// </copyright>
+
 /*
  * 8/1/2008 11:29 PM
- * 
+ *
  * v0.1
  * maxundos number: how many undo levels
  * wingravity: default gravity new windows will get
@@ -18,7 +23,7 @@
  * bgcolor colr: of the windows that we create
  * barpadding x y: horizontal n vertical padding for our bar
  * winliststyle row|column: whether to show windows list as a column or row
- * 
+ *
  * v0.2
  * resizeunit pixels: amt of pixels resizing will add/subtract
  * barinpadding: if there is padding, shuld bar appear inside window or screen
@@ -27,6 +32,7 @@
  * framesels selectors: how to access more than 10 frames
  */
 
+ /*
 namespace OShell.Core
 {
     using System.Drawing;
@@ -42,68 +48,68 @@ namespace OShell.Core
 
         public int MaxUndos
         {
-            get { return MaxUndos; }
-            internal set { MaxUndos = value; }
+            get { return this.MaxUndos; }
+            internal set { this.MaxUndos = value; }
         }
 
         public int MaxSizeGravity
         {
-            get { return MaxSizeGravity; }
-            internal set { MaxSizeGravity = value; }
+            get { return this.MaxSizeGravity; }
+            internal set { this.MaxSizeGravity = value; }
         }
 
         public Gravity BarGravity
         {
-            get { return BarGravity; }
-            internal set { BarGravity = value; }
+            get { return this.BarGravity; }
+            internal set { this.BarGravity = value; }
         }
 
         public Font TypeFont
         {
-            get { return TypeFont; }
-            internal set { TypeFont = value; }
+            get { return this.TypeFont; }
+            internal set { this.TypeFont = value; }
         }
 
         public Padding ScreenPadding
         {
-            get { return ScreenPadding; }
-            internal set { ScreenPadding = value; }
+            get { return this.ScreenPadding; }
+            internal set { this.ScreenPadding = value; }
         }
 
         public int Border
         {
-            get { return Border; }
-            internal set { Border = value; }
+            get { return this.Border; }
+            internal set { this.Border = value; }
         }
 
         public int BarBorder
         {
-            get { return BarBorder; }
-            internal set { BarBorder = value; }
+            get { return this.BarBorder; }
+            internal set { this.BarBorder = value; }
         }
 
         public uint InputWidth
         {
-            get { return InputWidth; }
-            internal set { InputWidth = value; }
+            get { return this.InputWidth; }
+            internal set { this.InputWidth = value; }
         }
 
         public bool WaitCursor
         {
-            get { return WaitCursor; }
-            internal set { WaitCursor = value; }
+            get { return this.WaitCursor; }
+            internal set { this.WaitCursor = value; }
         }
 
         public string WinFmt
         {
-            get { return WinFmt; }
-            internal set { WinFmt = value; }
+            get { return this.WinFmt; }
+            internal set { this.WinFmt = value; }
         }
 
         public int BarWidth
         {
-            get { return BarWidth; }
-            internal set { BarWidth = value; }
+            get { return this.BarWidth; }
+            internal set { this.BarWidth = value; }
         }
 
 
@@ -117,7 +123,7 @@ namespace OShell.Core
 
         public Variables GetInstance()
         {
-            return _instance;
+            return this._instance;
         }
     }
-}
+}*/

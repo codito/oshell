@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="Program.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ namespace OShell
     internal static class Program
     {
         // Command line Options for oshell
-        private static readonly GetOpt.Option[] Options = 
+        private static readonly GetOpt.Option[] Options =
         {
             new GetOpt.Option('h', false, "help", Properties.Resources.Option_Help_Description),
             new GetOpt.Option('v', false, "version", Properties.Resources.Option_Version_Description),
@@ -85,7 +86,7 @@ namespace OShell
             container.RegisterSingleton<IKeyMapService, KeyMapService>();
             container.RegisterSingleton<INotificationService, NotificationService>();
             container.RegisterSingleton<IMainWindow, MainWindow>();
-            
+
             // Register default command set
             var commands =
                 AppDomain.CurrentDomain.GetAssemblies()
@@ -192,6 +193,7 @@ namespace OShell
         #endregion
 
         #region Utilities
+
         /// <summary>
         /// Allocate a console if application started from within windows GUI.
         /// Detects the presence of an existing console associated with the application and

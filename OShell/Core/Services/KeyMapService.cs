@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="KeyMapService.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -34,7 +35,7 @@ namespace OShell.Core.Services
         private Dictionary<Keys, KeyMap> topKeyToKeyMapMapping;
 
         /// <summary>
-        /// Creates an instance of <see cref="KeyMapService"/>.
+        /// Initializes a new instance of the <see cref="KeyMapService"/> class.
         /// </summary>
         /// <param name="platformFacade">
         /// An <see cref="IPlatformFacade"/> implementation

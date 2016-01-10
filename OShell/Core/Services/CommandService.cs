@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="CommandService.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -29,6 +30,7 @@ namespace OShell.Core.Services
         private Dictionary<string, ICommand> commandInstances;
 
         #region ServiceBase implementation
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandService"/> class.
         /// </summary>
@@ -62,6 +64,7 @@ namespace OShell.Core.Services
         #endregion
 
         #region ICommandService implementation
+
         /// <inheritdoc/>
         public async Task<bool> Run(string commandSpec)
         {
@@ -91,7 +94,7 @@ namespace OShell.Core.Services
             {
                 var ex =
                     new Exception(
-                        String.Format(
+                        string.Format(
                             "CommandService: Unable to create an instance of {0} for {1}.",
                             commandHandlerType,
                             commandName));

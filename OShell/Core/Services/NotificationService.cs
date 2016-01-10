@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="NotificationService.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -17,7 +18,7 @@ namespace OShell.Core.Services
         private readonly Logger logger;
 
         /// <summary>
-        /// Initializes an instance of the <see cref="NotificationService"/> class.
+        /// Initializes a new instance of the <see cref="NotificationService"/> class.
         /// </summary>
         public NotificationService()
         {
@@ -27,6 +28,7 @@ namespace OShell.Core.Services
         }
 
         #region Properties
+
         /// <summary>
         /// Gets or sets a value indicating whether we have a message bar available. If false,
         /// messages are shown on standard output only.
@@ -35,6 +37,7 @@ namespace OShell.Core.Services
         #endregion
 
         #region ServiceBase overrides
+
         /// <summary>
         /// Starts the service.
         /// </summary>

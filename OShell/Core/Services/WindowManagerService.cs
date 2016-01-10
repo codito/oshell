@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WindowManagerService.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ namespace OShell.Core.Services
         #region Constructor
 
         /// <summary>
-        /// Initializes an instance of the <see cref="WindowManagerService"/> class.
+        /// Initializes a new instance of the <see cref="WindowManagerService"/> class.
         /// </summary>
         /// <param name="platformFacade">Instance of the Platform implementation facade</param>
         /// <param name="notificationService">Instance of Notification Service</param>
@@ -45,6 +46,7 @@ namespace OShell.Core.Services
         #endregion
 
         #region Public Properties
+
         /// <summary>
         /// Gets the dictionary of managed windows handles and references.
         /// </summary>
@@ -62,6 +64,7 @@ namespace OShell.Core.Services
         #endregion
 
         #region Start/Stop
+
         /// <summary>
         /// Starts the window manager service.
         /// </summary>
@@ -101,6 +104,7 @@ namespace OShell.Core.Services
         #endregion
 
         #region Functions
+
         /// <inheritdoc/>
         public void AddWindow(IntPtr handle)
         {
@@ -151,6 +155,7 @@ namespace OShell.Core.Services
         #endregion
 
         #region Reset state
+
         /// <summary>
         /// Resets all visible windows to standard styles. Used as a rescue mechanism in case
         /// windows get into messed up state. See <c>-r or -reset</c> command line parameter.

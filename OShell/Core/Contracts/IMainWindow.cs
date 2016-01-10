@@ -1,9 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IMainWindow.cs" company="OShell Development Team">
-//   Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 // <summary>
-//   
+//
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ namespace OShell.Core.Contracts
 
     /// <summary>
     /// Base for the Main Window of the application. Register process life time objects with
-    /// this Window (if the object requires a Handle). 
+    /// this Window (if the object requires a Handle).
     /// </summary>
     public interface IMainWindow
     {

@@ -1,12 +1,15 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ICommandService.cs" company="OShell Development Team">
-//   Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace OShell.Core.Contracts
 {
     using System.Threading.Tasks;
+
+    using OShell.Core.Commands;
 
     /// <summary>
     /// The CommandService interface.

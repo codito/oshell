@@ -1,6 +1,7 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="MainWindow.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -15,14 +16,15 @@ namespace OShell.Views
     using OShell.Core.Contracts;
     using OShell.Core.Internal;
 
+    #pragma warning disable SA1306 // Field names must begin with lower-case letter
+    #pragma warning disable SA1310 // Field names must not contain underscore
+
     /// <summary>
     /// The main window.
     /// </summary>
-    internal sealed class MainWindow : Form, IMainWindow 
+    internal sealed class MainWindow : Form, IMainWindow
     {
-// ReSharper disable InconsistentNaming
         private static uint WM_SHELLHOOK;
-// ReSharper restore InconsistentNaming
         private readonly IKeyMapService keyMapService;
 
         private readonly IWindowManagerService windowManagerService;
@@ -32,6 +34,7 @@ namespace OShell.Views
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
         /// </summary>
+        /// <param name="platformFacade">Platform implementation.</param>
         /// <param name="keyMapService">
         /// The key map service.
         /// </param>
@@ -59,6 +62,7 @@ namespace OShell.Views
         }
 
         #region IMainWindow Implmentation
+
         /// <inheritdoc/>
         public IntPtr GetHandle()
         {
@@ -78,6 +82,7 @@ namespace OShell.Views
         #endregion
 
         #region Form Overrides
+
         /// <inheritdoc/>
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
@@ -94,7 +99,7 @@ namespace OShell.Views
                 (task) =>
                     {
                         Logger.Instance
-                              .Info(String.Format(
+                              .Info(string.Format(
                                       "Fault on key press action. Key sequence: {0}. Exception: {1}",
                                       keyData,
                                       task.Exception));
@@ -109,11 +114,9 @@ namespace OShell.Views
         /// <inheritdoc/>
         protected override void WndProc(ref Message m)
         {
-// ReSharper disable InconsistentNaming
             const int WM_DISPLAYCHANGE = 0x007e;
             const int WM_SETTINGCHANGE = 0x001A;
             const int WM_HOTKEY = 0x312;
-// ReSharper restore InconsistentNaming
             if (m.Msg == WM_SHELLHOOK)
             {
                 switch (m.WParam.ToInt64())
@@ -152,16 +155,17 @@ namespace OShell.Views
                     {
                         keyData = keyData | Keys.Alt;
                     }
-                    
+
                     if ((modifier & (int)ModifierKey.Control) == (int)ModifierKey.Control)
                     {
                         keyData = keyData | Keys.Control;
                     }
-                    
+
                     if ((modifier & (int)ModifierKey.Shift) == (int)ModifierKey.Shift)
                     {
                         keyData = keyData | Keys.Shift;
                     }
+
                     this.WaitForNextKeyAsync(keyData);
                     break;
                 case WM_SETTINGCHANGE:

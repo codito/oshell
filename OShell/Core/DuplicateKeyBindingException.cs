@@ -1,6 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="DuplicateKeyBindingException.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ namespace OShell.Core
         /// </summary>
         /// <param name="keyData">Key sequence.</param>
         public DuplicateKeyBindingException(Keys keyData)
-            : base(String.Format("definekey: binding already exists for '{0}' key", keyData))
+            : base(string.Format("definekey: binding already exists for '{0}' key", keyData))
         {
             this.Data.Add("KeyData", keyData);
         }

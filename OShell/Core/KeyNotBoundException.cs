@@ -1,6 +1,7 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="KeyNotBoundException.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -20,7 +21,7 @@ namespace OShell.Core
         /// <param name="topKey">Root key</param>
         /// <param name="keyData">Auxiliary key sequence</param>
         public KeyNotBoundException(Keys topKey, Keys keyData)
-            : base(String.Format("readkey: undefined '{0}' key", keyData))
+            : base(string.Format("readkey: undefined '{0}' key", keyData))
         {
             this.Data.Add("TopKey", topKey);
             this.Data.Add("KeyData", keyData);

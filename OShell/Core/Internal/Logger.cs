@@ -1,6 +1,7 @@
 //-----------------------------------------------------------------------
 // <copyright file="Logger.cs" company="OShell Development Team">
-//     Copyright (c) OShell Development Team. All rights reserved.
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -129,12 +130,12 @@ namespace OShell.Core.Internal
         /// <param name="args">Additional arguments</param>
         public void Write(Verbosity level, string format, params object[] args)
         {
-            var prettyMessage = String.Format("{0}: {1}", level, String.Format(format, args));
+            var prettyMessage = string.Format("{0}: {1}", level, string.Format(format, args));
 
             // Add additional debug data for DEBUG messages
             if (level == Verbosity.Error)
             {
-                prettyMessage += String.Format(" GLE = {0}", Marshal.GetLastWin32Error());
+                prettyMessage += string.Format(" GLE = {0}", Marshal.GetLastWin32Error());
             }
 
             if (this.UseConsole)

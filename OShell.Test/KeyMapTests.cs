@@ -1,4 +1,9 @@
-﻿namespace OShell.Test
+﻿// <copyright file="KeyMapTests.cs" company="OShell Development Team">
+// Copyright (c) OShell Development Team. All rights reserved.
+// Licensed under the MIT License. See LICENSE in the project root for license information.
+// </copyright>
+
+namespace OShell.Test
 {
     using System;
     using System.Collections.Generic;
@@ -32,21 +37,24 @@
             keymap.TopKey.ShouldBeEquivalentTo(Keys.None);
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void CreateKeyMapWithTopKey()
         {
             var km = CreateKeyMapWithTopKey(Keys.A);
             km.TopKey.Should().Be(Keys.A);
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public void CreateKeyMapWithTopKeyCombination()
         {
             var keys = Keys.Alt | Keys.Shift | Keys.NumPad0;
             CreateKeyMapWithTopKey(keys).TopKey.Should().Be(keys);
         }
 
-        [TestMethod, Priority(0)]
+        [TestMethod]
+        [Priority(0)]
         public async Task ExecuteActionInvokesTheUserAction()
         {
             var topKey = Keys.Alt | Keys.LWin;
@@ -61,7 +69,8 @@
             result.Should().BeTrue();
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void ExecuteActionWithUnboundKeyThrowsKeyNotBoundException()
         {
             var topKey = Keys.LWin | Keys.A;
@@ -79,7 +88,8 @@
                                                    });
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void RegisterActionWithExistingKeyThrowsDuplicateKeyBindingException()
         {
             var km = CreateKeyMapWithTopKey(Keys.Alt);
@@ -89,7 +99,8 @@
               .And.Data.ShouldBeEquivalentTo(new Dictionary<string, object> { { "KeyData", Keys.A } });
         }
 
-        [TestMethod, Priority(1)]
+        [TestMethod]
+        [Priority(1)]
         public void RegisterActionWithNullThrowsArgumentException()
         {
             var km = CreateKeyMapWithTopKey(Keys.A);
